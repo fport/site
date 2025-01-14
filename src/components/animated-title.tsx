@@ -1,33 +1,33 @@
-'use client'
-
-import { useState } from 'react'
-
+"use client"
 export default function AnimatedTitle() {
-  const [isHovered, setIsHovered] = useState(false)
-
   return (
-    <h1 className="text-4xl font-medium">
-      Furkan{" "}
-      <span 
-        className="relative inline-block cursor-pointer perspective-[1000px]"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <span 
-          className={`inline-block transition-all duration-300 transform-style-preserve-3d ${
-            isHovered ? 'opacity-0 rotateX-90 origin-top' : 'opacity-100'
-          }`}
-        >
-          Portakal
+    <h1 className="font-medium pt-12 transition-element text-4xl">
+      <span className="sr-only">Furkan Portakal</span>
+      <span aria-hidden="true" className="block overflow-hidden group relative">
+        <span className="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full whitespace-nowrap">
+          {'Furkan Portakal'.split('').map((letter, index) => (
+            <span
+              key={index}
+              className="inline-block"
+              style={{ transitionDelay: `${index * 25}ms` }}
+            >
+              {letter === ' ' ? '\u00A0' : letter}
+            </span>
+          ))}
         </span>
-        <span 
-          className={`absolute left-0 transition-all duration-300 transform-style-preserve-3d ${
-            isHovered ? 'opacity-100 rotateX-0' : 'opacity-0 -rotateX-90 origin-bottom'
-          }`}
-        >
-          🍊
+        <span className="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-hover:translate-y-0">
+          {'Furkan '.split('').map((letter, index) => (
+            <span
+              key={index}
+              className="inline-block"
+              style={{ transitionDelay: `${index * 25}ms` }}
+            >
+              {letter}
+            </span>
+          ))}
+           &nbsp;🍊
         </span>
       </span>
     </h1>
-  )
-} 
+  );
+}

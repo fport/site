@@ -18,8 +18,8 @@ export default function Home() {
           </h2>
         </div>
         
-        <p className="text-gray-600 text-lg leading-relaxed">
-          I focus on WebSocket implementations and performance optimizations, always exploring ways to make things better. Currently diving into generative AI research and building side projects. I&apos;m driven by curiosity and the constant question of &quot;why not better?&quot;
+        <p className="text-gray-600 text-lg leading-relaxed text-justify">
+         As a frontend developer, I am dedicated to crafting seamless user experiences through clean code, semantic design, and scalable architectures. A quick learner and advocate for open-source, I continuously explore Generative AI, tackle complex challenges like WebSocket implementations, and lead innovative projects that push the boundaries of technology. Driven by curiosity and the question, &ldquo;Why not better?&rdquo;, I strive to create meaningful solutions while fostering collaboration and long-term relationships.
         </p>
 
         <div className="flex gap-6 text-gray-500">
