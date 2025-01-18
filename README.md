@@ -5,26 +5,28 @@ A modern portfolio website built with Next.js, featuring MDX support for content
 ## Features
 
 ### Current Features
-- 📝 MDX Support for dynamic content
-- 🎨 Modern and clean design
-- 💨 TailwindCSS for styling
-- 🚀 Next.js 15 for optimal performance
-- 📱 Fully responsive design
+
+-   📝 MDX Support for dynamic content
+-   🎨 Modern and clean design
+-   💨 TailwindCSS for styling
+-   🚀 Next.js 15 for optimal performance
+-   📱 Fully responsive design
 
 ### Upcoming Features
-- 💬 AI-powered chat integration
-- 🔖 Bookmark system
-- 📚 Interactive blog posts
-- 🤖 AI assistant for visitor interactions
+
+-   💬 AI-powered chat integration
+-   🔖 Bookmark system
+-   📚 Interactive blog posts
+-   🤖 AI assistant for visitor interactions
 
 ## Tech Stack
 
-- Next.js 15
-- TypeScript
-- TailwindCSS
-- MDX
-- Supabase (for upcoming features)
-- shadcn/ui
+-   Next.js 15
+-   TypeScript
+-   TailwindCSS
+-   MDX
+-   Supabase (for upcoming features)
+-   shadcn/ui
 
 ## Getting Started
 
@@ -47,6 +49,20 @@ Visit [http://localhost:3000](http://localhost:3000) to see the site.
 ## Content Management
 
 Content is written in MDX format, allowing for:
-- Interactive components within markdown
-- Custom React components
-- Dynamic content rendering
+
+-   Interactive components within markdown
+-   Custom React components
+-   Dynamic content rendering
+
+## Development
+
+This project follows modern development practices:
+
+-   TypeScript for type safety
+-   ESLint for code quality
+-   Prettier for code formatting
+-   Husky for git hooks
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
