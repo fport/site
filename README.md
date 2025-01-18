@@ -1,7 +1,52 @@
-## Writing
+# Personal Portfolio Site
 
-- [My Stack](/paper/stack)
+A modern portfolio website built with Next.js, featuring MDX support for content creation and interactive features.
 
-## Code
+## Features
 
-- [next-minimal-store](https://github.com/leerob/next-minimal-store)
+### Current Features
+- 📝 MDX Support for dynamic content
+- 🎨 Modern and clean design
+- 💨 TailwindCSS for styling
+- 🚀 Next.js 15 for optimal performance
+- 📱 Fully responsive design
+
+### Upcoming Features
+- 💬 AI-powered chat integration
+- 🔖 Bookmark system
+- 📚 Interactive blog posts
+- 🤖 AI assistant for visitor interactions
+
+## Tech Stack
+
+- Next.js 15
+- TypeScript
+- TailwindCSS
+- MDX
+- Supabase (for upcoming features)
+- shadcn/ui
+
+## Getting Started
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the site.
+
+## Content Management
+
+Content is written in MDX format, allowing for:
+- Interactive components within markdown
+- Custom React components
+- Dynamic content rendering
