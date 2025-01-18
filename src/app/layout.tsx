@@ -1,8 +1,8 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -29,6 +29,7 @@ export default function RootLayout({
           <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-white text-gray-900">
             <main className="max-w-[60ch] mx-auto w-full space-y-6">
               {children}
+              <Analytics />
             </main>
             <Footer />
           </div>
