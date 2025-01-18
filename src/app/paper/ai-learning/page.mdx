@@ -1,0 +1,103 @@
+import { AnimatedAILearning } from '../animated-ai-learning';
+import { CNNVisualization } from './cnn-visualization';
+
+export const metadata = {
+  title: 'My Journey in Generative AI',
+  alternates: {
+    canonical: '/paper/ai-learning',
+  },
+};
+
+<AnimatedAILearning />
+
+Hey! 👋 Let me share my AI journey with you - it's been quite a ride! I started with traditional ML and NLP, and now I'm deep into the exciting world of generative AI.
+
+## My ML & NLP Background
+
+Back in the day, I cut my teeth on Natural Language Processing. It was fascinating stuff - working with text classification, sentiment analysis, and all that jazz. I remember spending hours fine-tuning models and getting excited about even small improvements in accuracy.
+
+### The Neural Network Days
+
+Remember when CNNs were the hottest thing in town? Here's a little visualization of what we were working with:
+
+<CNNVisualization />
+
+I spent a good chunk of time understanding these architectures. It's wild to think how far we've come from these "simpler" times!
+
+## The Evolution to Modern AI
+
+### Deep Learning Journey
+The transition from traditional ML to deep learning was eye-opening. Here's what really clicked for me:
+
+- Started with basic neural nets
+- Moved to more complex architectures
+- Finally dove into transformers (mind-blown 🤯)
+
+### LLM Adventure
+
+These days, I'm all about Large Language Models. It's crazy how different it is from my NLP days! Now we're dealing with:
+
+<details className="mb-4">
+  <summary className="text-gray-600 text-[15px] mb-2">Modern LLM Concepts</summary>
+  
+  - Prompt engineering (way more art than science!)
+  - Context windows (remembering to keep it concise)
+  - Token optimization (every token counts!)
+  - Temperature tuning (finding that sweet spot between creative and focused)
+</details>
+
+## Recent Experiments
+
+I've been playing around with some really cool stuff:
+
+### Fine-tuning Adventures
+Got my hands dirty with model fine-tuning. It's amazing how you can take these massive models and teach them new tricks! Some highlights:
+
+- LoRA adaptations
+- Custom dataset creation
+- Hyperparameter tuning (the endless quest for perfect settings)
+
+### RAG Implementation
+Retrieval-Augmented Generation has been a game-changer. I've built systems that can:
+
+```typescript
+// A simple RAG example I worked with
+async function enhancedResponse(query: string) {
+  const relevantDocs = await vectorDB.search(query);
+  const enhancedPrompt = `Context: ${relevantDocs.join('\n')}
+  Question: ${query}`;
+  return await llm.generate(enhancedPrompt);
+}
+```
+
+## Vercel AI Adventures
+
+The Vercel AI SDK has been a revelation! Here's what I've learned:
+
+- Stream handling is so much cleaner now
+- Edge runtime deployment is a breeze
+- The AI components make integration super smooth
+
+I've been using their `useCompletion` and `useChat` hooks - they're seriously game-changing for AI web apps.
+
+## What's Next?
+
+I'm super excited about:
+
+- Multimodal models (text + vision is mind-blowing)
+- Agent systems (they're getting scarily smart)
+- Better RAG architectures
+- More efficient fine-tuning methods
+
+## Resources I Swear By
+
+These have been game-changers for me:
+
+1. Vercel AI Docs (seriously, they're gold!)
+2. AI Engineering Discord communities
+3. Hands-on projects (nothing beats building stuff)
+4. Twitter AI community (yeah, I'm one of those people now 😅)
+
+---
+
+This field moves crazy fast, and I'm learning something new literally every day. Hit me up if you want to geek out about any of this stuff! 
