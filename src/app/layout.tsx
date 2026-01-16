@@ -3,6 +3,10 @@ import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from './providers';
+import { ThemeToggle } from './theme-toggle';
+import { ChatBubble } from './components/chat-bubble';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,15 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className={`${inter.className}`}>
+      <html lang="en" className={`${inter.className}`} suppressHydrationWarning>
         <body className="antialiased tracking-tight">
-          <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-white text-gray-900">
-            <main className="max-w-[60ch] mx-auto w-full space-y-6">
-              {children}
-              <Analytics />
-            </main>
-            <Footer />
-          </div>
+          <ThemeProvider>
+            <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-background text-foreground">
+              <main className="max-w-[60ch] mx-auto w-full space-y-6">
+                {children}
+                <Analytics />
+              </main>
+              <Footer />
+            </div>
+            <ChatBubble />
+          </ThemeProvider>
         </body>
       </html>
     </ViewTransitions>
@@ -48,19 +55,22 @@ function Footer() {
   ];
 
   return (
-    <footer className="mt-12 text-center">
-      <div className="flex justify-center space-x-4 tracking-tight">
-        {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-orange-500 transition-colors duration-200"
-          >
-            {link.name}
-          </a>
-        ))}
+    <footer className="mt-12 max-w-[60ch] mx-auto w-full">
+      <div className="flex justify-between items-center text-sm">
+        <div className="flex space-x-4 tracking-tight">
+          {links.map((link) => (
+            <a
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted hover:text-foreground underline transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+        <ThemeToggle />
       </div>
     </footer>
   );

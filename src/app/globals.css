@@ -7,6 +7,11 @@
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --muted: #6b7280;
+  --link: #2563eb;
+  --link-hover: #1d4ed8;
   --sh-class: #7aa2f7;
   --sh-sign: #89ddff;
   --sh-string: #9ece6a;
@@ -15,6 +20,14 @@
   --sh-jsxliterals: #7aa2f7;
   --sh-property: #73daca;
   --sh-entity: #e0af68;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --muted: #9ca3af;
+  --link: #60a5fa;
+  --link-hover: #93c5fd;
 }
 
 html {
@@ -59,6 +72,10 @@ code {
   background-color: var(--color-gray-100);
 }
 
+.dark code {
+  background-color: #27272a;
+}
+
 pre code {
   background-color: transparent;
   padding: 0;
@@ -73,7 +90,7 @@ pre code > span .sh__token--identifier {
 
 code:not(pre code) span {
   font-weight: 500;
-  color: black !important;
+  color: var(--foreground) !important;
 }
 
 pre code span {
@@ -104,84 +121,34 @@ table {
 }
 
 ::view-transition-old(furkan) {
-  animation: fade-out 0.8s ease-in-out;
+  animation: fade-out 0.3s ease-in-out;
 }
 
 ::view-transition-new(furkan) {
-  animation: fade-in-up 0.4s ease-in-out;
+  animation: fade-in 0.3s ease-in-out;
 }
 
 @keyframes fade-out {
-  0% {
-    transform: translateY(0) translateX(-0.2px);
+  from {
     opacity: 1;
-    font-weight: 500;
   }
-
-  20% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.5;
-  }
-
-  40% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.3;
-  }
-
-  60% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.2;
-  }
-
-  100% {
-    transform: translateY(24px) translateX(-0.2px);
+  to {
     opacity: 0;
   }
 }
 
 @keyframes fade-in {
-  0% {
+  from {
     opacity: 0;
   }
-
-  40% {
-    opacity: 0.6;
-  }
-
-  60% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0;
-  }
-
-  20% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.5;
-  }
-
-  80% {
-    transform: translateY(0) translateX(-0.2px);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: translateY(0) translateX(-0.2px);
+  to {
     opacity: 1;
   }
 }
 
 @supports (view-transition-name: none) {
   .fade-in {
-    animation: fade-in 0.8s ease-in-out forwards;
+    animation: fade-in 0.3s ease-in-out forwards;
     opacity: 0;
   }
 }

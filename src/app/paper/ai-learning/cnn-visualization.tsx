@@ -1,7 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
-
 export function CNNVisualization() {
   const layers = [
     { nodes: 4, color: '#94a3b8' },
@@ -11,19 +7,14 @@ export function CNNVisualization() {
   ];
 
   return (
-    <div className="w-full h-48 flex items-center justify-center my-6 bg-gray-50 rounded-lg p-4">
+    <div className="w-full h-48 flex items-center justify-center my-6 bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
       <svg width="400" height="160" viewBox="0 0 400 160">
         {layers.map((layer, layerIndex) => (
           <g key={layerIndex} transform={`translate(${80 + layerIndex * 80}, 0)`}>
             {Array.from({ length: layer.nodes }).map((_, nodeIndex) => {
               const yPos = 80 - (layer.nodes * 25) / 2 + nodeIndex * 25;
               return (
-                <motion.g
-                  key={nodeIndex}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: layerIndex * 0.2 + nodeIndex * 0.1 }}
-                >
+                <g key={nodeIndex}>
                   <circle
                     cx="0"
                     cy={yPos}
@@ -39,7 +30,7 @@ export function CNNVisualization() {
                           (layers[layerIndex + 1].nodes * 25) / 2 +
                           nextNodeIndex * 25;
                         return (
-                          <motion.line
+                          <line
                             key={`${nodeIndex}-${nextNodeIndex}`}
                             x1="8"
                             y1={yPos}
@@ -47,14 +38,13 @@ export function CNNVisualization() {
                             y2={nextYPos}
                             stroke="#e2e8f0"
                             strokeWidth="1"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={{ pathLength: 1, opacity: 0.5 }}
-                            transition={{ delay: layerIndex * 0.3, duration: 0.5 }}
+                            opacity="0.5"
+                            className="dark:stroke-gray-600"
                           />
                         );
                       }
                     )}
-                </motion.g>
+                </g>
               );
             })}
           </g>
@@ -62,4 +52,4 @@ export function CNNVisualization() {
       </svg>
     </div>
   );
-} 
+}
