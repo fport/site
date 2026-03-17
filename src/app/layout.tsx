@@ -1,24 +1,27 @@
 import { Analytics } from "@vercel/analytics/react";
-import type { Metadata } from 'next';
-import { ViewTransitions } from 'next-view-transitions';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { ThemeProvider } from './providers';
-import { ThemeToggle } from './theme-toggle';
-import { ChatBubble } from './components/chat-bubble';
+import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "./providers";
+import { ThemeToggle } from "./theme-toggle";
+import { ChatBubble } from "./components/chat-bubble";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://getporti.com'),
+  metadataBase: new URL("https://getporti.com"),
   alternates: {
-    canonical: '/',
+    canonical: "/",
   },
   title: {
-    default: 'Furkan Portakal',
-    template: '%s | Furkan Portakal',
+    default: "Furkan Portakal",
+    template: "%s | Furkan Portakal",
   },
-  description: 'Frontend developer',
+  description: "Frontend developer",
+  verification: {
+    google: "3FQmrHc1F7KpCLi3vcVRFiC7ASQlMHBl4DZyMzpjnc4",
+  },
 };
 
 export default function RootLayout({
@@ -48,10 +51,10 @@ export default function RootLayout({
 
 function Footer() {
   const links = [
-    { name: 'x', url: 'https://x.com/getporti' },
-    { name: 'youtube', url: 'https://www.youtube.com/@getporti' },
-    { name: 'linkedin', url: 'https://www.linkedin.com/in/furkanportakal' },
-    { name: 'github', url: 'https://github.com/fport' },
+    { name: "x", url: "https://x.com/getporti" },
+    { name: "youtube", url: "https://www.youtube.com/@getporti" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/furkanportakal" },
+    { name: "github", url: "https://github.com/fport" },
   ];
 
   return (
