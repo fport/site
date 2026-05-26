@@ -1,0 +1,54 @@
+import { Link } from 'next-view-transitions';
+
+export const metadata = {
+  title: 'Building Fisle on the Side',
+  description: 'A side project that turns receipts into Luca-ready accounting entries for Turkish accountants.',
+  alternates: {
+    canonical: '/paper/fisle',
+  },
+};
+
+# Building Fisle on the Side
+
+<Link href="/" className="flex mb-8 font-medium text-muted hover:text-foreground underline transition-colors">Furkan Portakal</Link>
+
+I work a corporate frontend job during the day. In the evenings we've been shipping <Link href="https://www.fisle.co" className="underline text-primary">Fisle</Link> — a tool that takes a photo of a receipt and turns it into a Luca-ready accounting entry. It's aimed at Turkish accountants (mali müşavirler) and small business owners who spend hours every month typing receipts into spreadsheets by hand.
+
+## Why this, why now
+
+We kept running into the same problem in our own work — phone-camera receipts piling up, an Excel template that nobody wants to touch, hours that vanish at month-end. The work is repetitive enough that it should be automated, and the AI vision models that landed in the last year or two are finally good enough to do it well in Turkish.
+
+The dominant accounting software here, Luca, accepts a specific Excel import format. So the loop is short: scan receipt → extract the fields an accountant cares about (vendor, line items, VAT, totals, account codes) → export the file Luca wants. We started a few months ago to see if that loop could be made small enough that nobody has to think about it.
+
+## What it does today
+
+- Upload a photo or PDF → fields are extracted
+- Mapped to the correct Turkish chart-of-accounts code (153 ticari mal, 191 indirilecek KDV, etc.)
+- Exported as a Luca-compatible Excel
+- A handful of free tools alongside it — KDV calculator, income tax calculator, account code lookup — that are useful on their own and also bring in search traffic
+
+There's a free tier so people can try it without committing, and paid plans for accountants and businesses with real volume. First paying customers are in.
+
+## What's been hard
+
+Two things, honestly.
+
+**OCR quality across a long tail of receipt formats.** Turkish receipts aren't standardised. Thermal printer receipts from a market look nothing like a hotel folio or a restaurant invoice. Getting the extraction to be reliable across all of them — not just the easy 80% — takes a lot more iteration than the demos suggest.
+
+**Time, because this is a side project.** A corporate job + a product means most of the meaningful work happens after 9pm or on weekends. The hardest part isn't the code, it's protecting the focus for it.
+
+## Stack
+
+- **Next.js 15 + Tailwind v4** on Vercel
+- **Cloudflare** for DNS and the API (Workers)
+- **PostgreSQL** for data
+- **Better Auth** for auth
+- Modern AI vision models for the extraction step
+
+Roughly the same shape as the setup in my <Link href="/paper/stack" className="underline">stack post</Link>, kept small enough for a side project to maintain.
+
+## If you're reading this
+
+- If you know a mali müşavir or a small business owner drowning in receipts, send them <Link href="https://www.fisle.co" className="underline text-primary">fisle.co</Link>.
+- If you try it and something breaks or feels off, my DMs are open — direct feedback is the most useful thing you can give me right now.
+- Or just go poke around at <Link href="https://www.fisle.co" className="underline text-primary">fisle.co</Link>.
