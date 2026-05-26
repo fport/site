@@ -2,6 +2,7 @@ import { Link } from 'next-view-transitions';
 
 export const metadata = {
   title: 'My Stack',
+  description: 'The current shape of the stack I build with — Next.js, Cloudflare Workers, D1, R2, and a mix of AI providers.',
   alternates: {
     canonical: '/paper/stack',
   },
@@ -11,31 +12,63 @@ export const metadata = {
 
 <Link href="/" className="flex mb-8 font-medium text-muted hover:text-foreground underline transition-colors">Furkan Portakal</Link>
 
-Here's where I'm currently most productive:
+This is the shape my side projects keep settling into. Most of it comes from building <Link href="https://www.fisle.co" className="underline text-primary">Fisle</Link> in the evenings — there's more context on that project in <Link href="/paper/fisle" className="underline">this post</Link>. The constraints (low cost, small team, mostly serverless) pushed me toward a specific stack and away from a lot of things I used to default to.
 
-## 1. Framework (Next.js and React)
+I write everything in TypeScript.
 
-I’ve been working with Next.js since 2018 (and React since 2015) so I'm most productive here. I start all my projects with TypeScript.
+## Frontend
 
-For data fetching, I use newer React patterns:
+The user-facing app and the marketing site live in the same Next.js project, deployed on Vercel.
 
-<details className="mb-1 -mt-2">
-  <summary className="text-gray-600 text-[15px] mb-2">Majority: Server Components</summary>
-  
-    Most of the time, I fetch data in a Server Component (like a `page` or `layout`). Occasionally, I'll still use an external library for client-fetches (e.g. `swr`) when working with existing codebases.
-    
-    ```jsx
-    export default async function Page() {
-      let data = await fetch('https://api.vercel.app/blog')
-      let posts = await data.json()
-      return (
-        <ul>
-          {posts.map((post) => (
-            <li key={post.id}>{post.title}</li>
-          ))}
-        </ul>
-      )
-    }
-    ```
+- **Next.js 16 + React 19** — App Router, Server Components by default. I drop into client components only where I actually need state or browser APIs.
+- **Tailwind v4** — utility-first. With Radix Primitives I don't reach for a full component library anymore.
+- **Radix UI** — unstyled accessible primitives (dialog, dropdown, popover, etc.) wrapped with Tailwind.
+- **TanStack Query** — for any client-side fetching that has a meaningful lifecycle (mutations, optimistic updates).
+- **Zustand** for small client state, **react-hook-form + Zod** for forms.
+- **Motion** (formerly Framer Motion) for transitions.
+- **Serwist** for the PWA / service worker layer.
+- **MDX** for content (blog posts, guides). Frontmatter parsed with `gray-matter`.
 
-</details>
+## Backend
+
+The API runs as a Cloudflare Worker. Same TypeScript, much smaller surface.
+
+- **Hono** — tiny, fast router that feels right at home on Workers.
+- **Drizzle ORM** — typed schema, no codegen, plays well with D1.
+- **Zod** at the boundaries for input validation.
+- **Vercel AI SDK** for talking to the model providers.
+- **Sharp** for image preprocessing before things go to vision models.
+- **Wrangler** for local dev and deploys. Cron triggers handle the daily housekeeping jobs.
+
+## Data
+
+- **Cloudflare D1** — the primary app database. SQLite at the edge, cheap, low-friction, fast enough for everything we do.
+- **Cloudflare R2** — object storage for receipts and uploads. S3-compatible API but without egress fees, which matters when users re-download their files.
+- **PostgreSQL** for a couple of additional internal services.
+
+## AI
+
+We use a mix of providers in different parts of the pipeline.
+
+- **OpenAI**
+- **Azure** (Document Intelligence)
+- **Google Gemini**
+
+Different models are good at different things, and the cost/latency profile changes depending on what part of the flow you're in. So we don't pick one and live with it — we route based on the task.
+
+## Auth
+
+- **Better Auth** in both the Next.js app and the Workers API. Single source of truth for sessions, easier to keep client and server in sync than rolling something custom.
+
+## Hosting
+
+- **Vercel** for the Next.js app.
+- **Cloudflare** for everything else — DNS, Workers, D1, R2, and the proxy/cache layer.
+
+## Why this shape
+
+Most of the choices come from one constraint: a side project has to be cheap to run when nobody is using it, and not break when a lot of people are. Cloudflare's free tier covers the API, the database, and the storage for the entire current load. Vercel covers the frontend. The AI providers are the only line that scales with usage, and that's by design.
+
+The other thing is that I want to keep the surface small enough that one person can hold it in their head. Hono + Drizzle + D1 is a much smaller mental model than Express + Postgres + Redis + a queue worker. When something breaks at 11pm, I want to be able to fix it without paging in a microservices diagram.
+
+Most of my recent writing about this stack lives over at <Link href="https://www.fisle.co/blog" className="underline text-primary">fisle.co/blog</Link> — practical notes from actually shipping with it.
