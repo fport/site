@@ -51,4 +51,13 @@ export const posts: Post[] = [
       'A side project that turns receipts into Luca-ready accounting entries for Turkish accountants.',
     published: '2026-05-26',
   },
+  {
+    slug: 'fabric-gan',
+    title: 'Generating Fabric Patterns from Text, in 2021',
+    summary:
+      'A TÜBİTAK undergraduate research project: describe a textile pattern in words, get an original one back. Text-to-image before text-to-image was a product.',
+    // The work, not the write-up — `updated` is when this was written down.
+    published: '2021-03-09',
+    updated: '2026-08-28',
+  },
 ];
