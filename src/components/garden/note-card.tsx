@@ -9,6 +9,7 @@ const KIND_LABEL: Record<NoteKind, string> = {
   experiment: 'experiment',
   snippet: 'snippet',
   'open-question': 'open question',
+  role: 'role',
   talk: 'talk',
   resource: 'resource',
 };

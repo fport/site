@@ -13,6 +13,7 @@ export type NoteKind =
   | 'experiment'
   | 'snippet'
   | 'open-question'
+  | 'role'
   | 'talk'
   | 'resource';
 
