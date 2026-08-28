@@ -64,6 +64,40 @@ h4 {
   text-wrap: balance;
 }
 
+/* ---------------------------------------------------------------------------
+   Reading rhythm — how the prose column spaces itself.
+
+   A single `space-y` would give every block the same gap, so a heading ends up
+   sitting as far from its own list as from the paragraph above it. Spacing the
+   column by relationship instead — air before a section heading, little after —
+   reads tighter and buys back the height the homepage needs to land in one
+   screen on a laptop.
+   --------------------------------------------------------------------------- */
+
+.prose-flow > * + * {
+  margin-top: 1rem;
+}
+
+.prose-flow > * + :is(h2, h3, .section-heading) {
+  margin-top: 1.5rem;
+}
+
+/* A section heading belongs to what follows it, so the gap under it stays
+   small. The page title is not a section heading and keeps the normal gap. */
+.prose-flow > :is(h1, h2, h3, .section-heading) {
+  margin-bottom: 0;
+}
+
+.prose-flow > :is(h2, h3, .section-heading) + * {
+  margin-top: 0.5rem;
+}
+
+/* JSON-LD sits in the flow as an invisible <script>; it must not push the
+   heading after it down a line's worth of margin. */
+.prose-flow > script + * {
+  margin-top: 0;
+}
+
 pre {
   background-color: var(--code-bg);
   border-radius: 0.5rem;

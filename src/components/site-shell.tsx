@@ -1,5 +1,5 @@
-import { ScrollHint } from '@/components/scroll-hint';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { ScrollHint } from "@/components/scroll-hint";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 /**
  * The reading shell used by every prose page: a narrow measure, a footer and
@@ -10,7 +10,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-background text-foreground">
-        <main className="max-w-[60ch] mx-auto w-full space-y-6">{children}</main>
+        <main className="prose-flow max-w-[60ch] mx-auto w-full">
+          {children}
+        </main>
         <SiteFooter />
       </div>
       <ScrollHint />
@@ -19,17 +21,17 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 }
 
 const links = [
-  { name: 'x', url: 'https://x.com/getporti' },
-  { name: 'youtube', url: 'https://www.youtube.com/@getporti' },
-  { name: 'linkedin', url: 'https://www.linkedin.com/in/furkanportakal' },
-  { name: 'github', url: 'https://github.com/fport' },
-  { name: 'huggingface', url: 'https://huggingface.co/fport' },
-  { name: 'medium', url: 'https://medium.com/@furkanportakal' },
+  { name: "x", url: "https://x.com/getporti" },
+  { name: "youtube", url: "https://www.youtube.com/@getporti" },
+  { name: "linkedin", url: "https://www.linkedin.com/in/furkanportakal" },
+  { name: "github", url: "https://github.com/fport" },
+  { name: "huggingface", url: "https://huggingface.co/fport" },
+  { name: "medium", url: "https://medium.com/@furkanportakal" },
 ];
 
 function SiteFooter() {
   return (
-    <footer className="mt-12 max-w-[60ch] mx-auto w-full">
+    <footer className="mt-8 max-w-[60ch] mx-auto w-full">
       <div className="flex justify-between items-center text-sm">
         <div className="flex flex-wrap gap-x-4 gap-y-1 tracking-tight">
           {links.map((link) => (

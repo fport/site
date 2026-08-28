@@ -1,4 +1,4 @@
-import { Link } from 'next-view-transitions';
+import { Link } from "next-view-transitions";
 
 /**
  * A section title with an optional action pushed to the right margin, so the
@@ -8,14 +8,14 @@ import { Link } from 'next-view-transitions';
 export function SectionHeading({
   children,
   href,
-  action = 'see all',
+  action = "see all",
 }: {
   children: React.ReactNode;
   href?: string;
   action?: string;
 }) {
   return (
-    <div className="mt-8 mb-3 flex items-baseline justify-between gap-4">
+    <div className="section-heading mt-8 mb-3 flex items-baseline justify-between gap-4">
       <h2 className="text-foreground font-medium">{children}</h2>
       {href ? (
         <Link
