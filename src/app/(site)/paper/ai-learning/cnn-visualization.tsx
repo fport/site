@@ -1,19 +1,16 @@
 export function CNNVisualization() {
   const layers = [
-    { nodes: 4, color: "#94a3b8" },
-    { nodes: 6, color: "#64748b" },
-    { nodes: 4, color: "#475569" },
-    { nodes: 2, color: "#334155" },
+    { nodes: 4, color: '#94a3b8' },
+    { nodes: 6, color: '#64748b' },
+    { nodes: 4, color: '#475569' },
+    { nodes: 2, color: '#334155' },
   ];
 
   return (
     <div className="w-full h-48 flex items-center justify-center my-6 bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
       <svg width="400" height="160" viewBox="0 0 400 160">
         {layers.map((layer, layerIndex) => (
-          <g
-            key={layerIndex}
-            transform={`translate(${80 + layerIndex * 80}, 0)`}
-          >
+          <g key={layerIndex} transform={`translate(${80 + layerIndex * 80}, 0)`}>
             {Array.from({ length: layer.nodes }).map((_, nodeIndex) => {
               const yPos = 80 - (layer.nodes * 25) / 2 + nodeIndex * 25;
               return (
@@ -45,7 +42,7 @@ export function CNNVisualization() {
                             className="dark:stroke-gray-600"
                           />
                         );
-                      },
+                      }
                     )}
                 </g>
               );
