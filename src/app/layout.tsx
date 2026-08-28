@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: 'Furkan Portakal',
     template: '%s | Furkan Portakal',
   },
-  description: 'Frontend developer',
+  description: 'Frontend Tech Lead & full-stack engineer',
   verification: {
     google: '3FQmrHc1F7KpCLi3vcVRFiC7ASQlMHBl4DZyMzpjnc4',
   },
