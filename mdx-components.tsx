@@ -1,6 +1,8 @@
 import { Link } from 'next-view-transitions';
 import { ComponentPropsWithoutRef } from 'react';
 import { highlight } from 'sugar-high';
+import { PaperHeader } from '@/components/paper-header';
+import { SectionHeading } from '@/components/section-heading';
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -94,6 +96,9 @@ const components = {
       {...props}
     />
   ),
+
+  PaperHeader,
+  SectionHeading,
 };
 
 declare global {
