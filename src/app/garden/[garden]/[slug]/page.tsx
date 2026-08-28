@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Link } from 'next-view-transitions';
+import { ArticleJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { findNote, gardens, getGarden } from '@/garden';
 
 type Params = { params: Promise<{ garden: string; slug: string }> };
@@ -42,6 +43,22 @@ export default async function NotePage({ params }: Params) {
 
   return (
     <article>
+      <ArticleJsonLd
+        title={note.title}
+        description={note.summary}
+        path={`${garden.path}/${note.slug}`}
+        published={note.updated}
+        tags={note.tags}
+      />
+      <BreadcrumbJsonLd
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Garden', path: '/garden' },
+          { name: garden.title, path: garden.path },
+          { name: note.title, path: `${garden.path}/${note.slug}` },
+        ]}
+      />
+
       <nav className="pt-12 text-sm">
         <Link href={garden.path} className="text-muted underline hover:text-foreground">
           ← {garden.title}

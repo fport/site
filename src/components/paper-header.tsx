@@ -1,4 +1,5 @@
 import { Link } from 'next-view-transitions';
+import { ArticleJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { getPost } from '@/writing';
 
 /**
@@ -15,6 +16,21 @@ export function PaperHeader({ slug }: { slug: string }) {
 
   return (
     <header className="fade-in pt-12 mb-10">
+      <ArticleJsonLd
+        title={post.title}
+        description={post.summary}
+        path={`/paper/${post.slug}`}
+        published={post.published}
+        updated={post.updated}
+      />
+      <BreadcrumbJsonLd
+        trail={[
+          { name: 'Home', path: '/' },
+          { name: 'Writing', path: '/paper' },
+          { name: post.title, path: `/paper/${post.slug}` },
+        ]}
+      />
+
       <nav className="text-sm">
         <Link href="/paper" className="text-muted underline hover:text-foreground">
           ← Writing

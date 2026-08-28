@@ -23,13 +23,15 @@ const links = [
   { name: 'youtube', url: 'https://www.youtube.com/@getporti' },
   { name: 'linkedin', url: 'https://www.linkedin.com/in/furkanportakal' },
   { name: 'github', url: 'https://github.com/fport' },
+  { name: 'huggingface', url: 'https://huggingface.co/fport' },
+  { name: 'medium', url: 'https://medium.com/@furkanportakal' },
 ];
 
 function SiteFooter() {
   return (
     <footer className="mt-12 max-w-[60ch] mx-auto w-full">
       <div className="flex justify-between items-center text-sm">
-        <div className="flex space-x-4 tracking-tight">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 tracking-tight">
           {links.map((link) => (
             <a
               key={link.name}
