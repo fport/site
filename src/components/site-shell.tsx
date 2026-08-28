@@ -1,15 +1,20 @@
+import { ScrollHint } from '@/components/scroll-hint';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 /**
- * The reading shell used by every prose page: a narrow measure and a footer.
- * The garden canvas deliberately opts out of this so it can run full bleed.
+ * The reading shell used by every prose page: a narrow measure, a footer and
+ * the scroll hint. The garden canvas deliberately opts out of this so it can
+ * run full bleed.
  */
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-background text-foreground">
-      <main className="max-w-[60ch] mx-auto w-full space-y-6">{children}</main>
-      <SiteFooter />
-    </div>
+    <>
+      <div className="min-h-screen flex flex-col justify-between pt-0 md:pt-8 p-8 bg-background text-foreground">
+        <main className="max-w-[60ch] mx-auto w-full space-y-6">{children}</main>
+        <SiteFooter />
+      </div>
+      <ScrollHint />
+    </>
   );
 }
 
