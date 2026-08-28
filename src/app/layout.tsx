@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers";
 import { ThemeToggle } from "./theme-toggle";
-import { ChatBubble } from "./components/chat-bubble";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,7 +40,6 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
-            <ChatBubble />
           </ThemeProvider>
         </body>
       </html>
