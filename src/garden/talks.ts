@@ -1,23 +1,117 @@
 import CypressNotlari from './notes/talks/cypress-notlari.mdx';
+import FisleCofounder from './notes/talks/fisle-cofounder.mdx';
 import FrontendshipWeeklyShip2 from './notes/talks/frontendship-weekly-ship-2.mdx';
 import IstanbulJsAiNextjs from './notes/talks/istanbul-js-ai-nextjs.mdx';
+import Kodizim from './notes/talks/kodizim.mdx';
 import MicroFrontendEgitimi from './notes/talks/micro-frontend-egitimi.mdx';
+import MythologyTech from './notes/talks/mythology-tech.mdx';
+import Pargali from './notes/talks/pargali.mdx';
+import Sanstech from './notes/talks/sanstech.mdx';
+import Simpra from './notes/talks/simpra.mdx';
+import Tubitak2209b from './notes/talks/tubitak-2209b.mdx';
 import { talksLayout } from './talks.layout';
 import type { Garden } from './types';
 
 export const talksGarden: Garden = {
   id: 'talks',
   path: '/garden/talks',
-  title: 'Talks & Resources',
-  tagline: 'Conference talks, live sessions and the material I have published.',
+  title: 'Experience, Talks & Resources',
+  tagline: 'Where I have worked, what I have started, and the talks and material I have published.',
   description:
-    'My talks and live sessions, plus the Turkish documentation and training material I have published on testing and micro frontends.',
+    'The roles I have held and the things I have started, plus my talks, live sessions and the Turkish documentation and training material I have published.',
   clusters: [
+    { id: 'experience', label: 'where I have worked', accent: 'sky' },
+    { id: 'founded', label: 'founded & led', accent: 'violet' },
     { id: 'sessions', label: 'talks & live sessions', accent: 'amber' },
     { id: 'resources', label: 'educational resources', accent: 'lime' },
   ],
   frames: talksLayout,
+  initialZoom: 0.85,
   notes: [
+    {
+      slug: 'sanstech',
+      title: 'Sanstech',
+      summary: 'Frontend Developer → Senior → Tech Lead. Iddaa, two migrations, an internal AI product.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'experience',
+      tags: ['tech-lead', 'typescript', 'tailwind'],
+      accent: 'sky',
+      Content: Sanstech,
+    },
+    {
+      slug: 'pargali',
+      title: 'Pargali Bilişim',
+      summary: 'Cloud apps for hospitality and tourism — isomorphic React, BFF and PWA.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'experience',
+      tags: ['nextjs', 'nestjs', 'pwa'],
+      accent: 'sky',
+      Content: Pargali,
+    },
+    {
+      slug: 'simpra',
+      title: 'Simpra',
+      summary: 'Interface architecture on Check and Place — React, Redux, Storybook and a real test setup.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'experience',
+      tags: ['react', 'redux', 'testing'],
+      accent: 'sky',
+      Content: Simpra,
+    },
+    {
+      slug: 'mythology-tech',
+      title: 'Mythology Tech',
+      summary: 'The first job — a stock management application that replaced a manual process.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'experience',
+      tags: ['react', 'node', 'mongodb'],
+      accent: 'sky',
+      Content: MythologyTech,
+    },
+    {
+      slug: 'fisle-cofounder',
+      title: 'Fisle',
+      summary: 'AI receipt scanning and Luca export, built for Turkish accountants.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'founded',
+      tags: ['founder', 'ai', 'saas'],
+      accent: 'violet',
+      Content: FisleCofounder,
+    },
+    {
+      slug: 'kodizim',
+      title: 'Kodizim',
+      summary: 'A software, design and technology community I co-founded in Bursa.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'founded',
+      tags: ['community', 'mentorship'],
+      accent: 'violet',
+      Content: Kodizim,
+    },
+    {
+      slug: 'tubitak-2209b',
+      title: 'TÜBİTAK 2209-B Research Fellow',
+      summary: 'A funded undergraduate research project: fabric patterns generated from text.',
+      kind: 'role',
+      status: 'evergreen',
+      updated: '2026-08-28',
+      cluster: 'founded',
+      tags: ['research', 'deep-learning', 'nlp'],
+      accent: 'violet',
+      Content: Tubitak2209b,
+    },
     {
       slug: 'frontendship-weekly-ship-2',
       title: 'Frontendship: Weekly Ship 2',

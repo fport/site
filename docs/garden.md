@@ -13,7 +13,7 @@ src/garden/
   index.ts              registry of every garden
   ai.ts                 the AI garden: metadata, clusters, note list
   ai.layout.ts          generated card placement (x, y, w, h per slug)
-  talks.ts              the Talks & Resources garden
+  talks.ts              the Experience, Talks & Resources garden
   talks.layout.ts
   notes/<id>/*.mdx      the notes themselves
 
