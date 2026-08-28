@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
       { source: '/ai-garden', destination: '/garden/ai', permanent: true },
       { source: '/ai-garden/:slug', destination: '/garden/ai/:slug', permanent: true },
       { source: '/paper/talks', destination: '/garden/talks', permanent: true },
+      { source: '/paper/stack', destination: '/garden/stack', permanent: true },
     ];
   },
 };

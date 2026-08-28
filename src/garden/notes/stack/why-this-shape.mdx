@@ -1,0 +1,17 @@
+Most of the choices come from one constraint: a side project has to be cheap to
+run when nobody is using it, and not break when a lot of people are.
+
+Cloudflare's free tier covers the API, the database and the storage for the
+entire current load. Vercel covers the frontend. The AI providers are the only
+line that scales with usage, and that's by design.
+
+The other thing is that I want to keep the surface small enough that one person
+can hold it in their head. When something breaks at 11pm, I want to be able to
+fix it without paging in a microservices diagram.
+
+<Callout type="idea" title="The test">
+  Can one person hold the whole thing in their head at 11pm?
+</Callout>
+
+More practical notes from actually shipping with this stack live at
+[fisle.co/blog](https://www.fisle.co/blog).
