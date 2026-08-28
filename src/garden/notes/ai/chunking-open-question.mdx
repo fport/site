@@ -1,0 +1,28 @@
+Still unresolved for me: where the retrieval unit should sit relative to the
+embedding unit.
+
+<Row gap={6}>
+  <Box sub="cheap, loses context" accent="slate">Embed chunk</Box>
+  <Arrow dir="both" />
+  <Box sub="better recall, more storage" accent="violet">Embed summary</Box>
+</Row>
+
+Options I keep circling:
+
+1. **Embed the chunk, return the chunk.** Simple, and what everyone starts
+   with. Breaks on documents where meaning lives across sections.
+2. **Embed the chunk, return the parent.** Small vectors, wide context. Costs
+   context budget fast.
+3. **Embed a generated summary, return the original.** Retrieval quality goes
+   up; you now own a generation step in your ingest pipeline that can drift
+   from the source.
+
+<Callout type="todo" title="To test">
+  Same corpus, same queries, three indexes, one reranker. Measure recall@10
+  and answer groundedness separately — they do not move together.
+</Callout>
+
+<Sticky>
+  Suspicion: the right answer is document-type dependent, which means the real
+  work is classifying documents at ingest, not tuning one global strategy.
+</Sticky>

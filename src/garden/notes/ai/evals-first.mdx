@@ -1,0 +1,34 @@
+Prompt tuning without evals is just vibes with extra steps. The eval does not
+need to be sophisticated; it needs to exist before the prompt changes.
+
+<Schema title="the smallest useful harness">
+  <Pipeline steps={['20 cases|real inputs', 'Run|fixed seed', 'Grade|rubric or assert', 'Diff|vs last run']} />
+</Schema>
+
+## Starting set
+
+<Table
+  data={{
+    headers: ['Kind', 'Count', 'What it catches'],
+    rows: [
+      ['Golden', '10', 'regressions on the happy path'],
+      ['Adversarial', '5', 'prompt injection, refusal bait'],
+      ['Boring', '5', 'empty input, huge input, wrong language'],
+    ],
+  }}
+/>
+
+<Callout type="idea" title="Cheapest first">
+  Deterministic assertions — does the JSON parse, is the id in the output, is
+  it under N tokens — catch more real breakage than an LLM judge, and they
+  cost nothing to run on every commit.
+</Callout>
+
+## Grading with a model
+
+Use one when the answer is genuinely open-ended, and then:
+
+- Grade **one dimension at a time**. A single "is this good" score is noise.
+- Give the judge the rubric *and* a reference answer.
+- Track judge/human agreement on a sample. A judge you have never audited is
+  a random number generator with good manners.

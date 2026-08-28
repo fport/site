@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
   },
+  async redirects() {
+    return [
+      // The gardens used to live at the top level and under /paper.
+      { source: '/ai-garden', destination: '/garden/ai', permanent: true },
+      { source: '/ai-garden/:slug', destination: '/garden/ai/:slug', permanent: true },
+      { source: '/paper/talks', destination: '/garden/talks', permanent: true },
+    ];
+  },
 };
 
 const withMDX = createMDX({});

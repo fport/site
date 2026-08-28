@@ -1,8 +1,22 @@
 import { Link } from 'next-view-transitions';
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, isValidElement, ReactNode } from 'react';
 import { highlight } from 'sugar-high';
+import { Mermaid } from '@/components/garden/mermaid';
 import { PaperHeader } from '@/components/paper-header';
 import { SectionHeading } from '@/components/section-heading';
+import {
+  Arrow,
+  Box,
+  Callout,
+  Col,
+  Kbd,
+  Meter,
+  Pipeline,
+  Row,
+  Schema,
+  Stack,
+  Sticky,
+} from '@/components/garden/primitives';
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -10,6 +24,7 @@ type ListProps = ComponentPropsWithoutRef<'ul'>;
 type ListItemProps = ComponentPropsWithoutRef<'li'>;
 type AnchorProps = ComponentPropsWithoutRef<'a'>;
 type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>;
+type PreProps = ComponentPropsWithoutRef<'pre'>;
 
 const components = {
   h1: (props: HeadingProps) => (
@@ -66,6 +81,17 @@ const components = {
       </a>
     );
   },
+  // A ```mermaid fence is routed to the diagram renderer instead of the
+  // syntax highlighter. Everything else keeps the plain <pre> styling.
+  pre: ({ children, ...props }: PreProps) => {
+    if (isValidElement<{ className?: string; children?: ReactNode }>(children)) {
+      const { className, children: code } = children.props;
+      if (className === 'language-mermaid' && typeof code === 'string') {
+        return <Mermaid chart={code} />;
+      }
+    }
+    return <pre {...props}>{children}</pre>;
+  },
   code: ({ children, ...props }: ComponentPropsWithoutRef<'code'>) => {
     const codeHTML = highlight(children as string);
     return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
@@ -97,8 +123,21 @@ const components = {
     />
   ),
 
+  // Garden schema primitives — available in every .mdx file without importing.
+  Arrow,
+  Box,
+  Callout,
+  Col,
+  Kbd,
+  Mermaid,
+  Meter,
+  Pipeline,
+  Row,
+  Schema,
   PaperHeader,
   SectionHeading,
+  Stack,
+  Sticky,
 };
 
 declare global {

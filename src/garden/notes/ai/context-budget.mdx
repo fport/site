@@ -1,0 +1,25 @@
+A large context window is a budget, not a bucket. Everything you put in it
+competes for the model's attention and for your latency target.
+
+<Meter label="System prompt + tools" value={4000} max={32000} unit=" tok" />
+<Meter label="Retrieved chunks" value={12000} max={32000} unit=" tok" />
+<Meter label="Conversation history" value={9000} max={32000} unit=" tok" />
+<Meter label="Headroom for the answer" value={7000} max={32000} unit=" tok" />
+
+## Rules I keep coming back to
+
+- Put the **stable** part first — system prompt, tool definitions, long
+  reference documents. Stable prefixes are what prompt caching can reuse.
+- Put the **volatile** part last — the user turn, freshly retrieved chunks.
+  A single edit near the top invalidates the cache for everything after it.
+- Summarise history on a threshold, not every turn. Rolling summaries that
+  rewrite themselves each turn destroy the cache and drift.
+
+<Callout type="note" title="Ordering">
+  Cache hits are prefix-based. Same tokens, same order, or no hit.
+</Callout>
+
+<Sticky accent="rose">
+  Measure before trimming. Half the "context is too big" problems are really
+  one tool returning an unpaginated JSON blob.
+</Sticky>
