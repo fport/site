@@ -3,15 +3,19 @@
 @tailwind utilities;
 
 @theme {
-  --font-family-sans: 'Inter', sans-serif;
+  --font-family-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
   --background: #ffffff;
   --foreground: #1a1a1a;
   --muted: #6b7280;
-  --link: #2563eb;
-  --link-hover: #1d4ed8;
+  --link: #c2410c;
+  --link-hover: #9a3412;
+  --rule: #e5e7eb;
+  --code-bg: #16161e;
+  --code-inline-bg: #f3f4f6;
+  --sh-identifier: #ffffff;
   --sh-class: #7aa2f7;
   --sh-sign: #89ddff;
   --sh-string: #9ece6a;
@@ -22,12 +26,26 @@
   --sh-entity: #e0af68;
 }
 
+/* Molokai (Tomas Restrepo's vim theme, dark variant). Hex values are lifted
+   straight from the colorscheme's gui highlight groups. */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --muted: #9ca3af;
-  --link: #60a5fa;
-  --link-hover: #93c5fd;
+  --background: #1b1d1e; /* Normal guibg */
+  --foreground: #f8f8f2; /* Normal guifg */
+  --muted: #7e8e91; /* Comment */
+  --link: #fd971f; /* Identifier / CursorLineNr */
+  --link-hover: #e6db74; /* String */
+  --rule: #403d3d; /* Visual */
+  --code-bg: #232526; /* ColorColumn */
+  --code-inline-bg: #232526;
+  --sh-identifier: #f8f8f2;
+  --sh-class: #66d9ef; /* Type */
+  --sh-sign: #f92672; /* Operator */
+  --sh-string: #e6db74; /* String */
+  --sh-keyword: #f92672; /* Keyword */
+  --sh-comment: #7e8e91; /* Comment */
+  --sh-jsxliterals: #66d9ef; /* Tag */
+  --sh-property: #fd971f; /* Identifier */
+  --sh-entity: #a6e22e; /* Function */
 }
 
 html {
@@ -47,7 +65,7 @@ h4 {
 }
 
 pre {
-  background-color: #16161e;
+  background-color: var(--code-bg);
   border-radius: 0.5rem;
   overflow-x: auto;
   padding: 1rem;
@@ -69,11 +87,7 @@ code {
   font-size: 14px;
   padding: 0.2em 0.4em;
   border-radius: 0.3em;
-  background-color: var(--color-gray-100);
-}
-
-.dark code {
-  background-color: #27272a;
+  background-color: var(--code-inline-bg);
 }
 
 pre code {
@@ -85,7 +99,7 @@ pre code {
 }
 
 pre code > span .sh__token--identifier {
-  color: white !important;
+  color: var(--sh-identifier) !important;
 }
 
 code:not(pre code) span {
@@ -98,7 +112,8 @@ pre code span {
 }
 
 hr {
-  color: var(--color-gray-200);
+  color: var(--rule);
+  border-color: var(--rule);
 }
 
 /* Remove Safari input shadow on mobile */

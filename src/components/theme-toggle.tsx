@@ -12,7 +12,7 @@ export function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <span className="text-muted">Light</span>;
+    return <span className="text-muted">Dark</span>;
   }
 
   return (

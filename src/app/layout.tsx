@@ -1,11 +1,11 @@
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
-import { Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers';
 
-const inter = Inter({ subsets: ['latin'] });
+const manrope = Manrope({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://getporti.com'),
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className={`${inter.className}`} suppressHydrationWarning>
+      <html lang="en" className={`${manrope.className}`} suppressHydrationWarning>
         <body className="antialiased tracking-tight bg-background text-foreground">
           <ThemeProvider>
             {children}
