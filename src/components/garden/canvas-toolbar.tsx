@@ -54,6 +54,20 @@ function LaserIcon() {
   );
 }
 
+function ArrowLeftIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M19 12H5m0 0 6-6m-6 6 6 6"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function Divider() {
   return <span aria-hidden="true" className="mx-1 h-4 w-px bg-card-border" />;
 }
@@ -137,7 +151,7 @@ export function CanvasToolbar({
     <div ref={root} className="pointer-events-auto relative">
       <div className="glass flex items-center gap-0.5 rounded-full p-1">
         <Link href="/" aria-label="Back to the home page" className={button}>
-          ←
+          <ArrowLeftIcon />
         </Link>
 
         <Divider />
