@@ -17,14 +17,24 @@ export function getPost(slug: string) {
   return posts.find((post) => post.slug === slug);
 }
 
-/** Newest first. */
+/**
+ * Order is deliberate, not chronological — this is also the order the homepage
+ * takes its first three from, so the most worth reading sits at the top.
+ */
 export const posts: Post[] = [
   {
-    slug: 'fisle',
-    title: 'Building Fisle on the Side',
+    slug: 'gemma-finetune',
+    title: 'The Fine-Tune That Made the Model Worse',
     summary:
-      'A side project that turns receipts into Luca-ready accounting entries for Turkish accountants.',
-    published: '2026-05-26',
+      'LoRA on Gemma 3 4B with Turkish Alpaca. The pipeline worked and the model still got worse — which I only know because I measured it first.',
+    published: '2026-08-24',
+  },
+  {
+    slug: 'fantezi-kaptan',
+    title: 'Fantezi Kaptan: Modelling the TFF Fantasy League',
+    summary:
+      'Eight seasons of Süper Lig, my own xG model, an xPts model and an ILP squad optimiser — with the baselines deciding what counted as working.',
+    published: '2026-08-18',
   },
   {
     slug: 'ai-learning',
@@ -33,5 +43,12 @@ export const posts: Post[] = [
       'From NLP and CNNs to transformers, fine-tuning and RAG — how the ground kept moving.',
     published: '2025-01-18',
     updated: '2026-01-16',
+  },
+  {
+    slug: 'fisle',
+    title: 'Building Fisle on the Side',
+    summary:
+      'A side project that turns receipts into Luca-ready accounting entries for Turkish accountants.',
+    published: '2026-05-26',
   },
 ];
