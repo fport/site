@@ -3,6 +3,7 @@ import { ComponentPropsWithoutRef, isValidElement, ReactNode } from 'react';
 import { highlight } from 'sugar-high';
 import { Mermaid } from '@/components/garden/mermaid';
 import { PaperHeader } from '@/components/paper-header';
+import { RecentWriting } from '@/components/recent-writing';
 import { SectionHeading } from '@/components/section-heading';
 import {
   Arrow,
@@ -135,6 +136,7 @@ const components = {
   Row,
   Schema,
   PaperHeader,
+  RecentWriting,
   SectionHeading,
   Stack,
   Sticky,
