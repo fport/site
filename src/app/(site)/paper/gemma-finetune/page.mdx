@@ -115,8 +115,12 @@ Alongside that: `lr` down to 2e-5, an eval set actually attached with loss
 checked every 15 steps instead of trusting a single final number, and an L4 so
 bf16 works and the float32 penalty disappears.
 
-The model, the adapter and the GGUF build are on
-[Hugging Face](https://huggingface.co/fport). The notebook, the step-by-step
-guide and the raw before-and-after outputs are in
-[the repo](https://github.com/fport), including the results file that says in
-plain language that round one regressed.
+Round one is on the Hub in all three forms — the
+[LoRA adapter](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-lora), the
+[merged model](https://huggingface.co/fport/gemma-3-4b-tr-alpaca), and a
+[GGUF build](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-GGUF) that runs
+locally in Ollama.
+
+They are published as what they are: a working pipeline and a regression. The
+notebook and the raw before-and-after outputs stay with me until round two has
+something worth standing behind.
