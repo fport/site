@@ -11,43 +11,45 @@ import type { NoteFrame } from "./types";
  * the app reads these numbers, so it is always safe to overwrite wholesale.
  */
 export const aiLayout: Record<string, NoteFrame> = {
-  // buradan başla
-  "yol-haritasi": { x: 0, y: 0, w: 460, h: 470 },
+  // start here
+  roadmap: { x: 0, y: 0, w: 460, h: 470 },
 
-  // neden rag?
-  "neden-rag": { x: 540, y: 0, w: 460, h: 900 },
-  "rag-vs-fine-tune": { x: 540, y: 960, w: 460, h: 1080 },
+  // why rag?
+  "why-rag": { x: 540, y: 0, w: 460, h: 880 },
+  "rag-vs-fine-tune": { x: 540, y: 940, w: 460, h: 1160 },
 
   // vanilla rag
-  "vanilla-rag-hatti": { x: 1080, y: 0, w: 460, h: 680 },
-  "baseline-yigin": { x: 1080, y: 740, w: 460, h: 880 },
-  "naive-rag-nerede-kirilir": { x: 1080, y: 1680, w: 460, h: 680 },
+  "vanilla-rag-pipeline": { x: 1080, y: 0, w: 460, h: 740 },
+  "baseline-stack": { x: 1080, y: 800, w: 460, h: 870 },
+  "where-naive-rag-breaks": { x: 1080, y: 1730, w: 460, h: 670 },
 
   // table stakes
-  chunklama: { x: 1620, y: 0, w: 460, h: 700 },
-  "metadata-filtreleme": { x: 1620, y: 760, w: 460, h: 840 },
-  "hibrit-arama-ve-rerank": { x: 1620, y: 1660, w: 460, h: 690 },
-  "chunking-open-question": { x: 1620, y: 2410, w: 460, h: 580 },
+  chunking: { x: 1620, y: 0, w: 460, h: 740 },
+  "metadata-filtering": { x: 1620, y: 800, w: 460, h: 830 },
+  "hybrid-search-rerank": { x: 1620, y: 1690, w: 460, h: 690 },
+  "chunking-open-question": { x: 1620, y: 2440, w: 460, h: 660 },
 
-  // ileri retrieval
+  // advanced retrieval
   "small-to-big": { x: 2160, y: 0, w: 460, h: 680 },
-  "sorgu-donusumleri": { x: 2160, y: 740, w: 460, h: 730 },
-  "rag-retrieval-loop": { x: 2160, y: 1530, w: 460, h: 590 },
+  "query-transforms": { x: 2160, y: 740, w: 460, h: 770 },
+  "rag-retrieval-loop": { x: 2160, y: 1570, w: 460, h: 620 },
 
-  // agentic rag — two columns, the cluster region wraps both
-  "agentic-rag-dongusu": { x: 2700, y: 0, w: 460, h: 630 },
-  "agentic-desenler": { x: 2700, y: 690, w: 460, h: 820 },
-  "vanilla-vs-agentic": { x: 2700, y: 1570, w: 460, h: 700 },
-  "agent-tool-loop": { x: 3240, y: 0, w: 460, h: 1110 },
-  "context-budget": { x: 3240, y: 1170, w: 460, h: 680 },
+  // agentic rag
+  "agentic-rag-loop": { x: 2700, y: 0, w: 460, h: 660 },
+  "agentic-patterns": { x: 2700, y: 720, w: 460, h: 800 },
+  "vanilla-vs-agentic": { x: 2700, y: 1580, w: 460, h: 670 },
+
+  // agentic rag, cont.
+  "agent-tool-loop": { x: 3240, y: 0, w: 460, h: 1070 },
+  "context-budget": { x: 3240, y: 1130, w: 460, h: 650 },
 
   // fine-tuning
-  "ne-zaman-fine-tune": { x: 3780, y: 0, w: 460, h: 910 },
-  "fine-tune-yontemleri": { x: 3780, y: 970, w: 460, h: 740 },
-  "embedding-fine-tune": { x: 3780, y: 1770, w: 460, h: 680 },
+  "when-to-fine-tune": { x: 3780, y: 0, w: 460, h: 950 },
+  "fine-tuning-methods": { x: 3780, y: 1010, w: 460, h: 740 },
+  "embedding-fine-tune": { x: 3780, y: 1810, w: 460, h: 650 },
 
-  // ölçüm
-  "retrieval-evali": { x: 4320, y: 0, w: 460, h: 700 },
-  "uctan-uca-eval": { x: 4320, y: 760, w: 460, h: 700 },
-  "evals-first": { x: 4320, y: 1520, w: 460, h: 740 },
+  // measurement
+  "retrieval-eval": { x: 4320, y: 0, w: 460, h: 750 },
+  "end-to-end-eval": { x: 4320, y: 810, w: 460, h: 670 },
+  "evals-first": { x: 4320, y: 1540, w: 460, h: 740 },
 };
