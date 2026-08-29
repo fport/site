@@ -1,0 +1,34 @@
+What actually happens when a user asks something the model cannot answer alone.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant C as Model
+  participant M as MCP client
+  participant S as MCP server
+  participant X as External system
+  U->>C: "how many errors on the login screen?"
+  C->>C: not answerable from memory
+  C->>M: I need external data
+  M->>S: connect · "what can you do?"
+  S-->>M: tools, resources, prompts
+  M->>S: call the tool
+  S->>X: query the external system
+  X-->>S: raw data
+  S-->>M: formatted result
+  M-->>C: external data
+  C-->>U: "21 errors on that screen"
+```
+
+## The two halves
+
+- **Discovery.** The client asks the server what it offers and gets back a
+  described list. The model reads those descriptions like documentation.
+- **Invocation.** The model picks one, the client calls it, the server does the
+  real work and returns something the model can read.
+
+<Callout type="idea" title="Where the intelligence sits">
+  The server does not decide anything. It publishes a menu and executes what it
+  is asked. The choosing happens in the model — which is exactly why the
+  **descriptions** are the highest-leverage thing you write.
+</Callout>

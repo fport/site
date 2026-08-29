@@ -1,0 +1,38 @@
+The 2026-07-28 spec is the largest change since MCP shipped, and it is mostly
+one idea: **make the protocol stateless** so it can be operated like a normal
+HTTP service.
+
+<Table
+  data={{
+    headers: ['Change', 'What it means'],
+    rows: [
+      ['Stateless core', 'no initialize handshake, no session id'],
+      ['Self-describing requests', 'each carries version, identity, capabilities'],
+      ['MRTR', 'input_required + retry replaces server-initiated calls'],
+      ['Header routing', 'Mcp-Method and Mcp-Name on every request'],
+      ['Cacheable lists', 'ttlMs and cacheScope on list results'],
+      ['Extensions framework', 'Tasks, MCP Apps and EMA move out of the core'],
+    ],
+  }}
+/>
+
+## Why statelessness was the blocker
+
+With a handshake and a session id, every request had to land on the instance
+that started the conversation. That means sticky sessions, no plain
+round-robin, and a lost stream losing the session.
+
+<Schema title="what it unlocks">
+  <Pipeline accent="slate" steps={['Any request', 'Any instance', 'Plain load balancer', 'Horizontal scale']} />
+</Schema>
+
+<Callout type="idea" title="Header routing is the operational win">
+  Because `Mcp-Method` and `Mcp-Name` ride in headers, a gateway, rate limiter
+  or WAF can route and meter per tool **without parsing the JSON body**. That is
+  the difference between "we host it" and "we can operate it".
+</Callout>
+
+<Sticky accent="slate">
+  Deprecated on a twelve-month clock: HTTP+SSE transport, sampling, roots and
+  logging. Build new things without them.
+</Sticky>

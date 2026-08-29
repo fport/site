@@ -1,0 +1,27 @@
+Dense vectors capture meaning and **miss exact matches**: error codes, SKUs,
+person names, version numbers. BM25 is good at exactly those.
+
+<Schema title="retrieve → fuse → rank → cut">
+  <Pipeline accent="lime" steps={['Dense|top-50', 'BM25|top-50', 'RRF|fuse', 'Rerank|cross-encoder', 'Top-5']} />
+</Schema>
+
+## Why this order
+
+- **Retrieve wide, hand over narrow.** Fetching top-50 and cutting to top-5 is
+  both cheaper and better than dumping a raw top-20 into the context.
+- **RRF** fuses two lists without any attempt to normalise their scores; it
+  adds up ranks instead.
+- **A cross-encoder** reads the question and the chunk together. It catches the
+  relationship a bi-encoder misses — at the cost of latency, which is why it
+  comes last and over few candidates.
+
+<Callout type="warn" title="Reranking is not always a win">
+  A reranker changes the order of the context. If the answer depends on order —
+  a chronology, a step-by-step procedure — reshuffling can hurt. Do not turn it
+  on without measuring.
+</Callout>
+
+<Sticky accent="lime">
+  Ask for chunk ids in the answer. A RAG system that cites nothing does not
+  remove hallucination — it just makes it invisible.
+</Sticky>

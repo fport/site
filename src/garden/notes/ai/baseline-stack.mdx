@@ -1,0 +1,31 @@
+The reference baseline — a working, plain, deliberately unclever vanilla RAG
+service. This is the zero point every measurement is compared against.
+
+<Stack layers={[
+  { label: 'API & orchestration', sub: 'TypeScript + Express', accent: 'sky' },
+  { label: 'RAG integration', sub: 'LangChain' },
+  { label: 'Vector store', sub: 'Chroma, local' },
+  { label: 'Embedding & generation', sub: 'Ollama, temperature 0' },
+  { label: 'Configuration', sub: 'Zod + YAML' },
+]} />
+
+## Two tracks
+
+<Schema title="track 1 — offline index build">
+  <Pipeline steps={['Read JSON', 'Filter|pdfText', 'TextSplitter', 'Metadata', 'Write to Chroma']} />
+</Schema>
+
+<Schema title="track 2 — POST /rag/query">
+  <Pipeline accent="lime" steps={['Zod validate', 'similaritySearch|q, k', 'Format chunks', 'ChatOllama', 'JSON response']} />
+</Schema>
+
+<Callout type="gotcha" title="Full reset">
+  Wiping the collection and rewriting it on every index build is harmless in a
+  baseline and wrong in production: one changed document re-embeds the whole
+  corpus. Incremental upsert keyed on a document hash is the first fix.
+</Callout>
+
+<Sticky accent="sky">
+  temperature = 0 is not an accident: during evals the variance in an answer
+  should come from retrieval quality, not from sampling.
+</Sticky>

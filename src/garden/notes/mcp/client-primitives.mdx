@@ -1,0 +1,33 @@
+The protocol was originally two-way: a server could call *back* into the client
+to borrow the model, ask the user something, or read the workspace roots.
+
+<Table
+  data={{
+    headers: ['Primitive', 'What it did', 'Status'],
+    rows: [
+      ['Sampling', 'server borrows the host’s model', 'deprecated'],
+      ['Roots', 'server asks which directories are in scope', 'deprecated'],
+      ['Elicitation', 'server asks the user a question mid-call', 'replaced by MRTR'],
+      ['Logging', 'server emits structured logs to the host', 'deprecated'],
+    ],
+  }}
+/>
+
+All of these needed a held-open bidirectional stream, which is exactly what the
+stateless core removed.
+
+## What replaced elicitation
+
+**Multi Round-Trip Requests.** Instead of pushing a question down an open
+stream, the server returns `resultType: "input_required"` along with what it
+needs. The client collects the answers and **retries the original call** with
+them attached.
+
+<Schema title="input_required, then retry">
+  <Pipeline accent="violet" steps={['tools/call', 'input_required', 'client asks user', 'retry with answers']} />
+</Schema>
+
+<Callout type="warn" title="Twelve-month clock">
+  Deprecated does not mean gone — these keep working for at least twelve months.
+  But nothing new should be built on them.
+</Callout>

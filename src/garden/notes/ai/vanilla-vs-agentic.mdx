@@ -1,0 +1,29 @@
+Agentic RAG wins on accuracy and costs real engineering effort in latency,
+tokens and failure surface. The decision *is* that trade.
+
+<Table
+  data={{
+    headers: ['Dimension', 'Vanilla RAG', 'Agentic RAG'],
+    rows: [
+      ['Latency', 'low, ~1–2 s', 'high and variable'],
+      ['Token cost', 'low, one query', 'high, history re-read each round'],
+      ['Complexity', 'a simple pipeline', 'state management + tool wiring'],
+      ['Accuracy on hard tasks', 'low, context breaks', 'high, cross-synthesis'],
+      ['Failure surface', 'narrow: search and generate', 'wide: planning, tools, loops'],
+    ],
+  }}
+/>
+
+<Meter label="Vanilla — typical request" value={1} max={12} unit=" LLM calls" />
+<Meter label="Agentic — typical request" value={6} max={12} unit=" LLM calls" />
+
+<Callout type="note" title="Decision rule">
+  If most of your questions are answerable in one shot, use adaptive routing to
+  buy agentic quality **only on the hard ones**. Running an agent over an easy
+  question is the most elegant way to lose money.
+</Callout>
+
+<Sticky accent="amber">
+  If you cannot measure the accuracy gain, the latency and tokens you pay are
+  real and the gain is an assumption.
+</Sticky>

@@ -1,0 +1,37 @@
+Two transports in practice, and the choice is really "same machine or not".
+
+<Table
+  data={{
+    headers: ['Transport', 'Used for', 'Shape'],
+    rows: [
+      ['stdio', 'local servers', 'child process, stdin/stdout'],
+      ['Streamable HTTP', 'remote servers', 'plain HTTP, stateless'],
+      ['HTTP+SSE (legacy)', 'nothing new', 'deprecated, on a 12-month offramp'],
+    ],
+  }}
+/>
+
+<Schema title="the same server, two ways to reach it">
+  <Col gap={6}>
+    <Pipeline accent="sky" steps={['Host', 'spawn process', 'stdio', 'Server']} />
+    <Pipeline steps={['Host', 'HTTPS request', 'Streamable HTTP', 'Server']} />
+  </Col>
+</Schema>
+
+## Why the shift away from SSE
+
+The original remote transport held a long-lived server-sent-events stream open
+so the server could push requests back. That made every connection **sticky** —
+you could not put a plain load balancer in front of it, and a dropped stream
+lost the session.
+
+<Callout type="gotcha" title="If you are reading older material">
+  A lot of MCP writing still describes HTTP+SSE and a session id as the normal
+  remote setup. That is the old shape. New remote servers should be stateless
+  over Streamable HTTP.
+</Callout>
+
+<Sticky accent="sky">
+  stdio is not a lesser transport — for anything that touches the local
+  filesystem or local credentials it is the correct one, and the simplest.
+</Sticky>

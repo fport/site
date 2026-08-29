@@ -1,0 +1,28 @@
+When naive RAG breaks it looks like a **model bug** from the outside. It is
+almost always a retrieval bug.
+
+<Stack layers={[
+  { label: 'Low precision', sub: 'not every retrieved chunk is relevant', accent: 'rose' },
+  { label: 'Low recall', sub: 'not every relevant chunk is retrieved', accent: 'rose' },
+  { label: 'Stale data', sub: 'the index drifted from the source' },
+  { label: 'One shot', sub: 'no chance to correct a bad retrieval' },
+]} />
+
+## Two different diseases
+
+- **Low precision** fills the context with noise. The model may see the right
+  chunk and still lose it in the middle — *lost in the middle*. The answer
+  comes out close but wrong.
+- **Low recall** means the model never sees the material to synthesise from.
+  The answer is either incomplete or invented.
+
+<Callout type="gotcha">
+  A retrieval bug cannot be fixed with a prompt. **Log the retrieved chunks on
+  every request**, or you will spend the week tuning prompts against the wrong
+  problem.
+</Callout>
+
+<Sticky accent="rose">
+  More retrieved tokens does not mean better performance. Raising top-k usually
+  costs precision and makes the answer worse.
+</Sticky>

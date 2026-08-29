@@ -1,0 +1,33 @@
+Three roles, and they are easy to blur. The **host** is the application. It
+holds one **client** per connection. Each client talks to one **server**.
+
+```mermaid
+flowchart LR
+  H["Host · IDE, chat client, agent"] --> C1["MCP client 1"]
+  H --> C2["MCP client 2"]
+  C1 --> S1["MCP server · files"]
+  C2 --> S2["MCP server · issues"]
+  S1 --> D["Local or remote database"]
+  S2 --> W["Web API"]
+  W --> R["Some remote service"]
+```
+
+<Table
+  data={{
+    headers: ['Role', 'Who writes it', 'What it owns'],
+    rows: [
+      ['Host', 'the app vendor', 'the model, the UI, the approval prompts'],
+      ['Client', 'the SDK', 'one connection, protocol bookkeeping'],
+      ['Server', 'you', 'capabilities and the external system behind them'],
+    ],
+  }}
+/>
+
+The server is the only piece most people write. It exposes capabilities and
+does the talking to whatever sits behind it — a local database, a web API, a
+filesystem.
+
+<Callout type="note" title="One client per server">
+  A host with five servers holds five clients. That isolation is deliberate: a
+  compromised or broken server cannot see the others' traffic.
+</Callout>

@@ -1,0 +1,34 @@
+Intuition: **embedding a big block of text is a bad idea.** The vector blurs
+and the one sentence the question asks about drowns in noise.
+
+The fix: embed the small thing, hand the big thing to the answer.
+
+<Schema title="three variants">
+  <Col gap={6}>
+    <Pipeline accent="violet" steps={['Embed sentence', 'Match', 'Expand window k=2', 'Wide context to LLM']} />
+    <Pipeline steps={['Embed child chunk', 'Match', 'Fetch parent chunk', 'Synthesise from parent']} />
+    <Pipeline steps={['Embed summary/metadata', 'Match', 'Fetch the original', 'Synthesise from original']} />
+  </Col>
+</Schema>
+
+## The measured difference
+
+<Table
+  data={{
+    headers: ['Retriever', 'hit rate', 'MRR'],
+    rows: [
+      ['Base (plain chunk)', '0.796', '0.605'],
+      ['Chunk references', '0.892', '0.740'],
+      ['Metadata references', '0.916', '0.747'],
+    ],
+  }}
+/>
+
+Source: LlamaIndex advanced-retrieval benchmarks. The absolute numbers move
+with the corpus; the **ordering** usually holds.
+
+<Callout type="idea" title="What it buys">
+  Sharper retrieval, and an escape from "lost in the middle": where a naive
+  top-5 has one relevant chunk out of five, sentence-window retrieval shows the
+  model almost nothing but relevant context.
+</Callout>

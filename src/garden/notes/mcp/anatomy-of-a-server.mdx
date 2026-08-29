@@ -1,0 +1,34 @@
+A server is smaller than it sounds. It declares what it can do, then answers
+two kinds of call for each primitive: *list them* and *do one*.
+
+<Schema title="what you actually implement">
+  <Col gap={6}>
+    <Pipeline accent="violet" steps={['Declare capabilities', 'Answer tools/list', 'Handle tools/call', 'Return content']} />
+    <Pipeline steps={['Validate input', 'Talk to the real system', 'Shape the result', 'Report errors as text']} />
+  </Col>
+</Schema>
+
+## The shape of one tool
+
+<Table
+  data={{
+    headers: ['Field', 'Why it matters'],
+    rows: [
+      ['name', 'stable identifier — renaming it breaks callers'],
+      ['description', 'the only documentation the model reads'],
+      ['inputSchema', 'JSON Schema; the client can validate before calling'],
+      ['handler', 'your code — and the only place privileges are used'],
+    ],
+  }}
+/>
+
+<Callout type="note" title="Stateless by default">
+  Since the stateless core landed, a request no longer assumes it lands on the
+  instance that handled the last one. Keep per-request state out of process
+  memory, or put it behind something shared.
+</Callout>
+
+<Sticky accent="violet">
+  The hardest part of writing a server is not the protocol — the SDKs handle
+  that. It is deciding what to expose and what to keep out of reach.
+</Sticky>

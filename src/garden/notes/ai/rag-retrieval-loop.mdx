@@ -1,39 +1,28 @@
-The retrieval half of RAG is where quality is won or lost. Generation is
-mostly a formatting problem by comparison.
-
-<Schema title="ingest → retrieve → answer">
-  <Col gap={6}>
-    <Pipeline steps={['Source|docs, tickets', 'Chunk|split + overlap', 'Embed|vector', 'Store|index']} />
-    <Pipeline accent="sky" steps={['Query', 'Retrieve|top-k', 'Rerank|cross-encoder', 'Answer|grounded']} />
-  </Col>
-</Schema>
-
-## What actually moves the needle
-
-- **Chunk boundaries beat chunk size.** Splitting on headings and keeping the
-  parent heading in each chunk usually helps more than tuning token counts.
-- **Hybrid search.** Dense vectors miss exact identifiers, error codes and
-  names. Run BM25 alongside and fuse the rankings.
-- **Rerank before you widen.** Retrieving top-50 and reranking to top-5 is
-  cheaper and better than sending top-20 raw into the context.
-- **Cite or it did not happen.** Ask for chunk ids in the answer; it makes
-  hallucination visible instead of plausible.
-
-<Callout type="gotcha">
-  A retrieval bug looks exactly like a model bug from the outside. Log the
-  retrieved chunks for every request, or you will spend the week tuning
-  prompts against the wrong problem.
-</Callout>
-
-## The loop to instrument
+Vanilla RAG is one shot: if it retrieved the wrong thing, it cannot recover.
+What actually raises quality is turning retrieval into a **closed loop**.
 
 ```mermaid
 flowchart LR
   Q[Query] --> R[Retrieve]
   R --> K[Rerank]
   K --> G[Generate]
-  G --> E{Grounded?}
-  E -- no --> RW[Rewrite query]
+  E{"Grounded in sources?"}
+  G --> E
+  E -->|"no"| RW[Rewrite query]
   RW --> R
-  E -- yes --> A[Answer]
+  E -->|"yes"| A[Answer]
 ```
+
+## Three checks that close it
+
+- **Relevance check.** Are the retrieved chunks about the question? If not,
+  search again before generating. This is the core of Corrective RAG.
+- **Groundedness check.** Is every claim in the answer present in the shown
+  context? If not, narrow it or say "I do not know".
+- **A stopping condition.** At most N rounds. Otherwise the loop runs forever
+  and you find out at the end of the month.
+
+<Callout type="warn">
+  The loop is not free: each round is a retrieval plus an LLM call. Apply it to
+  the queries that **fail a check**, not to every query.
+</Callout>

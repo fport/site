@@ -1,0 +1,31 @@
+Isolated evals audit retrieval; end-to-end evals audit **the answer the user
+sees**. Both are needed, neither substitutes for the other.
+
+<Schema title="the e2e harness">
+  <Pipeline accent="slate" steps={['Question', 'RAG pipeline', 'Answer + context', 'Evaluator']} />
+</Schema>
+
+<Table
+  data={{
+    headers: ['Metric', 'The question it asks'],
+    rows: [
+      ['Faithfulness', 'is every claim present in the shown context'],
+      ['Answer relevancy', 'does the answer address the question'],
+      ['Context precision', 'how much of the retrieved context was needed'],
+      ['Context recall', 'how much of the needed context arrived'],
+    ],
+  }}
+/>
+
+## Two modes
+
+- **Label-free.** No reference answer: faithfulness, relevancy, tone, toxicity.
+  Cheap enough to run on every commit.
+- **Labelled.** Ground-truth answers exist: correctness, coverage. Expensive to
+  write, and the sharpest catcher of regressions.
+
+<Callout type="gotcha">
+  High faithfulness plus low answer relevancy means the model is telling you
+  something well-sourced and beside the point. That is a **retrieval** bug, not
+  a prompt bug.
+</Callout>

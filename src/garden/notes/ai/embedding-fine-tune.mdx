@@ -1,0 +1,22 @@
+The least-discussed way to improve retrieval: fine-tune **the embedding, not
+the model**. On a corpus full of domain jargon this is the cheapest win there is.
+
+<Schema title="a training set out of unlabelled data">
+  <Pipeline accent="rose" steps={['Raw chunk', 'Ask an LLM|what question does this answer', '(question, chunk) pair', 'Train the embedding']} />
+</Schema>
+
+A general-purpose embedding model has never seen your company's acronyms, part
+numbers or internal vocabulary. Synthetic question generation closes that gap
+without a single hand-written label.
+
+## Why it works
+
+- The training pairs come from **your corpus**, not from a public benchmark.
+- Improving the retriever improves every query in the pipeline — unlike a
+  prompt change, it compounds.
+- The same synthetic set is reusable as ground truth for retrieval evals.
+
+<Callout type="gotcha">
+  Changing the embedding means **rebuilding the whole index**. Old and new
+  vectors do not live in the same space. Put that in the cost plan.
+</Callout>

@@ -1,0 +1,25 @@
+This board reads left to right as one argument: **problem → cheapest fix →
+cheap wins → expensive wins → measurement.**
+
+```mermaid
+flowchart LR
+  A["1 · Why RAG"] --> B["2 · Vanilla RAG"]
+  B --> C["3 · Table stakes"]
+  C --> D["4 · Advanced retrieval"]
+  D --> E["5 · Agentic RAG"]
+  C --> F["6 · Fine-tuning"]
+  E --> G["7 · Measurement"]
+  F --> G
+  G -.->|"measure, go back"| C
+```
+
+## One rule
+
+Only climb a step once you have **measured** the one below it. Jumping to
+agentic RAG without ever trying a different chunk size is putting the most
+expensive fix on top of the cheapest problem.
+
+<Sticky>
+  The default order: Prompt → RAG → Advanced RAG → Agentic → Fine-tune →
+  Distill. Every step sits on the **measured** version of the one before it.
+</Sticky>

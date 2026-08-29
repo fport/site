@@ -1,0 +1,32 @@
+The shortest split: **RAG is for knowledge, fine-tuning is for form.** Baking
+facts that change weekly into weights means retraining every week.
+
+<Table
+  data={{
+    headers: ['', 'RAG', 'Fine-tune'],
+    rows: [
+      ['Knowledge lives', 'outside the model', 'in the weights'],
+      ['Updating it', 'easy — reindex', 'hard — retrain'],
+      ['Inference cost', 'higher, context is full', 'lower, prompt is short'],
+      ['Context limit', 'yes, the window', 'none'],
+      ['Citing sources', 'natural', 'impossible'],
+      ['Good at', 'facts, fresh data', 'tone, schema, behaviour'],
+    ],
+  }}
+/>
+
+```mermaid
+flowchart TD
+  S["The model is not doing what I want"] --> A{"What is missing?"}
+  A -->|"knowledge"| R["RAG"]
+  A -->|"form, tone, schema"| F["Fine-tune"]
+  A -->|"both"| H["RAG + a thin LoRA"]
+  R --> C{"Does the knowledge change often?"}
+  C -->|"yes"| R1["Definitely RAG"]
+  C -->|"no"| R2["Still RAG first"]
+```
+
+<Callout type="idea" title="In practice">
+  Most production systems end up hybrid: build strong RAG, measure it, then
+  fine-tune a small model only for the residue prompting cannot fix.
+</Callout>

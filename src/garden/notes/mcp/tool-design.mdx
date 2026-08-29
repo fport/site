@@ -1,0 +1,28 @@
+The model never sees your code. It sees a **name, a description and a schema** —
+so that is where quality lives.
+
+<Stack layers={[
+  { label: 'Few and wide', sub: 'five good tools beat forty narrow ones', accent: 'lime' },
+  { label: 'Honest descriptions', sub: 'say when NOT to use it, not just when to' },
+  { label: 'Typed input', sub: 'a strict schema is cheaper than a retry' },
+  { label: 'Readable errors', sub: 'return text the model can act on' },
+  { label: 'Paginate', sub: 'never hand back an unbounded blob' },
+]} />
+
+## The failure modes
+
+- **Tool soup.** Forty tools with terse names. The model picks wrong, and no
+  amount of prompt engineering above it fixes a bad menu.
+- **Swallowed errors.** A tool that returns an empty result on failure teaches
+  the model that the answer is "nothing".
+- **Unpaginated returns.** One tool dumping a full JSON document is the most
+  common cause of a blown context window.
+
+<Callout type="idea" title="Write the description for a new colleague">
+  Not "searches issues" but "searches issues in one repository by text; use for
+  finding existing reports, not for reading a known issue by number — use
+  `get_issue` for that."
+</Callout>
+
+The loop consuming these tools is its own subject — see
+[an agent is a loop](/garden/ai/agent-tool-loop) in the AI garden.

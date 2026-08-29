@@ -1,0 +1,34 @@
+Every MCP server is a new piece of untrusted text entering the model's context
+and a new set of privileges the model can reach. Both are attack surface.
+
+<Stack layers={[
+  { label: 'Tool poisoning', sub: 'a malicious description steers the model', accent: 'rose' },
+  { label: 'Indirect prompt injection', sub: 'instructions hidden in returned data' },
+  { label: 'Confused deputy', sub: 'server acts with its own broad credential' },
+  { label: 'Supply chain', sub: 'you installed a server you did not read' },
+]} />
+
+## The one that surprises people
+
+**Tool descriptions are context.** A server can put instructions in a
+description, and the model reads them the same way it reads yours. Invariant
+Labs demonstrated this concretely: a poisoned description on a second server
+was enough to get a model to exfiltrate a user's entire WhatsApp history
+through an innocuous-looking call.
+
+## Confused deputy, concretely
+
+An agent legitimately holds a broad database credential. A prompt injection
+persuades it to use that credential for something the deployer never intended.
+The server was not hacked — it did exactly what it was asked.
+
+<Callout type="warn" title="The rule that actually helps">
+  Run tools with **user-level** permissions, never server-level. And put
+  anything that deletes, sends, spends or changes infrastructure behind an
+  explicit per-call approval — not a one-time consent at install.
+</Callout>
+
+<Sticky accent="rose">
+  Treat everything a server returns as data, never as instructions. That
+  includes tool descriptions, which is the part people forget.
+</Sticky>

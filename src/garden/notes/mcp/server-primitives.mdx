@@ -1,0 +1,35 @@
+A server exposes three things. The difference that matters is **who decides to
+use them**.
+
+<Table
+  data={{
+    headers: ['Primitive', 'What it is', 'Controlled by'],
+    rows: [
+      ['Tools', 'executable functions with typed input', 'the model'],
+      ['Resources', 'readable data, static or dynamic', 'the application'],
+      ['Prompts', 'templates a user can invoke', 'the user'],
+    ],
+  }}
+/>
+
+<Stack layers={[
+  { label: 'Tools', sub: 'model-controlled — the LLM chooses to call', accent: 'lime' },
+  { label: 'Resources', sub: 'application-controlled — read-only, the host attaches' },
+  { label: 'Prompts', sub: 'user-controlled — a slash command, a template' },
+]} />
+
+## The wire methods
+
+Discovery and use are separate calls, and each has a list side and an act side:
+`tools/list` then `tools/call`, `resources/list` then `resources/read`,
+`prompts/list` then `prompts/get`.
+
+<Callout type="note" title="List results are cacheable">
+  Since the 2026-07-28 spec, list responses carry a `ttlMs` and a cache scope,
+  so a client does not re-enumerate a server's catalogue on every turn.
+</Callout>
+
+<Sticky accent="lime">
+  If you are unsure whether something is a tool or a resource, ask: should the
+  model be allowed to trigger it on its own? Yes → tool. No → resource.
+</Sticky>

@@ -1,0 +1,31 @@
+Training from scratch is almost no product team's job. In practice the choice
+is **which parameter-efficient method**.
+
+<Table
+  data={{
+    headers: ['Method', 'What it does', 'When'],
+    rows: [
+      ['Full SFT', 'updates every weight', 'rarely — costly, forgetful'],
+      ['LoRA', 'low-rank adapter on a frozen model', 'the default starting point'],
+      ['QLoRA', 'LoRA over a 4-bit base', 'fitting onto one GPU'],
+      ['DPO', 'aligns on preference pairs', 'you have good/bad answer pairs'],
+      ['GRPO', 'RL against a reward function', 'correctness is programmatically checkable'],
+      ['Distillation', 'copies a big model into a small one', 'cost and latency pressure'],
+    ],
+  }}
+/>
+
+<Schema title="the practical path">
+  <Pipeline accent="rose" steps={['Curate|200-500 examples', 'QLoRA SFT', 'DPO|if you have pairs', 'Eval|before promoting']} />
+</Schema>
+
+<Callout type="note" title="The current sweet spot">
+  Fine-tuning a strong open-weight 8B-class model with a thin adapter and
+  running it **alongside strong RAG** is where cost-per-quality lands best for
+  production agents.
+</Callout>
+
+<Sticky accent="rose">
+  An adapter does not replace retrieval. A fine-tuned model still invents the
+  document it never saw — just in a nicer format.
+</Sticky>

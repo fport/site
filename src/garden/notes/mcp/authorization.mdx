@@ -1,0 +1,28 @@
+For remote servers, authorization is the whole game. The spec settles on
+**OAuth 2.1**, and the details it tightens are the ones that get exploited.
+
+<Stack layers={[
+  { label: 'PKCE, always', sub: 'mandatory for every client, not just public ones', accent: 'amber' },
+  { label: 'No implicit grant', sub: 'removed from the spec entirely' },
+  { label: 'Validate audience', sub: 'only accept tokens minted for you' },
+  { label: 'No passthrough', sub: 'never forward a client token to an upstream API' },
+]} />
+
+## Two hardening changes worth knowing
+
+- **Issuer validation (RFC 9207).** Credentials are bound to the issuer that
+  minted them, which closes a class of mix-up attacks between authorization
+  servers.
+- **CIMD replaces Dynamic Client Registration.** Client ID Metadata Documents
+  are now the supported path; DCR is formally deprecated.
+
+<Callout type="gotcha" title="Token passthrough is the classic mistake">
+  Accepting a token meant for someone else, or handing your client's token to
+  an upstream service, turns your server into an open proxy for whoever holds
+  it. Mint your own credential for the upstream call.
+</Callout>
+
+<Sticky accent="amber">
+  Scope tokens to the minimum, and scope them per user — a server-wide
+  service account is the confused deputy problem waiting to happen.
+</Sticky>
