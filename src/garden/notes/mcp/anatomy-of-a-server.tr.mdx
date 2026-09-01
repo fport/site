@@ -1,0 +1,34 @@
+Bir server kulağa geldiğinden küçük. Ne yapabildiğini bildiriyor, sonra her
+primitive için iki tür çağrıya cevap veriyor: *listele* ve *birini yap*.
+
+<Schema title="aslında ne implemente ediyorsun">
+  <Col gap={6}>
+    <Pipeline accent="violet" steps={["Capability'leri bildir", "tools/list'e cevap ver", "tools/call'u işle", 'Content döndür']} />
+    <Pipeline steps={['Girdiyi doğrula', 'Gerçek sistemle konuş', 'Sonucu biçimlendir', 'Hataları metin olarak bildir']} />
+  </Col>
+</Schema>
+
+## Bir tool'un biçimi
+
+<Table
+  data={{
+    headers: ['Alan', 'Neden önemli'],
+    rows: [
+      ['name', 'sabit tanımlayıcı — yeniden adlandırmak çağıranları kırar'],
+      ['description', 'modelin okuduğu tek dokümantasyon'],
+      ['inputSchema', 'JSON Schema; client çağırmadan önce doğrulayabilir'],
+      ['handler', 'senin kodun — ve yetkilerin kullanıldığı tek yer'],
+    ],
+  }}
+/>
+
+<Callout type="note" title="Varsayılan olarak stateless">
+  Stateless çekirdek geldiğinden beri bir istek, bir öncekini işleyen
+  instance'a düşeceğini artık varsaymıyor. İstek başına state'i process
+  belleğinin dışında tut ya da paylaşılan bir şeyin arkasına koy.
+</Callout>
+
+<Sticky accent="violet">
+  Bir server yazmanın en zor kısmı protokol değil — onu SDK'lar hallediyor.
+  Zor olan, neyi dışa açıp neyi erişilmez tutacağına karar vermek.
+</Sticky>

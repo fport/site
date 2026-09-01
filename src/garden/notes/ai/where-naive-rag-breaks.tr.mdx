@@ -1,0 +1,27 @@
+Naif RAG bozulduğunda dışarıdan **model hatası** gibi görünür. Neredeyse her
+zaman bir retrieval hatasıdır.
+
+<Stack layers={[
+  { label: 'Düşük precision', sub: 'getirilen her chunk alakalı değil', accent: 'rose' },
+  { label: 'Düşük recall', sub: 'alakalı her chunk getirilmiyor', accent: 'rose' },
+  { label: 'Bayat veri', sub: 'index kaynaktan uzaklaştı' },
+  { label: 'Tek atış', sub: 'kötü bir retrieval’ı düzeltme şansı yok' },
+]} />
+
+## İki ayrı hastalık
+
+- **Düşük precision** context’i gürültüyle doldurur. Model doğru chunk’ı görüp
+  yine de ortada kaybedebilir — *lost in the middle*. Cevap yakın ama yanlış
+  çıkar.
+- **Düşük recall**, modelin sentezleyeceği malzemeyi hiç görmemesi demek. Cevap
+  ya eksik ya uydurma olur.
+
+<Callout type="gotcha">
+  Retrieval hatası prompt’la düzelmez. **Her istekte getirilen chunk’ları
+  logla**, yoksa haftayı yanlış probleme karşı prompt ayarlayarak geçirirsin.
+</Callout>
+
+<Sticky accent="rose">
+  Daha fazla token getirmek daha iyi performans demek değil. top-k’yı artırmak
+  genellikle precision’a mal olur ve cevabı kötüleştirir.
+</Sticky>

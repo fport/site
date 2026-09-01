@@ -1,6 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SiteHeader } from '@/components/site-header';
 import type { CanvasNote, GardenCluster, NoteFrame } from '@/garden/types';
 import { AuthorToolbar } from './author-toolbar';
 import { CanvasToolbar, type LaserMode, type Tool } from './canvas-toolbar';
@@ -137,6 +139,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [query, setQuery] = useState('');
+  const t = useTranslations('garden');
   const [indexOpen, setIndexOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [tool, setTool] = useState<Tool>('pan');
@@ -685,7 +688,8 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
                 onReset={onResetLayout}
                 onExit={() => {
                   setEditing(false);
-                  window.history.replaceState(null, '', garden.path);
+                  // Drop `?edit=1` but keep the (possibly locale-prefixed) path.
+                  window.history.replaceState(null, '', window.location.pathname);
                 }}
               />
             </div>
@@ -696,15 +700,11 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
 
       {/* --------------------------------------------------------- list ---- */}
       <div className="mx-auto w-full max-w-[46rem] space-y-4 p-5 pb-20 md:hidden">
-        <header className="pt-4">
-          <a href="/" className="text-[12px] text-muted underline">
-            ← porti
-          </a>
-          <h1 className="mt-2 text-xl font-medium">{garden.title}</h1>
+        <SiteHeader className="-mx-5 -mt-5 px-5" />
+        <header className="pt-2">
+          <h1 className="text-xl font-medium">{garden.title}</h1>
           <p className="mt-1 text-[13.5px] leading-snug text-muted">{garden.tagline}</p>
-          <p className="mt-3 text-[12px] text-muted">
-            The whiteboard needs a wider screen — here are the notes in order.
-          </p>
+          <p className="mt-3 text-[12px] text-muted">{t('mobileHint')}</p>
         </header>
         {placed.map((note) => (
           <NoteCard

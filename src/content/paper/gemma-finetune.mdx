@@ -1,0 +1,115 @@
+I wanted to understand fine-tuning end to end rather than read about it, so I
+took Gemma 3 4B, put a LoRA adapter on it with a Turkish instruction set, and
+shipped the result to Hugging Face and Ollama. The pipeline worked on the first
+run. The model came out worse than it went in.
+
+That second sentence is the whole post.
+
+## The run
+
+<Table
+  data={{
+    headers: ['', ''],
+    rows: [
+      ['Base model', 'unsloth/gemma-3-4b-it, 4-bit'],
+      ['Data set', 'BrewInteractive/alpaca-tr — 45,331 rows, 44,695 after filtering'],
+      ['Adapter', 'LoRA r=16, alpha=16 — 29.8M of 4.33B parameters, 0.69%'],
+      ['Training', '60 steps, batch 2 × grad accum 4 ≈ 480 examples, lr 2e-4'],
+      ['Masking', 'train_on_responses_only'],
+      ['Hardware', 'Colab Tesla T4, 14.6 GB — 2.33 GB peak, final loss 1.231'],
+    ],
+  }}
+/>
+
+One thing worth writing down: the run is in **float32**. The T4 has no bf16, and
+Gemma 3 overflows in fp16, so the usual half-precision shortcut is simply not
+available on the free tier. You pay for it in speed.
+
+## What came back
+
+I ran the same four questions through the model before and after, same seed.
+The answers got dramatically shorter:
+
+<Table
+  data={{
+    headers: ['Question', 'Before', 'After', 'Change'],
+    rows: [
+      ['Turkish breakfast culture', '827', '899', '+9%'],
+      ['Two-day Istanbul itinerary', '646', '215', '−67%'],
+      ['Python list vs tuple', '790', '491', '−38%'],
+      ['Fix this sentence', '399', '82', '−79%'],
+    ],
+  }}
+/>
+
+Shorter is not automatically worse. What made it worse is what left with the
+length. Markdown structure went. Code blocks went — the list-vs-tuple answer
+used to include a working Python example and afterwards did not. The itinerary
+stopped being planned by hour and became an unstructured paragraph.
+
+Then it started inventing Turkish words that do not exist: *salso*,
+*gözükürünce*, *Benün*. And on "fix this sentence" it did not fix the sentence.
+It produced a different, broken one. That is not a change of tone, that is the
+model no longer understanding the instruction.
+
+The name for this is catastrophic forgetting, and I caused it in ten minutes on
+a free GPU.
+
+## Why
+
+Four things, in order of how much they mattered:
+
+1. **The base model was already instruction-tuned.** The `-it` suffix says so.
+   It has been aligned on data Google curated. That is not an easy floor to
+   improve on, and I did not treat it as a floor at all.
+2. **`alpaca-tr` is machine-translated.** It is Stanford Alpaca run through
+   translation. Short, unstructured, occasionally broken answers.
+3. **So the model learned a style, not knowledge.** 480 examples was more than
+   enough to drag the output distribution toward the shape of the data set.
+4. **`lr=2e-4` is aggressive for this.** It is a reasonable default when you are
+   teaching a base model something new. It is too high when you are writing over
+   a strong instruct model, and combined with response-only masking it pushed
+   straight at the target style.
+
+## The part that actually worked
+
+Not the model. The measurement.
+
+Every stage of the pipeline did its job — data to chat template to LoRA to
+masking to training to export, three artefacts on the Hub including a GGUF that
+runs locally in Ollama. If I had stopped there I would have written a post about
+how easy fine-tuning is.
+
+The step that saved me was capturing baseline answers *before* training, from
+the same prompts with the same seed. It costs one cell and about a minute. It is
+also the step missing from most fine-tuning write-ups I have read, which is why
+so many of them end at "and now it speaks in my tone" without anyone checking
+what it stopped being able to do.
+
+A fine-tune with no baseline cannot fail. That is not a good property.
+
+## Round two
+
+The fix is not better hyperparameters, it is a better target. "Make it better at
+Turkish" was never a real goal — Gemma 3 already speaks good Turkish. Fine-tuning
+earns its keep on narrow tasks where the base model is *inconsistent*.
+
+So the next run is format compliance: every answer as a fixed JSON schema. The
+base model is inconsistent there — sometimes JSON, sometimes markdown, sometimes
+a JSON object with an apology in front of it. A few hundred examples should fix
+that, and the evaluation is completely objective: does `json.loads` throw, are
+the fields present. No taste involved.
+
+Alongside that: `lr` down to 2e-5, an eval set actually attached with loss
+checked every 15 steps instead of trusting a single final number, and an L4 so
+bf16 works and the float32 penalty disappears.
+
+Round one is on the Hub in all three forms — the
+[LoRA adapter](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-lora), the
+[merged model](https://huggingface.co/fport/gemma-3-4b-tr-alpaca), and a
+[GGUF build](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-GGUF) that runs
+locally in Ollama.
+
+They are published as what they are: a working pipeline and a regression. The
+notebook and the raw before-and-after outputs stay with me until round two has
+something worth standing behind.

@@ -1,0 +1,34 @@
+Eval’siz prompt ayarlamak, üstüne birkaç adım eklenmiş vibe’dan ibaret. Eval’in
+sofistike olması gerekmiyor; prompt değişmeden önce var olması gerekiyor.
+
+<Schema title="işe yarayan en küçük harness">
+  <Pipeline steps={['20 vaka|gerçek girdiler', 'Çalıştır|sabit seed', 'Puanla|rubrik ya da assert', 'Diff|son çalıştırmaya göre']} />
+</Schema>
+
+## Başlangıç seti
+
+<Table
+  data={{
+    headers: ['Tür', 'Adet', 'Ne yakalar'],
+    rows: [
+      ['Golden', '10', 'happy path’teki regresyonlar'],
+      ['Adversarial', '5', 'prompt injection, ret tuzağı'],
+      ['Sıkıcı', '5', 'boş girdi, devasa girdi, yanlış dil'],
+    ],
+  }}
+/>
+
+<Callout type="idea" title="Önce en ucuzu">
+  Deterministik assert’ler — JSON parse oluyor mu, id çıktıda var mı, N
+  token’ın altında mı — bir LLM judge’dan daha fazla gerçek kırılma yakalar ve
+  her commit’te çalıştırmak hiçbir şeye mal olmaz.
+</Callout>
+
+## Modelle puanlamak
+
+Cevap gerçekten açık uçluysa kullan, ve o zaman:
+
+- **Her seferinde tek boyut** puanla. Tek bir "bu iyi mi" skoru gürültüdür.
+- Judge’a rubriği *ve* bir referans cevabı ver.
+- Bir örneklem üzerinde judge/insan uyumunu takip et. Hiç denetlemediğin bir
+  judge, görgülü bir rastgele sayı üretecidir.

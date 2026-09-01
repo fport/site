@@ -1,0 +1,28 @@
+Bir push saniyeler sürmeli, baştan sona bir re-index değil. Değişiklik tespiti
+git diff ile değil, içerik hash'i ile.
+
+<Schema title="bir push neyi tetikler">
+  <Pipeline accent="sky" steps={["push|webhook ya da poll", "job|repo başına tekilleştirilmiş", "fetch + reset", "sha256 diff|manifest'e karşı", "sil + yeniden yaz|yalnız değişen path'ler", "manifest|güncellendi"]} />
+</Schema>
+
+## Neden diff değil hash
+
+- Rename'ler, mode değişiklikleri, submodule'ler, force-push'lar: dosya
+  içeriğini karşılaştırınca hiçbiri özel durum değil.
+- git repo'su olmayan yerel bir dizin de birebir aynı yoldan geçiyor.
+- Manifest, `read_code` için de tek doğruluk kaynağı — agent yalnızca
+  gerçekten index'lenmiş dosyaları okuyabiliyor.
+
+## Sıralamayla gelen çökme güvenliği
+
+Bir dosyanın manifest satırı, chunk'ları silinmeden **önce** kaldırılıyor ve
+yeni chunk'lar yazıldıktan **sonra** geri konuyor. Yarı yolda öldürülen bir
+job, dosyayı "index'lenmemiş" görünür bırakıyor; bir sonraki sync onu baştan
+yapıyor, o kadar. Hiçbir şey asla yarım hâlde durmuyor.
+
+<Callout type="note" title="Ölçüldü">
+  318 dosyalık bir TypeScript API: Apple M serisinde tam index ≈ 5 dakika
+  (embedding baskın); 38 dosyaya dokunan bir push ≈ 23 sn. Bir chunk ya da
+  embedding ayarı değiştiğinde onunla birlikte bir `index_version` string'i de
+  değişiyor ve bir sonraki sync tam olmaya zorlanıyor.
+</Callout>

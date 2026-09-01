@@ -1,18 +1,8 @@
 'use client';
 
-import { Link } from 'next-view-transitions';
-import type { CanvasNote, NoteKind, NoteStatus } from '@/garden/types';
-
-const KIND_LABEL: Record<NoteKind, string> = {
-  note: 'note',
-  schema: 'schema',
-  experiment: 'experiment',
-  snippet: 'snippet',
-  'open-question': 'open question',
-  role: 'role',
-  talk: 'talk',
-  resource: 'resource',
-};
+import { useTranslations } from 'next-intl';
+import { Link } from '@/components/link';
+import type { CanvasNote, NoteStatus } from '@/garden/types';
 
 const STATUS_GLYPH: Record<NoteStatus, string> = {
   seed: '◌',
@@ -51,6 +41,7 @@ export function NoteCard({
   onResizeStart,
 }: Props) {
   const isCanvas = mode === 'canvas';
+  const t = useTranslations('garden');
 
   return (
     <article
@@ -87,8 +78,8 @@ export function NoteCard({
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-muted">
-            <span title={note.status}>{STATUS_GLYPH[note.status]}</span>
-            <span>{KIND_LABEL[note.kind]}</span>
+            <span title={t(`status.${note.status}`)}>{STATUS_GLYPH[note.status]}</span>
+            <span>{t(`kind.${note.kind}`)}</span>
           </div>
           <h2 className="mt-0.5 truncate text-[14px] font-medium leading-snug" title={note.title}>
             {note.title}
@@ -98,8 +89,8 @@ export function NoteCard({
           <button
             type="button"
             onClick={() => onOpen(note.slug)}
-            aria-label={`Open ${note.title}`}
-            title="Open full size"
+            aria-label={t('card.open', { title: note.title })}
+            title={t('card.openTitle')}
             className="rounded p-1 text-muted transition-colors hover:bg-foreground/10 hover:text-foreground"
           >
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -114,8 +105,8 @@ export function NoteCard({
           </button>
           <Link
             href={`${gardenPath}/${note.slug}`}
-            aria-label={`Permalink to ${note.title}`}
-            title="Permalink"
+            aria-label={t('card.permalink', { title: note.title })}
+            title={t('card.permalinkTitle')}
             className="rounded p-1 text-muted transition-colors hover:bg-foreground/10 hover:text-foreground"
           >
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -156,7 +147,7 @@ export function NoteCard({
       {editing && isCanvas && onResizeStart ? (
         <button
           type="button"
-          aria-label={`Resize ${note.title}`}
+          aria-label={t('card.resize', { title: note.title })}
           onPointerDown={(event) => onResizeStart(event, note.slug)}
           className="absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize rounded-tl border-l border-t border-card-border bg-card"
         />

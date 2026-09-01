@@ -1,0 +1,31 @@
+Sıfırdan eğitmek neredeyse hiçbir ürün ekibinin işi değil. Pratikte seçim,
+**hangi parameter-efficient yöntem** olduğu.
+
+<Table
+  data={{
+    headers: ['Yöntem', 'Ne yapar', 'Ne zaman'],
+    rows: [
+      ['Full SFT', 'her ağırlığı günceller', 'nadiren — pahalı, unutkan'],
+      ['LoRA', 'donmuş model üstüne low-rank adapter', 'varsayılan başlangıç noktası'],
+      ['QLoRA', '4-bit base üstüne LoRA', 'tek GPU’ya sığdırmak için'],
+      ['DPO', 'tercih çiftleri üzerinden hizalar', 'iyi/kötü cevap çiftlerin varsa'],
+      ['GRPO', 'bir reward fonksiyonuna karşı RL', 'doğruluk programatik olarak kontrol edilebiliyorsa'],
+      ['Distillation', 'büyük modeli küçüğe kopyalar', 'maliyet ve latency baskısı'],
+    ],
+  }}
+/>
+
+<Schema title="pratik yol">
+  <Pipeline accent="rose" steps={['Derle|200-500 örnek', 'QLoRA SFT', 'DPO|çiftlerin varsa', 'Eval|yayına almadan önce']} />
+</Schema>
+
+<Callout type="note" title="Bugünkü tatlı nokta">
+  Güçlü bir open-weight 8B sınıfı modeli ince bir adapter ile fine-tune edip
+  **güçlü bir RAG’in yanında** çalıştırmak, production agent’lar için
+  kalite-başına-maliyetin en iyi oturduğu yer.
+</Callout>
+
+<Sticky accent="rose">
+  Adapter, retrieval’ın yerini tutmaz. Fine-tune edilmiş model hiç görmediği
+  dokümanı yine uydurur — sadece daha güzel bir formatta.
+</Sticky>

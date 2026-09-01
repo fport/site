@@ -1,0 +1,29 @@
+Agentic RAG doğrulukta kazanır; bedelini latency, token ve hata yüzeyinde gerçek
+mühendislik emeğiyle öder. Karar, tam olarak *bu takas*.
+
+<Table
+  data={{
+    headers: ['Boyut', 'Vanilla RAG', 'Agentic RAG'],
+    rows: [
+      ['Latency', 'düşük, ~1–2 sn', 'yüksek ve değişken'],
+      ['Token maliyeti', 'düşük, tek sorgu', 'yüksek, geçmiş her turda yeniden okunur'],
+      ['Karmaşıklık', 'basit bir pipeline', 'state yönetimi + tool bağlantıları'],
+      ['Zor görevlerde doğruluk', 'düşük, context kırılır', 'yüksek, çapraz sentez'],
+      ['Hata yüzeyi', 'dar: ara ve üret', 'geniş: planlama, tool’lar, döngüler'],
+    ],
+  }}
+/>
+
+<Meter label="Vanilla — tipik istek" value={1} max={12} unit=" LLM çağrısı" />
+<Meter label="Agentic — tipik istek" value={6} max={12} unit=" LLM çağrısı" />
+
+<Callout type="note" title="Karar kuralı">
+  Sorularının çoğu tek atışta cevaplanabiliyorsa, agentic kaliteyi **yalnızca
+  zor olanlarda** satın almak için adaptive routing kullan. Kolay bir sorunun
+  üstünde agent çalıştırmak, para kaybetmenin en zarif yolu.
+</Callout>
+
+<Sticky accent="amber">
+  Doğruluk kazancını ölçemiyorsan, ödediğin latency ve token gerçek, kazanç ise
+  bir varsayım.
+</Sticky>

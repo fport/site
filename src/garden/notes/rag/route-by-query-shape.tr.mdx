@@ -1,0 +1,35 @@
+İki retriever, bir regex. Sembole benzeyen bir query BM25'e gidiyor; bir
+cümle dense index'e. Hybrid fusion ve reranking flag arkasında duruyor —
+ikisi de ölçüldü, ikisi de kaybetti.
+
+<Table
+  data={{
+    headers: ["Ayar", "Recall@8", "MRR", "TR düzyazı R@8", "p50"],
+    rows: [
+      ["yalnız BM25", "0.405", "0.240", "0.263", "2 ms"],
+      ["hybrid (dense + BM25 → RRF)", "0.786", "0.604", "0.684", "40 ms"],
+      ["yalnız dense", "0.786", "0.678", "0.684", "32 ms"],
+      ["auto: sembol → BM25, düzyazı → dense ✓", "0.786", "0.690", "0.684", "34 ms"],
+    ],
+  }}
+/>
+
+## Her zaman hybrid neden kaybediyor
+
+RRF *sıraları* topluyor. Bir kanalın elinde işe yarar bir şey olmadığında —
+`QUEUE_NAMES` için dense, "auth nasıl çalışıyor" için BM25 — en iyi tahmini
+yine tam güçle öne çıkıyor ve listenin tepesini kirletiyor. Yönlendirme,
+tahmin yürütecek olan kanalı devreden çıkarıyor.
+
+## Sembol sayılan ne
+
+İçinde bir sınır olan tek bir token: camelCase, snake_case, kebab-case,
+`a.b.c`, `a/b`, `A::B` ya da ALLCAPS. Bilerek dar tutuldu — bir false
+positive gerçek bir soruyu BM25'e gönderiyor, bu ölçülebilir biçimde kötü;
+bir false negative ise yalnızca küçük bir kazanımdan vazgeçiyor. Semboller
+BM25'te 1.0 / 1.0, dense'te 1.0 / 0.875 alıyor.
+
+<Sticky accent="lime">
+  Masada bir LLM router vardı. Bir regex aynı MRR kazanımını bedavaya getirdi
+  ve sıfır latency ekliyor.
+</Sticky>

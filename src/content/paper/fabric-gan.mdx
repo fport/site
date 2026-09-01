@@ -1,0 +1,98 @@
+This is the oldest thing on this site, and the reason the rest of it exists.
+
+In my second year of computer engineering at Bursa Technical University, a
+proposal of mine came back funded: TÜBİTAK 2209-B, the industry-oriented
+research programme for undergraduates, 2020 first period. I led it, Mert Bozkır
+came on as researcher, and the title was longer than most of the code —
+*Doğal Dil İşleme ve Derin Öğrenme Yöntemleri Kullanılarak Metinden Kumaş
+Deseni Üretilmesi*. Generating fabric patterns from text with natural language
+processing and deep learning.
+
+You describe a textile pattern in a sentence. Colour, shape, size, how the
+motifs sit relative to each other. The system gives you back an original
+pattern that did not exist before.
+
+## Why this was a strange thing to attempt then
+
+The proposal went in during 2020. If you want to explain this project today you
+say "text to image" and everyone nods. At the time that phrase did not mean
+anything to most people — OpenAI announced DALL·E in January 2021, while we were
+already working, and you could not use it anyway. Stable Diffusion was a year
+and a half out. Diffusion models were a research curiosity, not something you
+built on.
+
+So text-to-image meant GANs, and getting a GAN to listen to a sentence meant
+building the bridge yourself.
+
+## The two halves
+
+<Table
+  data={{
+    headers: ['Half', 'Job'],
+    rows: [
+      ['NLP', 'Turn a free-text description into numbers the network can be conditioned on'],
+      ['GAN', 'Turn those numbers, plus noise, into an image that is both plausible and matches the description'],
+    ],
+  }}
+/>
+
+**The NLP half** is the part people skip when they explain this. A neural
+network cannot read "small navy paisley on cream, evenly spaced". It needs a
+vector. So the first job is representation: parse the description into the
+attributes that actually vary — colour, motif, scale, layout — and encode them
+into a fixed-length vector the generator can take as input. Get this wrong and
+nothing downstream can recover, because two sentences that mean different things
+end up as nearly the same numbers.
+
+**The GAN half** is two networks arguing. A *generator* takes random noise and
+produces an image. A *discriminator* looks at an image and judges whether it is
+real or generated. They train against each other: the generator tries to fool
+the discriminator, the discriminator tries not to be fooled, and the pressure
+between them is what pushes the generator toward images that look like the
+training set.
+
+The trick that makes it text-to-image is conditioning. You hand the text vector
+to *both* networks. The generator produces from noise plus text. The
+discriminator no longer answers one question but two: is this a real pattern,
+and does it match this description? A generator that makes beautiful patterns
+unrelated to the sentence now fails, which is exactly the pressure you want.
+
+## Why fabric was the right problem
+
+Not because it was easy. Because it was narrow.
+
+General text-to-image in 2021 was out of reach for two undergraduates with a
+university GPU lab. Textile patterns are a much smaller world: they repeat, they
+tile, they are built from a limited vocabulary of motifs, and the space of
+"correct" outputs is constrained in ways a photograph of anything is not. A
+model with a narrow domain and a clear notion of what a good output looks like
+can work at a scale where a general one cannot.
+
+That is a lesson I have used constantly since: scope the domain until the
+problem fits the resources you actually have, rather than picking the impressive
+version and running out of runway.
+
+The industry side mattered for the same reason. The project ran with Bursalı
+Tekstil, and Bursa is a textile city, so the question of whether a pattern was
+*usable* had someone in the room who could answer it. Academic advice came from
+Gizem Ortaç, industry advice from Hatice Kurt at Bursalı, and our department
+head Turgay Tugay Bilgin backed the thing before it had anything to show. We
+filed a patent application, ran it on the university's high-performance
+machines, and it ended up on
+[Anadolu Ajansı](https://www.aa.com.tr/tr/egitim/bursada-universite-ogrencileri-bilgisayara-metinle-verilen-komutla-tekstil-desenleri-ureten-yazilim-gelistirdi/2169609)
+— a strange experience when you are twenty and your model still sometimes
+outputs mud.
+
+## What it left me with
+
+The system is old now. The approach is obsolete — anyone doing this today
+reaches for a diffusion model and gets better results in an afternoon.
+
+What is not obsolete is what it forced me to learn. Conditioning a generative
+model on text, and the idea that the way you *represent* the request determines
+the ceiling of what comes back, is the same shape as the work I do now. Prompt
+structure, retrieval context, tool schemas — all of it is the same question in
+different clothing: how do you turn what a human wants into something a model
+can actually be steered by.
+
+I did not know that at the time. I just wanted to see if the thing would draw.

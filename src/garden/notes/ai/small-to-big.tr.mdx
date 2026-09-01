@@ -1,0 +1,34 @@
+Sezgi: **büyük bir metin bloğunu embed etmek kötü fikir.** Vektör bulanıklaşır
+ve sorunun sorduğu o tek cümle gürültüde boğulur.
+
+Çözüm: küçük şeyi embed et, büyük şeyi cevaba ver.
+
+<Schema title="üç varyant">
+  <Col gap={6}>
+    <Pipeline accent="violet" steps={['Cümleyi embed et', 'Eşleştir', 'Pencereyi genişlet k=2', 'Geniş context LLM’e']} />
+    <Pipeline steps={['Child chunk’ı embed et', 'Eşleştir', 'Parent chunk’ı getir', 'Parent’tan sentezle']} />
+    <Pipeline steps={['Özeti/metadata’yı embed et', 'Eşleştir', 'Orijinali getir', 'Orijinalden sentezle']} />
+  </Col>
+</Schema>
+
+## Ölçülmüş fark
+
+<Table
+  data={{
+    headers: ['Retriever', 'hit rate', 'MRR'],
+    rows: [
+      ['Base (düz chunk)', '0.796', '0.605'],
+      ['Chunk references', '0.892', '0.740'],
+      ['Metadata references', '0.916', '0.747'],
+    ],
+  }}
+/>
+
+Kaynak: LlamaIndex advanced-retrieval benchmark’ları. Mutlak sayılar corpus’a
+göre değişir; **sıralama** genellikle korunur.
+
+<Callout type="idea" title="Ne kazandırıyor">
+  Daha keskin retrieval ve "lost in the middle"dan kaçış: naif bir top-5’te beş
+  chunk’tan biri alakalıyken, sentence-window retrieval modele neredeyse
+  yalnızca alakalı context gösterir.
+</Callout>

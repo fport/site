@@ -1,0 +1,42 @@
+Kullanıcılar Türkçe soruyor; kod, yorumlar ve commit mesajları İngilizce.
+Metin o köprüyü kurmadıkça bir bi-encoder'da bu boşluğu kapatacak hiçbir şey
+yok.
+
+<Meter label="TR düzyazı recall@8 — MiniLM" value={4} max={100} unit="%" />
+<Meter label="TR düzyazı recall@8 — BGE-M3" value={68} max={100} unit="%" />
+<Meter label="TR düzyazı MRR — alt küme, enrichment yok" value={78} max={100} unit="%" />
+<Meter label="TR düzyazı MRR — alt küme, enriched" value={93} max={100} unit="%" />
+
+## Birinci adım: çok dilli bir embedder
+
+Tek başına BGE-M3, Türkçe düzyazıyı 0.04'ten 0.684'e taşıdı. Aynı corpus'ta
+İngilizce düzyazı 0.842'de; yani ~16 puanlık bir fark kaldı.
+
+## İkinci adım: eksik metni yaz
+
+Contextual retrieval, koda uygulanmış hâli: dosya başına bir LLM çağrısı, her
+chunk için 2–3 cümlelik Türkçe bir açıklama döndürüyor. Açıklama yalnızca
+embed edilen / BM25'e giren metne giriyor — modele gösterilen chunk gerçek
+kaynak olarak kalıyor. chunk hash'i + model ile cache'leniyor; bir re-index
+asla iki kez ödemiyor.
+
+<Table
+  data={{
+    headers: ["Aynı 46 dosya / 423 chunk", "Recall@8", "MRR", "TR düzyazı MRR", "yanlış weak-match"],
+    rows: [
+      ["enrichment yok", "0.929", "0.839", "0.778", "0.119"],
+      ["enriched (yerel qwen3.5:9b)", "1.000", "0.912", "0.932", "0.048"],
+    ],
+  }}
+/>
+
+Negatifler değişmedi (abstain iki durumda da 0.923) — açıklamalar alakasız
+sorularda güven üretmedi — ve skor kalibrasyonu yerinden oynamadı.
+
+<Callout type="gotcha" title="Default neden hâlâ kapalı">
+  Yerel bir 9B model dakikada ~11 açıklama yazıyor: 2.8k chunk'lık bir repo
+  bir kereliğine yaklaşık dört saate mal oluyor. Bulut modeliyle dakikalar ve
+  para. API key'i olmayan bir kurulum, eklediği her repo için saatler
+  harcayacaktı; o yüzden enrichment bir default değil, karşılığı ölçülmüş bir
+  flag.
+</Callout>

@@ -1,0 +1,93 @@
+import { CNNVisualization } from '@/components/paper/cnn-visualization';
+
+Selam! 👋 Yapay zekâ yolculuğumu anlatayım — epey hareketli geçti! Geleneksel ML ve NLP ile başladım, şimdiyse generative AI'ın heyecan verici dünyasının tam ortasındayım.
+
+## ML & NLP Geçmişim
+
+Bir zamanlar dişlerimi Natural Language Processing üzerinde bilemiştim. Büyüleyici işlerdi — metin sınıflandırma, duygu analizi ve o takımın hepsi. Modelleri fine-tune etmek için saatler harcadığımı ve accuracy'deki küçücük iyileşmelere bile sevindiğimi hatırlıyorum.
+
+### Sinir Ağı Günleri
+
+CNN'lerin şehrin en havalı şeyi olduğu zamanları hatırlıyor musunuz? İşte o günlerde uğraştığımız şeyin küçük bir görselleştirmesi:
+
+<CNNVisualization />
+
+Bu mimarileri anlamak için epey zaman harcadım. O "daha basit" zamanlardan bugüne ne kadar yol aldığımızı düşünmek çılgınca!
+
+## Modern Yapay Zekâya Evrim
+
+### Deep Learning Yolculuğu
+Geleneksel ML'den deep learning'e geçiş göz açıcıydı. Benim için asıl oturan şeyler:
+
+- Temel sinir ağlarıyla başladım
+- Daha karmaşık mimarilere geçtim
+- Sonunda transformer'lara daldım (beynim yandı 🤯)
+
+### LLM Macerası
+
+Bugünlerde her şeyim Large Language Model'lar. NLP günlerimden ne kadar farklı olduğu inanılmaz! Artık uğraştıklarımız:
+
+<details className="mb-4">
+  <summary className="text-gray-600 text-[15px] mb-2">Modern LLM Kavramları</summary>
+  
+  - Prompt engineering (bilimden çok sanat!)
+  - Context window'lar (kısa tutmayı unutmamak)
+  - Token optimizasyonu (her token sayılır!)
+  - Temperature ayarı (yaratıcı ile odaklı arasındaki o tatlı noktayı bulmak)
+</details>
+
+## Son Deneyler
+
+Epey havalı şeylerle oynuyorum:
+
+### Fine-tuning Maceraları
+Model fine-tuning'e elimi bulaştırdım. Bu devasa modelleri alıp onlara yeni numaralar öğretebilmek inanılmaz! Öne çıkanlar:
+
+- LoRA adaptasyonları
+- Özel dataset oluşturma
+- Hyperparameter tuning (mükemmel ayarlar için bitmeyen arayış)
+
+### RAG Implementasyonu
+Retrieval-Augmented Generation oyunu değiştirdi. Şunları yapabilen sistemler kurdum:
+
+```typescript
+// A simple RAG example I worked with
+async function enhancedResponse(query: string) {
+  const relevantDocs = await vectorDB.search(query);
+  const enhancedPrompt = `Context: ${relevantDocs.join('\n')}
+  Question: ${query}`;
+  return await llm.generate(enhancedPrompt);
+}
+```
+
+## Vercel AI Maceraları
+
+Vercel AI SDK tam bir keşif oldu! Öğrendiklerim:
+
+- Stream handling artık çok daha temiz
+- Edge runtime'a deploy etmek çocuk oyuncağı
+- AI component'leri entegrasyonu süper pürüzsüz hâle getiriyor
+
+`useCompletion` ve `useChat` hook'larını kullanıyorum — AI web uygulamaları için gerçekten oyunu değiştiriyorlar.
+
+## Sırada Ne Var?
+
+Şunlar için çok heyecanlıyım:
+
+- Multimodal modeller (metin + görüntü akıl almaz)
+- Agent sistemleri (korkutucu derecede zekileşiyorlar)
+- Daha iyi RAG mimarileri
+- Daha verimli fine-tuning yöntemleri
+
+## Yemin Ettiğim Kaynaklar
+
+Benim için oyunu değiştirenler:
+
+1. Vercel AI Docs (cidden, altın değerinde!)
+2. AI Engineering Discord toplulukları
+3. Uygulamalı projeler (bir şey inşa etmenin yerini hiçbir şey tutmuyor)
+4. Twitter AI topluluğu (evet, artık ben de o insanlardan biriyim 😅)
+
+---
+
+Bu alan çılgın bir hızla ilerliyor ve kelimenin tam anlamıyla her gün yeni bir şey öğreniyorum. Bunlardan herhangi biri hakkında geek'lik yapmak isterseniz bana yazın!

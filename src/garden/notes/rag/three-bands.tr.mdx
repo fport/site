@@ -1,0 +1,47 @@
+En yakın komşu aramasının "yakın bir şey yok" diye bir kavramı yok. Bir
+codebase'e beş yıldızlı bir tatil köyüne gidip gitmediğini sor, sekiz chunk
+döndürür (en iyi skor 0.366). Halüsinasyon tam orada başlıyor.
+
+<Schema title="en yüksek dense skor üzerinde CRAG tarzı bantlar">
+  <Row gap={6}>
+    <Box accent="rose" sub="atıldı, sayıldı">0.45'in altı</Box>
+    <Arrow />
+    <Box accent="amber" sub="weak-match notuyla döndü">0.45 – 0.55</Box>
+    <Arrow />
+    <Box accent="lime" sub="normal">0.55 ve üstü</Box>
+  </Row>
+</Schema>
+
+## Neden tek eşik değil
+
+Bu model ve corpus'ta cosine gri bölgeyi ayırmıyor: gerçek cevapların top-1
+dense medyanı 0.636, minimumu 0.526; alakasız soruların medyanı 0.524,
+*maksimumu* 0.587. Üst üste biniyorlar. Tek bir kesim ya gerçek cevapları
+atıyor ya da çöpü içeri alıyor.
+
+<Table
+  data={{
+    headers: ["Kapı", "13 negatifte abstain", "42 pozitifte yanlış alarm", "ek latency"],
+    rows: [
+      ["0.55 altına not", "0.833", "0.048", "0"],
+      ["taban 0.45 + not 0.55 ✓", "0.846", "0.048", "0"],
+      ["reranker skoru 0.05 altı", "1.000", "0.286", "+550 ms"],
+    ],
+  }}
+/>
+
+Taban, golden set'ten hiçbir şey eksiltmedi ve tatil köyü sorusunu boş bir
+sonuca çevirdi. Hâlâ sızan iki negatif, repo'da gerçekten *benzer* kod olan
+sorular — orada karar okuyucuya ait.
+
+<Callout type="idea" title="Filtre değil, sinyal">
+  Retriever asla tek başına karar vermiyor. Bandı, dokümantasyon hit'lerinde
+  bir DOC etiketini, kaç adayın atıldığını ve index'in ne kadar taze olduğunu
+  döndürüyor. Yargıç agent, LLM ya da insan — kanıtla birlikte.
+</Callout>
+
+<Callout type="warn" title="Eşikler model + corpus'a özel">
+  Aynı iş bir embedder'da ~0.73, diğerinde ~0.46 alıyor. Her eval raporu
+  kalibrasyon bloğunu basıyor — pozitiflerin minimumu, negatiflerin
+  maksimumu — ve model değiştiğinde bantlar oradan yeniden okunuyor.
+</Callout>

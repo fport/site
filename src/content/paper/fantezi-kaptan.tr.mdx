@@ -1,0 +1,143 @@
+Türkiye Futbol Federasyonu resmî bir fantezi ligi başlattı: on beş oyuncu, 100M
+bütçe, her hafta seçtiğin bir kaptan. Hem oynamak hem de pratik yapmak
+istiyordum; o yüzden altına küçük bir sistem kurdum — bir veri seti, bir xG
+modeli, bir puan modeli ve bir kadro optimiser'ı.
+
+İlginç olan, çalışıyor olması değil. Hangi parçalarının bir baseline ile
+karşılaştırılmaktan sağ çıktığı.
+
+## Kurallar göründüğünden önemli
+
+Puanlama motorunu oyunun yardım sayfasındaki herkese açık kural payload'ından
+kodladım. Tek bir satır her şeyi değiştiriyor:
+
+<Table
+  data={{
+    headers: ['Olay', 'Kaleci', 'Defans', 'Orta saha', 'Forvet'],
+    rows: [
+      ['Gol', '+10', '+6', '+5', '+4'],
+      ['Asist', '+3', '+3', '+3', '+3'],
+      ['Gol yememe (60 dk)', '+4', '+4', '+1', '—'],
+      ['Yenilen her 2 gol', '−1', '−1', '—', '—'],
+    ],
+  }}
+/>
+
+Goller burada FPL'dekinden çok daha değerli ve pozisyona göre, çoğu insanın
+içgüdüsünün tam tersi yönde ölçekleniyor. Gol atan bir defans oyuncusu altı
+puan. Gol atan bir kaleci on puan. FPL'den — defans oyuncularının bir clean
+sheet oyunu olduğu yerden — taşınan her sezgi daha ilk haftadan yanlış
+fiyatlanmış oluyor.
+
+## Veri
+
+Oyunun kendisi login'in arkasında; kaynak bu yüzden FotMob: sekiz sezon Süper
+Lig, oyuncu başına maç başına bir satıra indirgenmiş. **102.000 satır.**
+
+Erkenden çizdiğim ve koruduğum bir sınır var. Oyunun kullanıcı sözleşmesi
+verisinin çoğaltılmasını ve dağıtılmasını kısıtlıyor; dolayısıyla
+tfffantezilig.com kaynaklı hiçbir şey yayımlanan veri setine girmiyor — fiyat
+yok, sahiplik yüzdesi yok. Yayımlanan, FotMob'dan gelen maç istatistikleri artı
+onlardan *benim* hesapladığım puanlar. Oyuncu fiyatları kendi makinemde, kendi
+takımım için kalıyor.
+
+Bu kararın bir bedeli var; ona geri döneceğim.
+
+## Bir xG modeli, çünkü ödünç alınanı yayımlamak bana düşmez
+
+Sağlayıcılar kendi xG'lerini yayımlıyor ve onlarınki benimkinden iyi. Ama
+onların. Ben de bir tane eğittim: 35.000 şut, yalnızca şut öncesi özellikler —
+şutun sonucu yok, şut sonrası geometri yok, cevabı sızdıran hiçbir şey yok. AUC
+0.799.
+
+Mesafeyi ve açıyı bozan bir koordinat hatasını bulduktan sonra 0.803'e çıktı.
+Makul görünen bir sayının kontrol edilmiş bir sayı olmadığını hatırlatan iyi bir
+örnek.
+
+## xPts ve sonucu yarıya indiren baseline
+
+Asıl ürün xPts: leak'siz form özellikleri üzerinde LightGBM ile oyuncu başına
+haftalık beklenen fantezi puanı. Metrik MAE değil, haftalık Spearman — önemli
+olan mutlak değere yakın olmak değil, kimin *daha fazla* puan alacağını
+sıralamak.
+
+<Table
+  data={{
+    headers: ['Model', 'MAE', 'RMSE', 'Spearman'],
+    rows: [
+      ['Baseline: son 5 maç', '1.983', '2.898', '0.429'],
+      ['Baseline: sezon ortalaması', '1.795', '3.043', '0.458'],
+      ['LightGBM xPts', '1.578', '2.797', '0.576'],
+    ],
+  }}
+/>
+
+Model iki baseline'ı da geçiyor; yayımlamaya değer olmasının tek sebebi bu.
+
+Bir ara çok daha büyük farkla da geçmişti. Bu tablonun %26 iyileşme gösteren bir
+versiyonu vardı; sonra modele yardım etmek yerine baseline'lara sessizce zarar
+veren bir bug buldum. Düzeltince dürüst kazanç %12 civarı. Hâlâ gerçek, hâlâ
+değerli ve yayımlayacağım rakamın üçte biri.
+
+Baseline'ı modelinle aynı kod yolundan hesaplarsan, o yoldaki bir bug seni
+pohpohlar. Benimki pohpohladı.
+
+## Kadro optimiser'ı
+
+On beş oyuncu seçmek bir sıralama değil, bir tamsayı programı. Pozisyon
+kotaları — iki kaleci, beş defans, beş orta saha, üç forvet — kulüp başına en
+fazla üç oyuncu ve bir bütçe. `scipy.optimize.milp` ile çözüyorum.
+
+Dürüst kısım şu. Fiyatlar oyunun login'inin arkasında; ona bir fiyat dosyası
+vermezsen bütçeyi uygulayamıyor ve çıkan şey "kurabileceğin en iyi kadro" değil,
+"en yüksek xPts'li on beş oyuncu" oluyor. Bunlar çok farklı cevaplar, çünkü
+gerçek fantezide bağlayıcı kısıt bütçe.
+
+Demo da tam olarak bunu söylüyor, sarı bir uyarıyla — gerçekte savunamayacağı
+bir kadro sunmak yerine.
+
+## Başarısız olan ve başarısız kalan iki deney
+
+**Bir maç sonucu modeli.** Poisson gol modeli, iki lambda, 1X2 olasılıkları. Her
+hafta ev sahibini seçmek %45.6 tutturuyor. Altı maçlık form %48.2. Yirmi maçlık
+bir ufuk eklemek %50.9 — uzun pencere önemli, çünkü sezon başında kısa olan
+neredeyse boş ve onsuz model yeni çıkmış bir takımı Galatasaray'a karşı favori
+gösteriyordu.
+
+Yüzde elli, fiyatını biçene kadar iyi geliyor: haftada bir iki puan ediyor.
+Kaptan seçimi tek başına on ve üzeri puan oynatıyor. O yüzden uygulamada en
+tepede değil, açıkça düşük öncelikli diye etiketlenmiş hâlde duruyor.
+
+**O modelin çıktısını oyuncu modeline vermek.** Beklenen yenilen gol ve clean
+sheet olasılığı feature gain'de üst sıralara çıktı; tuzak tam olarak bu.
+Haftalık Spearman 0.5793'ten 0.5723'e düştü. Bunlar modelin zaten sahip olduğu
+takım formu özelliklerinden türetiliyor — yeni bilgi yok, sadece overfit edecek
+daha fazla yüzey. Çıkardım.
+
+## Ve kendini köşeye sıkıştıran danışman
+
+Son parça, xPts'i gerekçeli bir Türkçe öneriye çeviren bir LLM olacaktı. İlk
+koşu, 4B bir modelde LoRA; yüzeysel metrikler harika görünüyordu: ortalama cevap
+80 kelimeden 22'ye, uydurulan sayılar %4.5'ten %0.36'ya.
+
+Sonra asıl önemli metrik. Doğru tavsiye oranı 0.230'dan 0.400'e çıktı — çoğunluk
+sınıfı baseline'ı **0.410** iken. Her şeye "kaçın" demeyi öğrenmişti. Yüz
+cevabın doksan beşi. xPts'i 3.0'ın üzerindeki oyuncuların %82'sine kaçın dedi;
+aralarında 5.51'lik biri — bir kaptan adayı — de vardı, gerekçesi "puan
+üretmiyor"du, aynı cümlede 7.0 ortalamasını alıntılarken.
+
+Karşılaştırma script'inde o baseline satırı olmasa, 0.23'ten 0.40'a bir zafer
+gibi okunur. Oysa en yaygın etikete çökmüş bir model.
+
+## Başlangıçta kendime söyleyeceklerim
+
+Baseline'ı modelden önce yaz. Sonra değil — elinde zaten hoşuna giden bir sayı
+varken değil. Bu projede üç kez, geri almak zorunda kalacağım bir iddiayla aramda
+duran tek şey baseline'dı — şişirilmiş %26, önemli görünen özellik, tek kelime
+öğrenmiş danışman.
+
+Veri seti, model ve çalışan bir demo herkese açık: [veri
+seti](https://huggingface.co/datasets/fport/super-lig-fantasy), [xPts
+modeli](https://huggingface.co/fport/super-lig-xpts) ve
+[demo](https://huggingface.co/spaces/fport/fantezi-kaptan). Oyunun kendisi
+[tfffantezilig.com](https://tfffantezilig.com/) adresinde.

@@ -5,6 +5,29 @@ Cloudflare's free tier covers the API, the database and the storage for the
 entire current load. Vercel covers the frontend. The AI providers are the only
 line that scales with usage, and that's by design.
 
+<Diagram
+  title="what runs where"
+  nodes={[
+    { id: 'users', label: 'Users', sub: 'browser · mobile', kind: 'external', x: 0, y: 0 },
+    { id: 'web', label: 'Next.js', sub: 'app + sessions', kind: 'cloud', x: 1, y: 0 },
+    { id: 'api', label: 'Hono API', sub: 'Workers', kind: 'service', x: 2, y: 0 },
+    { id: 'db', label: 'Database', sub: 'Drizzle', kind: 'data', x: 3, y: 0 },
+    { id: 'storage', label: 'Storage', sub: 'uploads', kind: 'data', x: 3, y: 1 },
+    { id: 'ai', label: 'AI providers', sub: 'the only metered line', kind: 'model', x: 1, y: 1 },
+  ]}
+  groups={[
+    { label: 'Vercel', kind: 'cloud', nodes: ['web'] },
+    { label: 'Cloudflare · free tier', kind: 'cloud', nodes: ['api', 'db', 'storage'] },
+  ]}
+  edges={[
+    { from: 'users', to: 'web', label: 'HTTPS', kind: 'service' },
+    { from: 'web', to: 'api', label: 'fetch + session', kind: 'service' },
+    { from: 'api', to: 'db', label: 'SQL', kind: 'data' },
+    { from: 'api', to: 'storage', label: 'put · get', kind: 'data', route: 'vh' },
+    { from: 'api', to: 'ai', label: 'LLM calls', kind: 'model', dashed: true, route: 'vh' },
+  ]}
+/>
+
 The other thing is that I want to keep the surface small enough that one person
 can hold it in their head. When something breaks at 11pm, I want to be able to
 fix it without paging in a microservices diagram.

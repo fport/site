@@ -1,0 +1,28 @@
+Vektör arama, bir codebase RAG'inin kolay tarafı. Asıl zor olan dört şey bu
+sistemin her parçasını belirledi.
+
+<Schema title="önce ne kırılır">
+  <Row gap={6}>
+    <Box accent="rose" sub="handleAuthCallback">birebir semboller</Box>
+    <Box accent="rose" sub="düzyazı vs. kod">Türkçe → İngilizce</Box>
+    <Box accent="rose" sub="repo değişti">bayatlama</Box>
+    <Box accent="rose" sub="kNN asla hayır demez">"hayır" demek</Box>
+  </Row>
+</Schema>
+
+<Table
+  data={{
+    headers: ["Problem", "Ne yaptık", "Ölçüm"],
+    rows: [
+      ["Semboller", "sembol biçimli query'leri BM25'e yönlendir", "1.0 / 1.0 recall@8 / MRR"],
+      ["Türkçe sorular", "çok dilli embedder, isteğe bağlı LLM açıklamaları", "0.04 → 0.684 → 1.0 (alt küme)"],
+      ["Bayatlama", "push'ta sha256 manifest diff'i", "38 değişen dosya 23 sn'de"],
+      ["Cevap yok", "üç skor bandı + negatif golden case'ler", "abstain 0.846, yanlış alarm 0.048"],
+    ],
+  }}
+/>
+
+<Sticky accent="rose">
+  Her satır, yanında bir sayı olan bir karar. Bu bahçenin geri kalanı o
+  sayıların hikâyesi — fikrimizi değiştirenler dâhil.
+</Sticky>

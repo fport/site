@@ -1,6 +1,7 @@
-import { Link } from 'next-view-transitions';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/components/link';
 import { ArticleJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
-import { getPost } from '@/writing';
+import type { Post } from '@/writing';
 
 /**
  * The header every `/paper` article opens with: a way back to the index, the
@@ -10,12 +11,11 @@ import { getPost } from '@/writing';
  * Matches the header on `/paper` and the garden pages — MDX `#` headings are
  * reset to body size by preflight, which is why the title is set explicitly.
  */
-export function PaperHeader({ slug }: { slug: string }) {
-  const post = getPost(slug);
-  if (!post) return null;
+export function PaperHeader({ post }: { post: Post }) {
+  const t = useTranslations();
 
   return (
-    <header className="fade-in pt-12 mb-10">
+    <header className="fade-in mb-10">
       <ArticleJsonLd
         title={post.title}
         description={post.summary}
@@ -25,15 +25,15 @@ export function PaperHeader({ slug }: { slug: string }) {
       />
       <BreadcrumbJsonLd
         trail={[
-          { name: 'Home', path: '/' },
-          { name: 'Writing', path: '/paper' },
+          { name: t('nav.home'), path: '/' },
+          { name: t('writing.title'), path: '/paper' },
           { name: post.title, path: `/paper/${post.slug}` },
         ]}
       />
 
       <nav className="text-sm">
         <Link href="/paper" className="text-muted underline hover:text-foreground">
-          ← Writing
+          {t('writing.back')}
         </Link>
       </nav>
 
@@ -41,7 +41,7 @@ export function PaperHeader({ slug }: { slug: string }) {
       <p className="mt-2 leading-snug text-muted">{post.summary}</p>
       <p className="mt-3 text-sm text-muted">
         <time dateTime={post.published}>{post.published}</time>
-        {post.updated ? <> · updated {post.updated}</> : null}
+        {post.updated ? <> · {t('common.updated', { date: post.updated })}</> : null}
       </p>
     </header>
   );

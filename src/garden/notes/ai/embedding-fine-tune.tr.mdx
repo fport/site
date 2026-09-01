@@ -1,0 +1,25 @@
+Retrieval’ı iyileştirmenin en az konuşulan yolu: **modeli değil, embedding’i**
+fine-tune etmek. Alan jargonuyla dolu bir corpus’ta bu, olabilecek en ucuz
+kazanım.
+
+<Schema title="etiketsiz veriden bir eğitim seti">
+  <Pipeline accent="rose" steps={['Ham chunk', 'LLM’e sor|bu hangi soruyu cevaplıyor', '(soru, chunk) çifti', 'Embedding’i eğit']} />
+</Schema>
+
+Genel amaçlı bir embedding modeli şirketinin kısaltmalarını, parça numaralarını
+ya da iç kelime dağarcığını hiç görmedi. Sentetik soru üretimi bu açığı tek bir
+elle yazılmış etiket olmadan kapatır.
+
+## Neden işe yarıyor
+
+- Eğitim çiftleri herkese açık bir benchmark’tan değil, **senin corpus’undan**
+  geliyor.
+- Retriever’ı iyileştirmek pipeline’daki her sorguyu iyileştirir — bir prompt
+  değişikliğinin aksine, birikir.
+- Aynı sentetik set, retrieval eval’leri için ground truth olarak yeniden
+  kullanılabilir.
+
+<Callout type="gotcha">
+  Embedding’i değiştirmek **bütün index’i yeniden kurmak** demek. Eski ve yeni
+  vektörler aynı uzayda yaşamaz. Bunu maliyet planına yaz.
+</Callout>

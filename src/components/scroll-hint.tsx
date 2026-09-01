@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 /**
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react';
  */
 export function ScrollHint() {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations('common');
 
   useEffect(() => {
     const update = () => {
@@ -43,7 +45,7 @@ export function ScrollHint() {
           window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' })
         }
       >
-        more
+        {t('more')}
         <span className="scroll-hint__arrow" aria-hidden="true">
           ↓
         </span>

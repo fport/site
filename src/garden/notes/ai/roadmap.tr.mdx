@@ -1,0 +1,25 @@
+Bu pano soldan sağa tek bir argüman olarak okunur: **problem → en ucuz çözüm →
+ucuz kazanımlar → pahalı kazanımlar → ölçüm.**
+
+```mermaid
+flowchart LR
+  A["1 · Neden RAG"] --> B["2 · Vanilla RAG"]
+  B --> C["3 · Olmazsa olmazlar"]
+  C --> D["4 · İleri retrieval"]
+  D --> E["5 · Agentic RAG"]
+  C --> F["6 · Fine-tuning"]
+  E --> G["7 · Ölçüm"]
+  F --> G
+  G -.->|"ölç, geri dön"| C
+```
+
+## Tek kural
+
+Bir basamağa ancak altındakini **ölçtükten** sonra çık. Farklı bir chunk
+boyutunu hiç denemeden agentic RAG’e atlamak, en ucuz problemin üstüne en
+pahalı çözümü koymaktır.
+
+<Sticky>
+  Varsayılan sıra: Prompt → RAG → İleri RAG → Agentic → Fine-tune →
+  Distill. Her adım, bir öncekinin **ölçülmüş** hali üzerine oturur.
+</Sticky>

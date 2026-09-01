@@ -1,20 +1,22 @@
 'use client';
 
-import { Link } from 'next-view-transitions';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { Link } from '@/components/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-/** Verified against the canvas and reader key handlers. */
-const SHORTCUTS: [key: string, what: string][] = [
-  ['drag', 'pan the board'],
-  ['⌘ scroll', 'zoom'],
-  ['+ / −', 'zoom in and out'],
-  ['0', 'fit everything'],
-  ['/', 'search notes'],
-  ['esc', 'close the note'],
-  ['v', 'drag tool'],
-  ['l', 'laser pointer'],
-];
+/** Verified against the canvas and reader key handlers. Labels live in `garden.toolbar.shortcuts`. */
+const SHORTCUTS = [
+  ['drag', 'drag'],
+  ['⌘ scroll', 'cmdScroll'],
+  ['+ / −', 'plusMinus'],
+  ['0', 'zero'],
+  ['/', 'slash'],
+  ['esc', 'esc'],
+  ['v', 'v'],
+  ['l', 'l'],
+] as const;
 
 const button =
   'flex h-7 w-7 items-center justify-center rounded-full text-muted transition-colors hover:bg-foreground/10 hover:text-foreground';
@@ -125,6 +127,9 @@ export function CanvasToolbar({
   onMenuOpenChange: (open: boolean) => void;
 }) {
   const root = useRef<HTMLDivElement>(null);
+  const t = useTranslations('garden.toolbar');
+  const tNav = useTranslations('nav');
+  const tTheme = useTranslations('theme');
 
   useEffect(() => {
     if (!notesOpen && !menuOpen) return;
@@ -150,7 +155,7 @@ export function CanvasToolbar({
   return (
     <div ref={root} className="pointer-events-auto relative">
       <div className="glass flex items-center gap-0.5 rounded-full p-1">
-        <Link href="/" aria-label="Back to the home page" className={button}>
+        <Link href="/" aria-label={tNav('backToHome')} className={button}>
           <ArrowLeftIcon />
         </Link>
 
@@ -162,7 +167,7 @@ export function CanvasToolbar({
 
         <button
           type="button"
-          aria-label="Drag to pan"
+          aria-label={t('pan')}
           aria-pressed={tool === 'pan'}
           className={`${button} ${tool === 'pan' ? active : ''}`}
           onClick={() => onToolChange('pan')}
@@ -171,7 +176,7 @@ export function CanvasToolbar({
         </button>
         <button
           type="button"
-          aria-label="Laser pointer"
+          aria-label={t('laser')}
           aria-pressed={tool === 'laser'}
           className={`${button} ${tool === 'laser' ? active : ''}`}
           onClick={() => onToolChange('laser')}
@@ -194,7 +199,7 @@ export function CanvasToolbar({
                 }`}
                 onClick={() => onLaserModeChange(mode)}
               >
-                {mode}
+                {t(mode)}
               </button>
             ))}
           </div>
@@ -202,20 +207,20 @@ export function CanvasToolbar({
 
         <Divider />
 
-        <button type="button" aria-label="Zoom out" className={button} onClick={onZoomOut}>
+        <button type="button" aria-label={t('zoomOut')} className={button} onClick={onZoomOut}>
           −
         </button>
         <span className="w-11 select-none text-center text-[11.5px] tabular-nums text-muted">
           {Math.round(zoom * 100)}%
         </span>
-        <button type="button" aria-label="Zoom in" className={button} onClick={onZoomIn}>
+        <button type="button" aria-label={t('zoomIn')} className={button} onClick={onZoomIn}>
           +
         </button>
 
         <Divider />
 
         <button type="button" onClick={onFit} className={pill}>
-          fit
+          {t('fit')}
         </button>
 
         <Divider />
@@ -229,15 +234,17 @@ export function CanvasToolbar({
             onNotesOpenChange(!notesOpen);
           }}
         >
-          notes
+          {t('notes')}
           <span className="tabular-nums opacity-60">{notesCount}</span>
           <Chevron open={notesOpen} />
         </button>
 
+        <LanguageSwitcher className={pill} />
+
         <div className="relative">
           <button
             type="button"
-            aria-label="Theme and shortcuts"
+            aria-label={t('menu')}
             aria-expanded={menuOpen}
             className={`${button} ${menuOpen ? active : ''}`}
             onClick={() => {
@@ -251,7 +258,7 @@ export function CanvasToolbar({
           {menuOpen ? (
             <div className="glass-panel absolute right-0 top-full mt-2 w-60 rounded-xl p-3">
               <div className="flex items-center justify-between text-[12px] text-muted">
-                <span>theme</span>
+                <span>{tTheme('label')}</span>
                 <ThemeToggle />
               </div>
 
@@ -266,7 +273,7 @@ export function CanvasToolbar({
                     <span className="shrink-0 rounded border border-card-border px-1.5 py-0.5 font-mono text-[10.5px] text-muted">
                       {key}
                     </span>
-                    <span className="text-right text-muted">{what}</span>
+                    <span className="text-right text-muted">{t(`shortcuts.${what}`)}</span>
                   </li>
                 ))}
               </ul>

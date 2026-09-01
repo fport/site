@@ -319,6 +319,32 @@ table {
   background-color: color-mix(in srgb, var(--card) 92%, transparent);
 }
 
+/* ---------------------------------------------------------------------------
+   Site header — frosted, and only visibly a surface once something scrolls
+   under it. The hairline appears with scroll position (scroll-driven
+   animation); browsers without it simply never draw the line.
+   --------------------------------------------------------------------------- */
+
+.site-header {
+  background-color: color-mix(in srgb, var(--background) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid transparent;
+}
+
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: site-header-scrolled linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 64px;
+  }
+  @keyframes site-header-scrolled {
+    to {
+      border-bottom-color: color-mix(in srgb, var(--card-border) 80%, transparent);
+    }
+  }
+}
+
 /* --------------------------------------------------------------------------- 
    Garden — paper surface, note cards and MDX prose scaled down for the canvas.
    --------------------------------------------------------------------------- */
@@ -339,6 +365,29 @@ table {
   --accent-rose: #fde9ec;
   --accent-violet: #eee9fb;
   --accent-slate: #f1f2f4;
+
+  /* <Diagram> node kinds: wash, border and text, in the infra-whiteboard idiom. */
+  --dg-service-fill: #e8f6e0;
+  --dg-service-stroke: #4c9e3f;
+  --dg-service-ink: #2c6b24;
+  --dg-data-fill: #efeafd;
+  --dg-data-stroke: #7d5fe0;
+  --dg-data-ink: #5a3fbd;
+  --dg-cloud-fill: #fdf1d6;
+  --dg-cloud-stroke: #d6932e;
+  --dg-cloud-ink: #986313;
+  --dg-security-fill: #fde6ea;
+  --dg-security-stroke: #dc4d6c;
+  --dg-security-ink: #ac2643;
+  --dg-queue-fill: #fee9d8;
+  --dg-queue-stroke: #e9802f;
+  --dg-queue-ink: #b25515;
+  --dg-external-fill: #f1f2f4;
+  --dg-external-stroke: #8b939d;
+  --dg-external-ink: #56606b;
+  --dg-model-fill: #e3f1fb;
+  --dg-model-stroke: #3d9ccb;
+  --dg-model-ink: #1f6d93;
 }
 
 .dark {
@@ -358,6 +407,29 @@ table {
   --accent-rose: #3a1626; /* Keyword #F92672 */
   --accent-violet: #271e3d; /* Constant #AE81FF */
   --accent-slate: #2b2c2d;
+
+  /* Same washes for <Diagram>, borders and ink lifted straight from molokai. */
+  --dg-service-fill: #26330f;
+  --dg-service-stroke: #a6e22e;
+  --dg-service-ink: #c9f06f;
+  --dg-data-fill: #271e3d;
+  --dg-data-stroke: #ae81ff;
+  --dg-data-ink: #cdb6ff;
+  --dg-cloud-fill: #38321a;
+  --dg-cloud-stroke: #e6db74;
+  --dg-cloud-ink: #f1e89f;
+  --dg-security-fill: #3a1626;
+  --dg-security-stroke: #f92672;
+  --dg-security-ink: #ff86b4;
+  --dg-queue-fill: #3b2712;
+  --dg-queue-stroke: #fd971f;
+  --dg-queue-ink: #ffbb66;
+  --dg-external-fill: #2b2c2d;
+  --dg-external-stroke: #7e8e91;
+  --dg-external-ink: #b7c1c3;
+  --dg-model-fill: #12313a;
+  --dg-model-stroke: #66d9ef;
+  --dg-model-ink: #a6ebf8;
 }
 
 [data-accent='amber'] {

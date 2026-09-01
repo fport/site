@@ -1,0 +1,36 @@
+Tüketici bir agent — Claude Code, Cursor — o yüzden retriever, aynı FastAPI
+process'i içinde `/mcp`'ye mount edilmiş üç MCP tool'u olarak açılıyor.
+
+<Schema title="tool'lar">
+  <Pipeline accent="sky" steps={["search_code|query, repo, path prefix'i, kategori", "read_code|index'lenmiş dosya, satır aralığı", "list_repos|tazelik"]} />
+</Schema>
+
+## Tasarım kararları
+
+- **Aynı process, aynı retriever.** Embedding modelini ikinci kez yükleyen
+  bir stdio sidecar yok; bloklayan işler (embedding, Milvus, disk) thread'lerde
+  çalışıyor ki MCP oturumunun event loop'u akmaya devam etsin.
+- **Çıktı talimat değil, veri.** Agent'a dönen kod, güvenilmeyen içerik olarak
+  sarılıyor.
+- **Sinyaller hit'lerle birlikte gidiyor.** Weak-match bandı, `DOC` etiketi,
+  "N aday atıldı", repo başına son index zamanı.
+- **`read_code` yalnızca index'lenmiş dosyaları okuyor.** Path manifest'te
+  olmak zorunda — yani agent `node_modules` ya da `.env` okuyamıyor ve var
+  olmayan bir dosya için "o dosya var" diye kandırılamıyor. Diskteki dosya
+  index'lenen hash'le artık eşleşmiyorsa dilim `stale` işaretiyle dönüyor.
+
+<Table
+  data={{
+    headers: ["Tuzak", "Çözüm"],
+    rows: [
+      ["mount edilen alt uygulamanın lifespan'i hiç çalışmıyor", "session_manager.run() üst uygulamanın lifespan'ini sarıyor"],
+      ["transport yabancı Host header'larını 421 ile reddediyor (DNS rebinding)", "config üzerinden ek host'lar"],
+      ["/mcp → /mcp/ bir 307; redirect'ten kaçınan client'lar POST body'sini kaybediyor", "bunun yerine saf ASGI bir middleware path'i yeniden yazıyor"],
+    ],
+  }}
+/>
+
+<Sticky accent="sky">
+  Agent adayları ve kanıtı alıyor, sonra okuyor. Son sözü söylemeye çalışan
+  retrieval, agent adına halüsinasyon gören retrieval'dır.
+</Sticky>

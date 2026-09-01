@@ -1,0 +1,35 @@
+Chunk boyutunu ayarlamak ölçülebilir en ucuz kazanım — ama asıl önemli olan
+boyut değil, **sınır**. Bir fikrin tam ortasından kesilmiş 512 token’lık bir
+chunk, temiz bir 1024’ten daha kötüdür.
+
+<Table
+  data={{
+    headers: ['Chunk', 'Kazanç', 'Kayıp'],
+    rows: [
+      ['Küçük (128–256)', 'yüksek precision', 'context kopuyor'],
+      ['Orta (512–1024)', 'çoğu corpus için denge noktası', '—'],
+      ['Büyük (2000+)', 'context bütün', 'bulanık embedding, gürültü'],
+    ],
+  }}
+/>
+
+## Bu sırayla dene
+
+1. Sabit token sayısına göre değil, **başlıklara göre böl**. Başlık zincirini
+   her chunk’a taşı.
+2. **%10–15 overlap.** Sınıra denk gelen cümleyi iki tarafta da tut.
+3. **Contextual retrieval.** Her parçanın önüne — ucuz bir modele ürettirdiğin —
+   hangi dokümanın neresinde durduğunu söyleyen 50–100 token’lık bir satır
+   ekle, sonra onu embed et.
+
+<Callout type="idea" title="Ölçülmüş etki">
+  Anthropic’in değerlendirmesinde tek başına contextual embedding, top-20
+  retrieval hata oranını %35, contextual BM25 ile birlikte %49, üstüne bir
+  reranker ile %67 düşürdü — %5,7’den %1,9’a.
+</Callout>
+
+<Sticky accent="lime">
+  Tek bir global chunking stratejisi yok. Bir sözleşme, bir tablo ve bir sohbet
+  kaydı aynı splitter’dan sağ çıkmaz — asıl iş, ingest sırasında doküman tipini
+  sınıflandırmak.
+</Sticky>

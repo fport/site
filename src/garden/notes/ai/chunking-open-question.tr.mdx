@@ -1,0 +1,28 @@
+Benim için hâlâ çözülmemiş: retrieval biriminin embedding birimine göre nerede
+durması gerektiği.
+
+<Row gap={6}>
+  <Box sub="ucuz, context kaybediyor" accent="slate">Chunk’ı embed et</Box>
+  <Arrow dir="both" />
+  <Box sub="daha iyi recall, daha çok depolama" accent="violet">Özeti embed et</Box>
+</Row>
+
+Etrafında dönüp durduğum seçenekler:
+
+1. **Chunk’ı embed et, chunk’ı döndür.** Basit ve herkesin başladığı yer.
+   Anlamın bölümler arasına yayıldığı dokümanlarda kırılıyor.
+2. **Chunk’ı embed et, parent’ı döndür.** Küçük vektörler, geniş context.
+   Context bütçesini hızla yiyor.
+3. **Üretilmiş bir özeti embed et, orijinali döndür.** Retrieval kalitesi
+   artıyor; artık ingest pipeline’ında kaynaktan sapabilecek bir generation
+   adımının sahibisin.
+
+<Callout type="todo" title="Test edilecek">
+  Aynı corpus, aynı sorgular, üç index, bir reranker. recall@10 ile cevabın
+  groundedness’ini ayrı ayrı ölç — birlikte hareket etmiyorlar.
+</Callout>
+
+<Sticky>
+  Şüphem şu: doğru cevap doküman tipine bağlı; yani asıl iş tek bir global
+  stratejiyi ayarlamak değil, ingest sırasında dokümanları sınıflandırmak.
+</Sticky>

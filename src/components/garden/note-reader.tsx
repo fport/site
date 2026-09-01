@@ -1,7 +1,8 @@
 'use client';
 
-import { Link } from 'next-view-transitions';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
+import { Link } from '@/components/link';
 import type { CanvasNote } from '@/garden/types';
 
 /** Full-size overlay for reading one note without leaving the canvas. */
@@ -15,6 +16,7 @@ export function NoteReader({
   onClose: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const t = useTranslations('garden');
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -49,7 +51,7 @@ export function NoteReader({
         >
           <div className="min-w-0 flex-1">
             <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
-              {note.kind.replace('-', ' ')} · {note.status} · {note.updated}
+              {t(`kind.${note.kind}`)} · {t(`status.${note.status}`)} · {note.updated}
             </p>
             <h2 className="mt-0.5 text-lg font-medium leading-tight">{note.title}</h2>
           </div>
@@ -57,13 +59,13 @@ export function NoteReader({
             href={`${gardenPath}/${note.slug}`}
             className="shrink-0 text-[12px] text-muted underline transition-colors hover:text-foreground"
           >
-            permalink
+            {t('reader.permalink')}
           </Link>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('reader.close')}
             className="shrink-0 rounded p-1 text-muted transition-colors hover:bg-foreground/10 hover:text-foreground"
           >
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">

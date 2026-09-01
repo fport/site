@@ -1,0 +1,31 @@
+İzole eval’ler retrieval’ı denetler; uçtan uca eval’ler **kullanıcının gördüğü
+cevabı** denetler. İkisi de gerekli, hiçbiri diğerinin yerine geçmez.
+
+<Schema title="e2e harness">
+  <Pipeline accent="slate" steps={['Soru', 'RAG pipeline', 'Cevap + context', 'Değerlendirici']} />
+</Schema>
+
+<Table
+  data={{
+    headers: ['Metrik', 'Sorduğu soru'],
+    rows: [
+      ['Faithfulness', 'her iddia gösterilen context’te var mı'],
+      ['Answer relevancy', 'cevap soruyu karşılıyor mu'],
+      ['Context precision', 'getirilen context’in ne kadarı gerekliydi'],
+      ['Context recall', 'gereken context’in ne kadarı geldi'],
+    ],
+  }}
+/>
+
+## İki mod
+
+- **Etiketsiz.** Referans cevap yok: faithfulness, relevancy, ton, toksisite.
+  Her commit’te çalıştıracak kadar ucuz.
+- **Etiketli.** Ground-truth cevaplar var: doğruluk, kapsam. Yazması pahalı,
+  regresyonları en keskin yakalayan da bu.
+
+<Callout type="gotcha">
+  Yüksek faithfulness artı düşük answer relevancy, modelin sana iyi kaynaklanmış
+  ama konuyla ilgisiz bir şey anlattığı anlamına gelir. Bu bir **retrieval**
+  hatası, prompt hatası değil.
+</Callout>

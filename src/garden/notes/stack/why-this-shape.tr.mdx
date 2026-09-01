@@ -1,0 +1,40 @@
+Seçimlerin çoğu tek bir kısıttan geliyor: bir side project, kimse kullanmazken
+ucuza çalışmalı ve çok kişi kullanırken de bozulmamalı.
+
+Cloudflare'in ücretsiz katmanı API'yi, veritabanını ve storage'ı mevcut yükün
+tamamı için karşılıyor. Frontend'i Vercel karşılıyor. Kullanımla ölçeklenen tek
+kalem AI provider'ları, o da bilinçli bir tercih.
+
+<Diagram
+  title="ne nerede çalışıyor"
+  nodes={[
+    { id: 'users', label: 'Kullanıcılar', sub: 'tarayıcı · mobil', kind: 'external', x: 0, y: 0 },
+    { id: 'web', label: 'Next.js', sub: 'uygulama + session', kind: 'cloud', x: 1, y: 0 },
+    { id: 'api', label: 'Hono API', sub: 'Workers', kind: 'service', x: 2, y: 0 },
+    { id: 'db', label: 'Veritabanı', sub: 'Drizzle', kind: 'data', x: 3, y: 0 },
+    { id: 'storage', label: 'Storage', sub: 'yüklemeler', kind: 'data', x: 3, y: 1 },
+    { id: 'ai', label: "AI provider'ları", sub: 'ölçülen tek kalem', kind: 'model', x: 1, y: 1 },
+  ]}
+  groups={[
+    { label: 'Vercel', kind: 'cloud', nodes: ['web'] },
+    { label: 'Cloudflare · ücretsiz katman', kind: 'cloud', nodes: ['api', 'db', 'storage'] },
+  ]}
+  edges={[
+    { from: 'users', to: 'web', label: 'HTTPS', kind: 'service' },
+    { from: 'web', to: 'api', label: 'fetch + session', kind: 'service' },
+    { from: 'api', to: 'db', label: 'SQL', kind: 'data' },
+    { from: 'api', to: 'storage', label: 'put · get', kind: 'data', route: 'vh' },
+    { from: 'api', to: 'ai', label: 'LLM çağrıları', kind: 'model', dashed: true, route: 'vh' },
+  ]}
+/>
+
+Diğer mesele şu: yüzeyi tek bir kişinin kafasında tutabileceği kadar küçük
+tutmak istiyorum. Gece 11'de bir şey bozulduğunda, bir microservices diyagramı
+açmak zorunda kalmadan düzeltebilmek istiyorum.
+
+<Callout type="idea" title="Test">
+  Tek bir kişi gece 11'de her şeyi kafasında tutabiliyor mu?
+</Callout>
+
+Bu stack'le gerçekten ürün çıkarırken edindiğim daha pratik notlar
+[fisle.co/blog](https://www.fisle.co/blog)'da.

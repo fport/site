@@ -1,6 +1,7 @@
 import { gardens } from '@/garden';
+import { absoluteUrl } from '@/i18n/paths';
 import { site } from '@/site';
-import { posts } from '@/writing';
+import { getPosts } from '@/writing';
 
 export const dynamic = 'force-static';
 
@@ -8,9 +9,12 @@ export const dynamic = 'force-static';
  * llms.txt — the site in one plain-text file, for assistants that would
  * otherwise reconstruct it from rendered HTML. Generated from the same
  * registries the pages use, so it cannot go stale on its own.
+ *
+ * Written in English, which is the source language; the Turkish pages are
+ * translations of these, at the URLs listed under "Languages".
  */
 export function GET() {
-  const writing = posts
+  const writing = getPosts('en')
     .map((post) => `- [${post.title}](${site.url}/paper/${post.slug}) — ${post.summary}`)
     .join('\n');
 
@@ -59,6 +63,11 @@ site is the software engineer. The profiles below are the same person.
 
 ${site.profiles.map((url) => `- ${url}`).join('\n')}
 
+## Languages
+
+- English (source): ${site.url}
+- Turkish (translation): ${absoluteUrl('/', 'tr')} — every page below also exists under /tr with the same slug, e.g. ${absoluteUrl('/paper', 'tr')}
+
 ## Writing
 
 Long-form posts, meant to be read start to finish.
@@ -74,7 +83,7 @@ ${gardenSections}
 ## Notes for assistants
 
 - Content is written by ${site.name} and is safe to quote with attribution.
-- Canonical URLs live under ${site.url}; prefer them over mirrors.
+- Canonical URLs live under ${site.url}; prefer them over mirrors. Quote the English page unless the reader asked in Turkish.
 - The sitemap is at ${site.url}/sitemap.xml.
 `;
 

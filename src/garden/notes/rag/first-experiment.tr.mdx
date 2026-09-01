@@ -1,0 +1,32 @@
+Gerçek sistemden önce bir kullan-at sistem vardı: MiniLM-L6-v2, küçük bir
+Milvus, 30 soru. Neredeyse her konuda yanılıyordu ve amaç da zaten buydu.
+
+<Table
+  data={{
+    headers: ["recall@5", "sembol query'si", "düz cümle"],
+    rows: [
+      ["dense (MiniLM)", "0.60", "0.62"],
+      ["BM25", "0.80", "0.36"],
+      ["ikisinin RRF'i", "0.60", "0.52"],
+    ],
+  }}
+/>
+
+## Gerçek sisteme ne taşındı
+
+- **Semboller BM25 ister.** Bir embedding'in `QUEUE_NAMES` hakkında
+  söyleyecek hiçbir şeyi yok; leksik bir index'in ise her şeyi var.
+- **Her zaman birleştirmek bedava değil.** RRF, kaybeden kanalın en iyi
+  tahminini tam güçle öne çıkardı ve *iki* kanalın da tek başına aldığı
+  sonucun altında kaldı.
+- **Türkçe soru, İngilizce kod: 0.04.** Bir retrieval hatası değil — eşleşecek
+  Türkçe metin yoktu, o kadar. İki çözüm ileri taşındı: çok dilli bir
+  embedder ve seçenek olarak LLM'in yazdığı açıklamalar.
+- **Yerel modeller kayar.** qwen2.5 yük altında cümle ortasında Çinceye
+  geçti ve bunu söylemedi. O günden beri üretilen her açıklamanın alfabesi
+  kontrol ediliyor.
+
+<Callout type="idea" title="Başarısız deney neden duruyor">
+  Sayıları, sonraki her kararın kıyaslandığı baseline. "Semboller için BM25"
+  diyen bir tasarım notu bir görüş; 0.80'e karşı 0.60 ise bir gerçek.
+</Callout>

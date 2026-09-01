@@ -1,0 +1,37 @@
+Bir server üç şey dışa açar. Önemli olan fark, **bunları kullanmaya kimin
+karar verdiği**.
+
+<Table
+  data={{
+    headers: ['Primitive', 'Nedir', 'Kim kontrol ediyor'],
+    rows: [
+      ['Tools', 'tipli girdi alan çalıştırılabilir fonksiyonlar', 'model'],
+      ['Resources', 'okunabilir veri, statik ya da dinamik', 'uygulama'],
+      ['Prompts', 'kullanıcının çağırabildiği şablonlar', 'kullanıcı'],
+    ],
+  }}
+/>
+
+<Stack layers={[
+  { label: 'Tools', sub: 'model kontrolünde — çağırmayı LLM seçer', accent: 'lime' },
+  { label: 'Resources', sub: 'uygulama kontrolünde — salt okunur, host ekler' },
+  { label: 'Prompts', sub: 'kullanıcı kontrolünde — bir slash komutu, bir şablon' },
+]} />
+
+## Wire üzerindeki metotlar
+
+Discovery ile kullanım ayrı çağrılar ve her birinin bir list tarafı, bir de
+eylem tarafı var: `tools/list` sonra `tools/call`, `resources/list` sonra
+`resources/read`, `prompts/list` sonra `prompts/get`.
+
+<Callout type="note" title="List sonuçları cache'lenebilir">
+  2026-07-28 spec'inden beri list yanıtları bir `ttlMs` ve bir cache scope
+  taşıyor; böylece client her turda server'ın kataloğunu yeniden saymak
+  zorunda kalmıyor.
+</Callout>
+
+<Sticky accent="lime">
+  Bir şeyin tool mu resource mu olduğundan emin değilsen şunu sor: modelin
+  bunu kendi başına tetiklemesine izin verilmeli mi? Evet → tool. Hayır →
+  resource.
+</Sticky>

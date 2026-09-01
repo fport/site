@@ -1,0 +1,38 @@
+2026-07-28 spec'i, MCP çıktığından beri yapılan en büyük değişiklik ve büyük
+ölçüde tek bir fikir: **protokolü stateless yap** ki normal bir HTTP servisi
+gibi işletilebilsin.
+
+<Table
+  data={{
+    headers: ['Değişiklik', 'Anlamı'],
+    rows: [
+      ['Stateless çekirdek', 'initialize handshake yok, session id yok'],
+      ['Kendini tarif eden istekler', 'her biri version, identity ve capability taşıyor'],
+      ['MRTR', 'input_required + retry, server tarafından başlatılan çağrıların yerini alıyor'],
+      ['Header routing', 'her istekte Mcp-Method ve Mcp-Name'],
+      ["Cache'lenebilir listeler", 'list sonuçlarında ttlMs ve cacheScope'],
+      ['Extensions framework', 'Tasks, MCP Apps ve EMA çekirdekten çıkıyor'],
+    ],
+  }}
+/>
+
+## Asıl engel neden state'ti
+
+Bir handshake ve bir session id varken her istek, konuşmayı başlatan
+instance'a düşmek zorundaydı. Bu da sticky session, düz round-robin yok ve
+kopan bir stream'in session'ı götürmesi demek.
+
+<Schema title="neyin önünü açıyor">
+  <Pipeline accent="slate" steps={['Herhangi bir istek', 'Herhangi bir instance', 'Düz load balancer', 'Yatay ölçek']} />
+</Schema>
+
+<Callout type="idea" title="Header routing operasyonel kazanım">
+  `Mcp-Method` ve `Mcp-Name` header'larda gittiği için bir gateway, rate
+  limiter ya da WAF **JSON body'yi parse etmeden** tool başına yönlendirme ve
+  ölçüm yapabilir. "Host ediyoruz" ile "işletebiliyoruz" arasındaki fark bu.
+</Callout>
+
+<Sticky accent="slate">
+  On iki aylık geri sayımda deprecated olanlar: HTTP+SSE transport, sampling,
+  roots ve logging. Yeni şeyleri bunlar olmadan kur.
+</Sticky>

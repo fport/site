@@ -1,6 +1,7 @@
-import { Link } from 'next-view-transitions';
 import { ComponentPropsWithoutRef, isValidElement, ReactNode } from 'react';
 import { highlight } from 'sugar-high';
+import { Link } from '@/components/link';
+import { Diagram } from '@/components/garden/diagram';
 import { Mermaid } from '@/components/garden/mermaid';
 import { PaperHeader } from '@/components/paper-header';
 import { RecentWriting } from '@/components/recent-writing';
@@ -129,6 +130,7 @@ const components = {
   Box,
   Callout,
   Col,
+  Diagram,
   Kbd,
   Mermaid,
   Meter,

@@ -1,0 +1,31 @@
+Ders kitabı şöyle der: 40 getir, cross-encoder ile rerank et, 8 tanesini ver.
+Bu corpus'ta ders kitabı yanılıyordu ve sayılar bunu söyledi.
+
+<Table
+  data={{
+    headers: ["Ayar", "Recall@8", "MRR", "TR düzyazı", "p50"],
+    rows: [
+      ["auto + dense (rerank yok)", "0.786", "0.690", "0.684", "34 ms"],
+      ["hybrid, k=40 aday", "0.952", "—", "0.895", "39 ms"],
+      ["hybrid + bge-reranker-v2-m3", "0.762", "0.508", "0.579", "4389 ms"],
+      ["auto + bge-reranker-v2-m3", "0.762", "0.514", "0.579", "2050 ms"],
+    ],
+  }}
+/>
+
+- **Kazanılacak alan gerçek.** Recall@40 0.95 — doğru chunk neredeyse her
+  zaman aday havuzunda. İyi bir reranker'ın kazanacak 17 puanı var.
+- **Bu reranker o puanları harcadı.** MRR 0.690'dan 0.514'e düştü, en çok da
+  Türkçe dilim geriledi. Üstüne query başına iki ila dört saniye ekledi.
+- **"Cevap yok" kapısı olarak daha da kötüydü.** 12/12 negatifi yakaladı — ve
+  42 gerçek cevabın 12'sini çöp diye işaretledi. %29 yanlış alarm oranı.
+
+<Callout type="warn" title="Duruyor, ama kapalı">
+  Flag, daha iyi bir reranker'ın tabloya bir satır daha olarak denenebilmesi
+  için var. Default'u makale değil, tablo belirliyor.
+</Callout>
+
+<Sticky accent="lime">
+  Bir reranker, corpus'un hakkında bir hipotezdir. Onu bir hipotez gibi test
+  et.
+</Sticky>

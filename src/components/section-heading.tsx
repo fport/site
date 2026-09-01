@@ -1,4 +1,5 @@
-import { Link } from "next-view-transitions";
+import { useTranslations } from 'next-intl';
+import { Link } from '@/components/link';
 
 /**
  * A section title with an optional action pushed to the right margin, so the
@@ -8,12 +9,14 @@ import { Link } from "next-view-transitions";
 export function SectionHeading({
   children,
   href,
-  action = "see all",
+  action,
 }: {
   children: React.ReactNode;
   href?: string;
   action?: string;
 }) {
+  const t = useTranslations('common');
+
   return (
     <div className="section-heading mt-8 mb-3 flex items-baseline justify-between gap-4">
       <h2 className="text-foreground font-medium">{children}</h2>
@@ -22,7 +25,7 @@ export function SectionHeading({
           href={href}
           className="shrink-0 text-sm text-muted underline transition-colors hover:text-foreground"
         >
-          {action} →
+          {action ?? t('seeAll')} →
         </Link>
       ) : null}
     </div>

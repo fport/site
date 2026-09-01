@@ -1,0 +1,142 @@
+The Turkish Football Federation launched an official fantasy league: fifteen
+players, a 100M budget, a captain you pick every week. I wanted to play it, and
+I wanted the practice, so I built a small system underneath it — a data set, an
+xG model, a points model and a squad optimiser.
+
+The interesting part is not that it works. It is which parts of it survived
+being compared against a baseline.
+
+## The rules matter more than they look
+
+I coded the scoring engine from the public rules payload on the game's help
+page. One line changes everything:
+
+<Table
+  data={{
+    headers: ['Event', 'GK', 'DEF', 'MID', 'FWD'],
+    rows: [
+      ['Goal', '+10', '+6', '+5', '+4'],
+      ['Assist', '+3', '+3', '+3', '+3'],
+      ['Clean sheet (60 min)', '+4', '+4', '+1', '—'],
+      ['Every 2 goals conceded', '−1', '−1', '—', '—'],
+    ],
+  }}
+/>
+
+Goals are worth far more here than in FPL, and they scale by position in the
+opposite direction to how most people's instincts run. A defender who scores is
+worth six points. A goalkeeper who scores is worth ten. Any intuition carried
+over from FPL — where defenders are a clean-sheet play — is mispriced from the
+first week.
+
+## Data
+
+The game itself is behind a login, so the source is FotMob: eight seasons of
+Süper Lig, parsed down to one row per player per match. **102,000 rows.**
+
+There is a boundary I drew early and kept. The game's user agreement restricts
+reproducing and distributing its data, so nothing that originates from
+tfffantezilig.com goes into the published data set — no prices, no ownership
+percentages. What is published is match statistics from FotMob plus the points
+*I* compute from them. Player prices stay on my own machine, for my own team.
+
+That decision has a cost, and I will come back to it.
+
+## An xG model, because the borrowed one is not mine to publish
+
+Providers publish their own xG, and it is better than mine. It is also theirs.
+So I trained one: 35,000 shots, pre-shot features only — no shot outcome, no
+post-shot geometry, nothing that leaks the answer. AUC 0.799.
+
+It went to 0.803 after I found a bug in the coordinate handling that was
+distorting distance and angle. Which is a good reminder that a plausible-looking
+number is not a checked one.
+
+## xPts, and the baseline that cut the result in half
+
+The actual product is xPts: expected fantasy points per player per week, from
+LightGBM over leak-free form features. The metric is weekly Spearman, not MAE —
+what matters is ranking who will score *more*, not being close in absolute terms.
+
+<Table
+  data={{
+    headers: ['Model', 'MAE', 'RMSE', 'Spearman'],
+    rows: [
+      ['Baseline: last 5 matches', '1.983', '2.898', '0.429'],
+      ['Baseline: season average', '1.795', '3.043', '0.458'],
+      ['LightGBM xPts', '1.578', '2.797', '0.576'],
+    ],
+  }}
+/>
+
+The model beats both baselines, which is the only reason it is worth shipping.
+
+It also, briefly, beat them by a lot more. I had a version of this table showing
+a 26% improvement before I found a bug that was quietly damaging the baselines
+rather than helping the model. Fixed, the honest gain is about 12%. Still real,
+still worth having, and a third of what I would have posted.
+
+If you compute a baseline with the same code path as your model, a bug in that
+path flatters you. Mine did.
+
+## The squad optimiser
+
+Picking fifteen players is an integer program, not a sort. Position quotas —
+two keepers, five defenders, five midfielders, three forwards — a cap of three
+players per club, and a budget. I solve it with `scipy.optimize.milp`.
+
+Here is the honest part. Prices live behind the game's login, so unless you hand
+it a price file it cannot apply the budget, and what comes out is not "the best
+squad you can build" but "the fifteen highest xPts". Those are very different
+answers, because in real fantasy the budget is the binding constraint.
+
+The demo says exactly that, in a yellow warning, rather than presenting a
+squad it cannot actually justify.
+
+## Two experiments that failed, and stayed failed
+
+**A match-outcome model.** Poisson goal model, two lambdas, 1X2 probabilities.
+Picking the home side every week gets 45.6%. Six-match form gets 48.2%. Adding a
+twenty-match horizon gets 50.9% — the long window matters because early in a
+season the short one is nearly empty, and without it the model was making a
+newly promoted side favourite against Galatasaray.
+
+Fifty percent sounds fine until you price it: it is worth one or two points a
+week. The captain pick alone swings ten or more. So it is in the app, clearly
+labelled as low priority, instead of at the top.
+
+**Feeding that model's output into the player model.** Expected goals conceded
+and clean sheet probability ranked high on feature gain, which is exactly the
+trap. Weekly Spearman went from 0.5793 to 0.5723. They are derived from team
+form features the model already has — no new information, just more surface to
+overfit. Removed.
+
+## And the advisor that talked itself into a corner
+
+The last piece was meant to be an LLM turning xPts into a reasoned Turkish
+recommendation. First run, LoRA on a 4B model, and the shallow metrics looked
+great: average answer 80 words down to 22, hallucinated numbers down from 4.5%
+to 0.36%.
+
+Then the metric that mattered. Correct-advice rate went from 0.230 to 0.400 —
+against a majority-class baseline of **0.410**. It had learned to say "avoid" to
+everything. Ninety-five of a hundred answers. It said avoid to 82% of players
+with xPts above 3.0, including one at 5.51 — a captain candidate — with the
+explanation that he "isn't producing points" while quoting his 7.0 average in
+the same sentence.
+
+Without that baseline line in the comparison script, 0.23 to 0.40 reads like a
+win. It is a model that collapsed to the most common label.
+
+## What I would tell myself at the start
+
+Write the baseline before the model. Not after, when you already have a number
+you like. Three times in this project the baseline was the only thing standing
+between me and a claim I would have had to walk back — the inflated 26%, the
+feature that looked important, the advisor that had learned one word.
+
+The data set, the model and a working demo are public: the
+[data set](https://huggingface.co/datasets/fport/super-lig-fantasy),
+the [xPts model](https://huggingface.co/fport/super-lig-xpts), and the
+[demo](https://huggingface.co/spaces/fport/fantezi-kaptan). The game itself is at
+[tfffantezilig.com](https://tfffantezilig.com/).

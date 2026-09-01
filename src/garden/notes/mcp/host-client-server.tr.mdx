@@ -1,0 +1,45 @@
+Üç rol var ve birbirine karıştırmak kolay. **Host** uygulamanın kendisi. Her
+bağlantı için bir **client** tutuyor. Her client tek bir **server** ile
+konuşuyor.
+
+<Diagram
+  title="server başına bir client"
+  nodes={[
+    { id: 'c1', label: 'MCP client 1', sub: 'tek bağlantı', kind: 'service', x: 0, y: 0 },
+    { id: 'c2', label: 'MCP client 2', sub: 'tek bağlantı', kind: 'service', x: 0, y: 1 },
+    { id: 's1', label: 'MCP server', sub: 'dosyalar · yerel', kind: 'service', x: 1, y: 0 },
+    { id: 's2', label: 'MCP server', sub: "issue'lar · uzak", kind: 'service', x: 1, y: 1 },
+    { id: 'db', label: 'Veritabanı', sub: 'yerel ya da uzak', kind: 'data', x: 2, y: 0 },
+    { id: 'web', label: 'Web API', sub: 'uzaktaki bir servis', kind: 'cloud', x: 2, y: 1 },
+  ]}
+  groups={[
+    { label: 'Host · IDE, chat client, agent', kind: 'external', nodes: ['c1', 'c2'] },
+    { label: 'senin yazdığın kısım', kind: 'security', nodes: ['s1', 's2'] },
+  ]}
+  edges={[
+    { from: 'c1', to: 's1', label: 'stdio', kind: 'service' },
+    { from: 'c2', to: 's2', label: 'Streamable HTTP', kind: 'service' },
+    { from: 's1', to: 'db', label: 'SQL', kind: 'data' },
+    { from: 's2', to: 'web', label: 'HTTPS', kind: 'cloud', dashed: true },
+  ]}
+/>
+
+<Table
+  data={{
+    headers: ['Rol', 'Kim yazıyor', 'Neyin sahibi'],
+    rows: [
+      ['Host', 'uygulama sağlayıcısı', 'model, arayüz, onay diyalogları'],
+      ['Client', 'SDK', 'tek bir bağlantı, protokol muhasebesi'],
+      ['Server', 'sen', "capability'ler ve arkalarındaki dış sistem"],
+    ],
+  }}
+/>
+
+Çoğu insanın yazdığı tek parça server. Capability'leri dışa açıyor ve
+arkasında ne varsa onunla konuşuyor — yerel bir veritabanı, bir web API, bir
+dosya sistemi.
+
+<Callout type="note" title="Server başına bir client">
+  Beş server'ı olan bir host beş client tutar. Bu yalıtım bilinçli: ele
+  geçirilmiş ya da bozulmuş bir server, diğerlerinin trafiğini göremez.
+</Callout>

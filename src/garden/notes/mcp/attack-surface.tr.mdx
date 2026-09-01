@@ -1,0 +1,36 @@
+Her MCP server, modelin context'ine giren yeni bir güvenilmeyen metin parçası
+ve modelin ulaşabildiği yeni bir yetki kümesi demek. İkisi de saldırı yüzeyi.
+
+<Stack layers={[
+  { label: 'Tool poisoning', sub: 'kötü niyetli bir açıklama modeli yönlendirir', accent: 'rose' },
+  { label: 'Indirect prompt injection', sub: 'dönen verinin içine gizlenmiş talimatlar' },
+  { label: 'Confused deputy', sub: "server kendi geniş credential'ıyla hareket eder" },
+  { label: 'Supply chain', sub: 'okumadığın bir server kurdun' },
+]} />
+
+## İnsanları şaşırtan
+
+**Tool açıklamaları context'tir.** Bir server açıklamanın içine talimat
+koyabilir ve model onları seninkileri okuduğu gibi okur. Invariant Labs bunu
+somut olarak gösterdi: ikinci bir server'daki zehirlenmiş bir açıklama, masum
+görünen bir çağrı üzerinden modele bir kullanıcının bütün WhatsApp geçmişini
+sızdırtmaya yetti.
+
+## Confused deputy, somut haliyle
+
+Bir agent meşru olarak geniş bir veritabanı credential'ı tutuyor. Bir prompt
+injection onu bu credential'ı deploy edenin hiç niyetlenmediği bir şey için
+kullanmaya ikna ediyor. Server hack'lenmedi — tam olarak kendisinden isteneni
+yaptı.
+
+<Callout type="warn" title="Gerçekten işe yarayan kural">
+  Tool'ları **kullanıcı seviyesi** yetkilerle çalıştır, asla server seviyesi
+  değil. Silen, gönderen, harcayan ya da altyapıyı değiştiren her şeyi de
+  çağrı başına açık bir onayın arkasına koy — kurulumda bir kez alınan bir
+  rızanın değil.
+</Callout>
+
+<Sticky accent="rose">
+  Server'ın döndürdüğü her şeye veri gibi davran, asla talimat gibi değil.
+  Buna tool açıklamaları da dahil — insanların unuttuğu kısım o.
+</Sticky>

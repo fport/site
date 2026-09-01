@@ -1,0 +1,35 @@
+Metadata, her chunk’a enjekte edebileceğin context’tir: yıl, doküman başlığı,
+sayfa, bölüm, sahip. Ham semantik arama bunları birbirine karıştırır — sonuç
+**düşük precision**.
+
+```mermaid
+flowchart LR
+  Q["Soru: 2021 risk faktörleri"] --> N["Tek collection, top-4"]
+  N --> A["2020 chunk"]
+  N --> B["2021 chunk"]
+  N --> C["2019 chunk"]
+  N --> D["2020 chunk"]
+```
+
+Sorunun içindeki `2021` bir *anlam* değil, bir **filtre**. Vektör benzerliği
+2020 ve 2021 dokümanlarını neredeyse aynı görür.
+
+```mermaid
+flowchart LR
+  Q2["Soru + çıkarılan filtre year=2021"] --> F["Metadata filtresi"]
+  F --> S["Yalnızca 2021 collection’ı"]
+  S --> R["2021 chunk 7"]
+```
+
+## Ne saklamalı
+
+<Stack layers={[
+  { label: 'Yapısal', sub: 'yıl, sayfa, bölüm, doküman tipi', accent: 'lime' },
+  { label: 'Türetilmiş', sub: 'chunk özeti, komşuların özeti' },
+  { label: 'Ters HyDE', sub: 'bu chunk hangi soruları cevaplıyor' },
+]} />
+
+<Callout type="note" title="İki kere kazandırır">
+  Aynı metadata hem aramayı daraltır (filtre olarak) hem cevabı zenginleştirir
+  (kaynak, tarih, sayfa numarası). Yazması ucuz, tutması katlanarak kazandırır.
+</Callout>

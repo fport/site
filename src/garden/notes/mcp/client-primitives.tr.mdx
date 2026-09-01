@@ -1,0 +1,33 @@
+Protokol başta iki yönlüydü: server, modeli ödünç almak, kullanıcıya bir şey
+sormak ya da workspace root'larını okumak için client'ı *geri* çağırabiliyordu.
+
+<Table
+  data={{
+    headers: ['Primitive', 'Ne yapıyordu', 'Durum'],
+    rows: [
+      ['Sampling', "server, host'un modelini ödünç alır", 'deprecated'],
+      ['Roots', 'server hangi dizinlerin kapsamda olduğunu sorar', 'deprecated'],
+      ['Elicitation', 'server çağrının ortasında kullanıcıya soru sorar', 'yerini MRTR aldı'],
+      ['Logging', "server host'a yapılandırılmış log gönderir", 'deprecated'],
+    ],
+  }}
+/>
+
+Bunların hepsi açık tutulan çift yönlü bir stream istiyordu — stateless
+çekirdeğin kaldırdığı şey tam olarak bu.
+
+## Elicitation'ın yerine ne geldi
+
+**Multi Round-Trip Requests.** Server, soruyu açık bir stream'den aşağı itmek
+yerine ihtiyaç duyduğu şeyle birlikte `resultType: "input_required"`
+döndürüyor. Client cevapları topluyor ve onları ekleyerek **orijinal çağrıyı
+yeniden deniyor**.
+
+<Schema title="input_required, sonra retry">
+  <Pipeline accent="violet" steps={['tools/call', 'input_required', 'client kullanıcıya sorar', 'cevaplarla retry']} />
+</Schema>
+
+<Callout type="warn" title="On iki aylık geri sayım">
+  Deprecated, gitti demek değil — bunlar en az on iki ay daha çalışmaya devam
+  ediyor. Ama yeni hiçbir şey bunların üzerine kurulmamalı.
+</Callout>

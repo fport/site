@@ -1,0 +1,33 @@
+Bir chunk; bir fonksiyon, sınıf, metot, interface, tip ya da export edilmiş
+bir sabit — sınırları süslü parantez sayarak değil, gerçek bir parser'dan
+geliyor.
+
+<Schema title="chunker kuralları">
+  <Pipeline accent="violet" steps={["parse|tree-sitter", "birimler|≤ 2000 B", "böl|büyük sınıf → üyeler", "birleştir|küçükler ≥ 200 B", "header|yalnız index için"]} />
+</Schema>
+
+## Dört kural
+
+- **Büyük kapsayıcılar üyelerine bölünüyor.** 5 KB'lık bir sınıf, bir header
+  chunk'ı artı metot başına bir chunk oluyor; her biri `parent = class`
+  taşıyor.
+- **Küçük şeyler bir komşuyla birleşiyor.** Tek satırlık tipler, kısa
+  const'lar, import blokları ve doc yorumları bir sonraki birime yapışıyor.
+- **Hiçbir şey ~2000 byte'ı (≈ 500 token) aşmıyor.** Model 8192 kabul ediyor
+  ama uzun bir chunk'ın embedding'i ortalamaya çekilip hiçbir şey anlatmaz
+  oluyor. Tek başına aşırı büyük bir fonksiyon satır satır pencereleniyor ve
+  sembolünü koruyor.
+- **Metin temiz kalıyor.** "Ben neyim, nerede yaşıyorum" header'ı — dosya,
+  sembol, parent, import'lar — yalnızca embed edilen ve BM25'e giren metnin
+  başına ekleniyor. Atıflar gerçek kaynağı gösteriyor.
+
+## BM25 için identifier'lar
+
+Standart analyser `handleAuthCallback`'i tek token olarak tutuyor; yani "auth
+callback" ona hiç dokunmuyor. Her chunk'ın identifier'ları küçük harfli alt
+kelimelere bölünüp index'lenen metnin sonuna ekleniyor.
+
+<Callout type="note" title="Her hit kanallarını taşıyor">
+  Bir sonuç `dense`, `bm25`, `rrf` ve `rerank` skorlarını yan yana döndürüyor.
+  Hangi kanalın neyi bulduğu bir UI tahmini değil, veri.
+</Callout>

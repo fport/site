@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { RefObject } from "react";
 import type { GardenCluster, PlacedNote } from "@/garden/types";
 
@@ -30,6 +31,7 @@ export function GardenIndex({
   onSelect,
   searchRef,
 }: Props) {
+  const t = useTranslations("garden.index");
   const groups = [
     ...clusters.map((cluster) => ({
       id: cluster.id,
@@ -38,7 +40,7 @@ export function GardenIndex({
     })),
     {
       id: "__loose",
-      label: "unfiled",
+      label: t("unfiled"),
       notes: notes.filter((note) => !note.cluster),
     },
   ].filter((group) => group.notes.length > 0);
@@ -54,8 +56,8 @@ export function GardenIndex({
           ref={searchRef}
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder="Search notes…"
-          aria-label="Search notes"
+          placeholder={t("search")}
+          aria-label={t("search")}
           className="w-full rounded-md border border-card-border bg-background px-2 py-1.5 text-[12.5px] placeholder:text-muted focus:border-muted focus:outline-none"
         />
       </div>

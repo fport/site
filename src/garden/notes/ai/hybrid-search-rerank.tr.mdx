@@ -1,0 +1,27 @@
+Dense vektörler anlamı yakalar ve **birebir eşleşmeleri kaçırır**: hata kodları,
+SKU’lar, kişi adları, sürüm numaraları. BM25 tam da bunlarda iyidir.
+
+<Schema title="getir → birleştir → sırala → kes">
+  <Pipeline accent="lime" steps={['Dense|top-50', 'BM25|top-50', 'RRF|birleştir', 'Rerank|cross-encoder', 'Top-5']} />
+</Schema>
+
+## Neden bu sıra
+
+- **Geniş getir, dar ver.** top-50 çekip top-5’e kesmek, ham bir top-20’yi
+  context’e boca etmekten hem daha ucuz hem daha iyi.
+- **RRF** iki listeyi skorlarını normalize etmeye hiç kalkışmadan birleştirir;
+  onun yerine sıraları toplar.
+- **Cross-encoder** soruyla chunk’ı birlikte okur. Bi-encoder’ın kaçırdığı
+  ilişkiyi yakalar — latency pahasına; o yüzden en sona ve az sayıda aday
+  üzerine gelir.
+
+<Callout type="warn" title="Reranking her zaman kazanç değil">
+  Reranker context’in sırasını değiştirir. Cevap sıraya bağlıysa — bir
+  kronoloji, adım adım bir prosedür — karıştırmak zarar verebilir. Ölçmeden
+  açma.
+</Callout>
+
+<Sticky accent="lime">
+  Cevapta chunk id’leri iste. Hiçbir şeye atıf yapmayan bir RAG sistemi
+  halüsinasyonu ortadan kaldırmaz — sadece görünmez yapar.
+</Sticky>

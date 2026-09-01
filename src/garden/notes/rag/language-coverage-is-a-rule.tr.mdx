@@ -1,0 +1,50 @@
+Cazip tasarım bir tabloydu: uzantı → dil, klasör → rol (`controllers/` =
+controller), semboller için dil başına bir regex. Bunun yerine production
+sistemlerinin ne yaptığına baktık ve bir tablonun ne kazandıracağını ölçtük.
+
+## Herkes ne yapıyor
+
+GitHub code search, Sourcegraph, Cursor, aider, Continue, Sweep, Qodo,
+Greptile — hepsi **dil kapsamını bir parser ekosistemine devrediyor**
+(upstream `tags.scm` ile tree-sitter grammar'ları ya da universal-ctags),
+grammar'dan bağımsız bir boyut sınırıyla chunk'lıyor, evrensel bir satır
+penceresi fallback'i tutuyor ve path + sembolü metadata olarak taşıyor.
+Hiçbirinde framework'e özel mantık yok. Hiçbiri klasör→rol taksonomisi
+tutmuyor.
+
+<Table
+  data={{
+    headers: ["Öneri", "Karar", "Neden"],
+    rows: [
+      ["uzantı → dil tablosu", "bir kuralla değiştirildi", "pakette 371 grammar geliyor; uzantı adı bir grammar adıysa (.lua .vue .razor .zig) doğrudan çalışıyor; küçük bir alias tablosu (.ts .cs .kt) import anında pakete karşı doğrulanıyor"],
+      ["regex sembol çıkarıcılar", "hayır", "tree-sitter 20+ dil için sembol, tür ve parent'ı zaten veriyor"],
+      ["klasör → rol etiketleri", "hayır", "rol, path'in deterministik bir fonksiyonu ve path zaten embed edilen metnin içinde; golden set'teki 11 kaçağın hiçbirini düzeltmedi"],
+      ["vendor adı atlama listeleri (jquery, bootstrap…)", "hayır", "repo başına bir ignore dosyası genelleşiyor; bir isim listesi tek bir şirketi kodluyor"],
+      ["framework başına kurallar (Next.js, Vue, Razor)", "hayır", "route dosyaları route'u zaten path'lerinde taşıyor; Razor blokları grammar'dan kendiliğinden çıkıyor"],
+    ],
+  }}
+/>
+
+## Elle yazılı tuttuklarımız, ve neden
+
+- **Bilerek düz:** json, yaml, css, html — grammar'ları var, ama pencereler
+  eşit ölçüldü ve bir parser yalnızca çökme yüzeyi.
+- **Hiç index'lenmeyenler:** csv, tsv, diff, po, pem — onlar için de grammar
+  var.
+- **Grammar var, parser reddedildi:** `sql` (üretilen grammar migration
+  dosyalarında segfault veriyor) ve `cobol` (dengesiz parantezlerde 300 sn'yi
+  aşıp takılıyor). İkisi de her grammar'ı kendi subprocess'inde dejenere
+  girdiyle çalıştıran bir smoke test'le bulundu — bir çökme indexer'ı değil,
+  çocuk process'i öldürüyor.
+
+<Callout type="gotcha" title="Grammar'lar ilk kullanımda iniyor">
+  language-pack 1.15'ten beri bir grammar ilk kullanımda indiriliyor. Offline
+  bir container'da ilk Kotlin dosyası sessizce pencerelere düşerdi; o yüzden
+  Docker build'i test edilen liste üzerinde `prefetch()` çağırıp imaja
+  gömüyor.
+</Callout>
+
+<Sticky accent="violet">
+  Artık bir dil eklemek sıfır satıra mal oluyor. Ablation'a göre bu eksenin
+  tavanı topu topu bir soruluk recall — yani sıfır, doğru fiyat.
+</Sticky>

@@ -1,0 +1,95 @@
+Bu sitedeki en eski şey ve gerisinin var olma sebebi.
+
+Bursa Teknik Üniversitesi'nde bilgisayar mühendisliği ikinci sınıftayken bir
+önerim fonlanarak geri döndü: TÜBİTAK 2209-B, lisans öğrencileri için sanayi
+odaklı araştırma programı, 2020 birinci dönem. Yürütücüsü bendim, Mert Bozkır
+araştırmacı olarak katıldı ve başlık kodun çoğundan uzundu — *Doğal Dil İşleme
+ve Derin Öğrenme Yöntemleri Kullanılarak Metinden Kumaş Deseni Üretilmesi*.
+
+Bir tekstil desenini bir cümleyle tarif ediyorsun. Renk, şekil, boyut,
+motiflerin birbirine göre nasıl durduğu. Sistem sana daha önce var olmayan,
+özgün bir desen veriyor.
+
+## O zaman bunu denemek neden tuhaf bir şeydi
+
+Öneri 2020'de verildi. Bu projeyi bugün anlatmak istesen "text to image" dersin,
+herkes başını sallar. O zaman bu ifade çoğu insan için hiçbir anlam taşımıyordu —
+OpenAI DALL·E'yi biz çoktan çalışırken, Ocak 2021'de duyurdu; zaten kullanamazdın
+da. Stable Diffusion'a bir buçuk yıl vardı. Diffusion modelleri üzerine bir şey
+inşa ettiğin bir şey değil, bir araştırma merakıydı.
+
+Dolayısıyla text-to-image demek GAN demekti; bir GAN'a bir cümleyi dinletmek de
+köprüyü kendin kurmak demekti.
+
+## İki yarı
+
+<Table
+  data={{
+    headers: ['Yarı', 'İş'],
+    rows: [
+      ['NLP', 'Serbest metin bir tarifi, ağın koşullanabileceği sayılara çevirmek'],
+      ['GAN', 'O sayıları, artı gürültüyü, hem makul hem de tarife uyan bir görsele çevirmek'],
+    ],
+  }}
+/>
+
+**NLP yarısı**, insanların bunu anlatırken atladığı kısım. Bir sinir ağı "krem
+üzerine küçük lacivert şal deseni, eşit aralıklı" cümlesini okuyamaz. Ona bir
+vektör lazım. Yani ilk iş temsil: tarifi gerçekten değişen niteliklere — renk,
+motif, ölçek, yerleşim — ayrıştırmak ve bunları generator'ın girdi olarak
+alabileceği sabit uzunlukta bir vektöre kodlamak. Bunu yanlış yaparsan
+sonrasında hiçbir şey toparlayamaz, çünkü farklı anlamlara gelen iki cümle
+neredeyse aynı sayılara dönüşür.
+
+**GAN yarısı**, tartışan iki ağ. Bir *generator* rastgele gürültü alır ve bir
+görsel üretir. Bir *discriminator* bir görsele bakar ve gerçek mi üretilmiş mi
+diye karar verir. Birbirlerine karşı eğitilirler: generator discriminator'ı
+kandırmaya çalışır, discriminator kanmamaya çalışır ve aralarındaki bu baskı,
+generator'ı eğitim setine benzeyen görsellere doğru iten şeydir.
+
+Bunu text-to-image yapan numara koşullama. Metin vektörünü *iki* ağa da
+veriyorsun. Generator gürültü artı metinden üretiyor. Discriminator artık bir
+değil iki soruya cevap veriyor: bu gerçek bir desen mi, ve bu tarife uyuyor mu?
+Cümleyle ilgisiz ama güzel desenler üreten bir generator artık başarısız
+oluyor; istediğin baskı da tam olarak bu.
+
+## Kumaş neden doğru problemdi
+
+Kolay olduğu için değil. Dar olduğu için.
+
+2021'de genel text-to-image, elinde bir üniversite GPU laboratuvarı olan iki
+lisans öğrencisinin erişiminin ötesindeydi. Tekstil desenleri çok daha küçük bir
+dünya: tekrar ediyorlar, döşeniyorlar, sınırlı bir motif dağarcığından
+kuruluyorlar ve "doğru" çıktıların uzayı, herhangi bir şeyin fotoğrafında
+olmayacak şekilde kısıtlı. Dar bir alanı ve iyi bir çıktının neye benzediğine
+dair net bir fikri olan bir model, genel bir modelin çalışamayacağı bir ölçekte
+çalışabiliyor.
+
+O günden beri sürekli kullandığım bir ders bu: etkileyici versiyonu seçip yolun
+ortasında yakıtsız kalmak yerine, problem elindeki kaynaklara sığana kadar alanı
+daralt.
+
+Sanayi tarafı da aynı nedenle önemliydi. Proje Bursalı Tekstil ile yürüdü ve
+Bursa bir tekstil şehri; dolayısıyla bir desenin *kullanılabilir* olup olmadığı
+sorusuna odada cevap verebilecek biri vardı. Akademik danışmanlık Gizem
+Ortaç'tan, sanayi danışmanlığı Bursalı'dan Hatice Kurt'tan geldi; bölüm
+başkanımız Turgay Tugay Bilgin de ortada gösterilecek bir şey yokken bu işin
+arkasında durdu. Patent başvurusu yaptık, üniversitenin yüksek başarımlı
+makinelerinde çalıştırdık ve iş
+[Anadolu Ajansı'na](https://www.aa.com.tr/tr/egitim/bursada-universite-ogrencileri-bilgisayara-metinle-verilen-komutla-tekstil-desenleri-ureten-yazilim-gelistirdi/2169609)
+kadar gitti — yirmi yaşındayken ve modelin hâlâ ara sıra çamur üretirken tuhaf
+bir deneyim.
+
+## Bana ne bıraktı
+
+Sistem artık eski. Yaklaşım demode — bugün bunu yapan herkes bir diffusion
+modeline uzanıyor ve bir öğleden sonrada daha iyi sonuç alıyor.
+
+Demode olmayan, bana öğrenmeye zorladığı şey. Üretken bir modeli metinle
+koşullamak ve isteği *temsil etme* biçiminin geri gelenin tavanını belirlediği
+fikri, bugün yaptığım işle aynı şekle sahip. Prompt yapısı, retrieval bağlamı,
+tool şemaları — hepsi farklı kılıklarda aynı soru: bir insanın istediğini, bir
+modelin gerçekten yönlendirilebileceği bir şeye nasıl çevirirsin.
+
+O zaman bunu bilmiyordum. Sadece şu şeyin çizip çizmeyeceğini görmek
+istiyordum.

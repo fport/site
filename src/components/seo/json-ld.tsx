@@ -1,4 +1,6 @@
-import { absolute, schemaId, site } from '@/site';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { absoluteUrl } from '@/i18n/paths';
+import { schemaId, site } from '@/site';
 
 /** XSS-safe JSON-LD serialisation — the escape Next.js recommends. */
 function safeJsonLd(data: Record<string, unknown>): string {
@@ -18,8 +20,14 @@ function Script({ data }: { data: Record<string, unknown> }) {
  * so the job is entity disambiguation: one Person node with `sameAs` pointing
  * at every profile that already ranks, and everything else on the site
  * referencing it by @id rather than repeating an author name.
+ *
+ * The description follows the page language; the @ids do not, so the Turkish
+ * and English pages describe the same entity rather than two.
  */
-export function SiteJsonLd() {
+export async function SiteJsonLd() {
+  const locale = await getLocale();
+  const t = await getTranslations('meta');
+
   return (
     <>
       <Script
@@ -31,13 +39,14 @@ export function SiteJsonLd() {
           alternateName: site.handle,
           url: site.url,
           jobTitle: site.role,
-          description: site.description,
+          description: t('description'),
           worksFor: {
             '@type': 'Organization',
             name: site.employer.name,
             url: site.employer.url,
           },
           knowsAbout: [...site.knowsAbout],
+          knowsLanguage: ['tr', 'en'],
           sameAs: [...site.profiles],
         }}
       />
@@ -48,8 +57,8 @@ export function SiteJsonLd() {
           '@id': schemaId.website,
           url: site.url,
           name: site.name,
-          description: site.description,
-          inLanguage: 'en',
+          description: t('description'),
+          inLanguage: locale,
           publisher: { '@id': schemaId.person },
         }}
       />
@@ -58,14 +67,17 @@ export function SiteJsonLd() {
 }
 
 /** The homepage is a profile page for the Person above. */
-export function ProfilePageJsonLd() {
+export async function ProfilePageJsonLd() {
+  const locale = await getLocale();
+
   return (
     <Script
       data={{
         '@context': 'https://schema.org',
         '@type': 'ProfilePage',
-        url: site.url,
+        url: absoluteUrl('/', locale),
         name: site.name,
+        inLanguage: locale,
         isPartOf: { '@id': schemaId.website },
         about: { '@id': schemaId.person },
         mainEntity: { '@id': schemaId.person },
@@ -74,7 +86,7 @@ export function ProfilePageJsonLd() {
   );
 }
 
-export function ArticleJsonLd({
+export async function ArticleJsonLd({
   title,
   description,
   path,
@@ -89,6 +101,9 @@ export function ArticleJsonLd({
   updated?: string;
   tags?: readonly string[];
 }) {
+  const locale = await getLocale();
+  const url = absoluteUrl(path, locale);
+
   return (
     <Script
       data={{
@@ -96,12 +111,12 @@ export function ArticleJsonLd({
         '@type': 'Article',
         headline: title,
         description,
-        url: absolute(path),
-        mainEntityOfPage: absolute(path),
+        url,
+        mainEntityOfPage: url,
         author: { '@id': schemaId.person },
         publisher: { '@id': schemaId.person },
         isPartOf: { '@id': schemaId.website },
-        inLanguage: 'en',
+        inLanguage: locale,
         ...(published ? { datePublished: published } : {}),
         ...(updated ?? published ? { dateModified: updated ?? published } : {}),
         ...(tags?.length ? { keywords: [...tags] } : {}),
@@ -111,7 +126,9 @@ export function ArticleJsonLd({
 }
 
 /** Tells search engines where a page sits, so results show a real path. */
-export function BreadcrumbJsonLd({ trail }: { trail: { name: string; path: string }[] }) {
+export async function BreadcrumbJsonLd({ trail }: { trail: { name: string; path: string }[] }) {
+  const locale = await getLocale();
+
   return (
     <Script
       data={{
@@ -121,7 +138,7 @@ export function BreadcrumbJsonLd({ trail }: { trail: { name: string; path: strin
           '@type': 'ListItem',
           position: index + 1,
           name: step.name,
-          item: absolute(step.path),
+          item: absoluteUrl(step.path, locale),
         })),
       }}
     />

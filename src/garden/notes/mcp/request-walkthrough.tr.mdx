@@ -1,0 +1,35 @@
+Kullanıcı, modelin tek başına cevaplayamayacağı bir şey sorduğunda aslında ne
+oluyor.
+
+```mermaid
+sequenceDiagram
+  participant U as Kullanıcı
+  participant C as Model
+  participant M as MCP client
+  participant S as MCP server
+  participant X as Dış sistem
+  U->>C: "login ekranında kaç hata var?"
+  C->>C: hafızadan cevaplanamıyor
+  C->>M: dış veriye ihtiyacım var
+  M->>S: bağlan · "neler yapabiliyorsun?"
+  S-->>M: tool'lar, resource'lar, prompt'lar
+  M->>S: tool'u çağır
+  S->>X: dış sistemi sorgula
+  X-->>S: ham veri
+  S-->>M: biçimlendirilmiş sonuç
+  M-->>C: dış veri
+  C-->>U: "o ekranda 21 hata var"
+```
+
+## İki yarı
+
+- **Discovery.** Client server'a ne sunduğunu soruyor ve açıklamalı bir liste
+  alıyor. Model bu açıklamaları dokümantasyon okur gibi okuyor.
+- **Invocation.** Model birini seçiyor, client onu çağırıyor, server asıl işi
+  yapıp modelin okuyabileceği bir şey döndürüyor.
+
+<Callout type="idea" title="Zekâ nerede oturuyor">
+  Server hiçbir şeye karar vermiyor. Bir menü yayınlıyor ve istenileni
+  çalıştırıyor. Seçim modelde oluyor — yazdığın en yüksek kaldıraçlı şeyin
+  **açıklamalar** olmasının sebebi tam da bu.
+</Callout>

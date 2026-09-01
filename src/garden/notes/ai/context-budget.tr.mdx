@@ -1,0 +1,26 @@
+Büyük bir context window kova değil, bütçedir. İçine koyduğun her şey modelin
+dikkati ve senin latency hedefin için yarışır.
+
+<Meter label="System prompt + tool’lar" value={4000} max={32000} unit=" tok" />
+<Meter label="Getirilen chunk’lar" value={12000} max={32000} unit=" tok" />
+<Meter label="Konuşma geçmişi" value={9000} max={32000} unit=" tok" />
+<Meter label="Cevap için pay" value={7000} max={32000} unit=" tok" />
+
+## Hep döndüğüm kurallar
+
+- **Kararlı** kısmı başa koy — system prompt, tool tanımları, uzun referans
+  dokümanlar. Prompt caching’in yeniden kullanabildiği şey kararlı prefix’ler.
+- **Değişken** kısmı sona koy — kullanıcının turu, yeni getirilen chunk’lar.
+  Üst taraftaki tek bir düzenleme, sonrasındaki her şey için cache’i geçersiz
+  kılar.
+- Geçmişi her turda değil, bir eşikte özetle. Her tur kendini yeniden yazan
+  yuvarlanan özetler cache’i yok eder ve sapar.
+
+<Callout type="note" title="Sıralama">
+  Cache hit’leri prefix’e dayanır. Aynı token’lar, aynı sıra — yoksa hit yok.
+</Callout>
+
+<Sticky accent="rose">
+  Kırpmadan önce ölç. "Context çok büyük" problemlerinin yarısı aslında
+  sayfalanmamış bir JSON yığını döndüren tek bir tool.
+</Sticky>

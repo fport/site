@@ -1,0 +1,36 @@
+Sözdizimi farkında chunking gerçekte ne kazandırıyor? Aynı repo'yu iki kez
+index'ledik — bir kez tree-sitter birimleriyle, bir kez aynı boyutta boş satır
+pencereleriyle — ve aynı 42 soruyu çalıştırdık.
+
+<Table
+  data={{
+    headers: ["Chunker", "Recall@8", "MRR", "EN düzyazı", "TR düzyazı", "sembol R / MRR"],
+    rows: [
+      ["tree-sitter birimleri", "0.786", "0.690", "0.842 / 0.744", "0.684 / 0.570", "1.0 / 1.0"],
+      ["boş satır pencereleri", "0.762", "0.598", "0.895 / 0.737", "0.632 / 0.518", "0.75 / 0.32"],
+    ],
+  }}
+/>
+
+## Dürüstçe okumak
+
+- Recall **bir soru** kadar oynadı. MRR 0.09 oynadı — ve neredeyse tamamı
+  sembol query'leri (0.32 → 1.0) artı Türkçe dilim.
+- İngilizce düzyazıda düz pencereler **eşit ya da daha iyiydi**.
+- Yani AST chunking daha fazlasını bulmuyor. Doğru parçayı tepeye koyuyor ve
+  adını biliyor. Bu sahip olmaya değer; ama 20 puanlık bir kaldıraç değil.
+
+## Literatür de aynı fikirde
+
+cAST makalesi aynı boyuttaki satır pencerelerine karşı +1 ila +4 puan
+bildiriyor. Bağımsız kontrollü bir tekrar ≈ 0 buldu; bir üçüncüsü sabit
+pencereleri hafif önde buldu. Naif "fonksiyon başına bir chunk" ise güvenilir
+biçimde *daha kötü* (−4 ila −6 puan) — değer, küçük kardeşleri birleştirmekte
+ve boyutu sınırlamakta; sözdizimsel sınırın kendisinde değil. Reranking ve
+LLM'in yazdığı bağlam retrieval'ı 3–10 kat daha fazla oynatıyor.
+
+<Callout type="gotcha" title="Eval'in göremediği">
+  Golden set'imiz `path::symbol` değil, dosya path'i bekliyor. Atıf kalitesi —
+  AST chunking'in en iyi olduğu şey — puanlanmadı bile. Yukarıdaki fark saf
+  retrieval.
+</Callout>

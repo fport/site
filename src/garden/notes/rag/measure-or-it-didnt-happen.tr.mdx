@@ -1,0 +1,30 @@
+Repo'nun kuralı: `evals/results/` altında bir JSON olmadan hiçbir retrieval
+flag'inin default'u değişmez. "Daha iyi gibi" bir sonuç değil.
+
+<Schema title="harness">
+  <Pipeline accent="slate" steps={["golden|42 pozitif + 13 negatif", "çalıştır|auto · k=8", "puanla|Recall@8 · MRR · abstain · false-weak", "ledger|README tablosu"]} />
+</Schema>
+
+Golden set 19 İngilizce düzyazı soru, 19 Türkçe, 4 sembol ve cevabı repo'da
+*olmayan* 13 soru. Her koşu ayrıca p50/p95 ve bir kalibrasyon bloğu basıyor.
+Repo'ya özel set'ler git dışında kalıyor — içlerinde dahili path'ler var.
+
+## Sayıların devirdiği inançlar
+
+<Table
+  data={{
+    headers: ["İnanç", "Ölçüm", "Karar"],
+    rows: [
+      ["dense + BM25'i her zaman birleştir", "MRR 0.604 vs yönlendirmeli 0.690", "query biçimine göre yönlendir"],
+      ["cross-encoder reranker işe yarar", "MRR 0.690 → 0.514, +2–4 sn", "flag, default kapalı"],
+      ["reranker 'cevap yok' kapısı olabilir", "%29 yanlış alarm", "yerine üç cosine bandı"],
+      ["klasör → rol etiketleri embedding'leri akıllandırır", "11 kaçağın 0'ını düzeltti", "yapılmadı"],
+      ["daha çok dil = büyük kazanç", "AST vs pencereler: 1 soru, MRR +0.09", "genel kural, dil başına sıfır kod"],
+      ["Türkçe daha iyi bir eşleştirici ister", "eşleştirme değil, metin eksikti: 0.04 → 0.684 → 0.932", "çok dilli embedder + isteğe bağlı enrichment"],
+    ],
+  }}
+/>
+
+<Sticky accent="slate">
+  Tablonun yarısı emin olduğumuz şeyler. Tablonun var olma sebebi de bu.
+</Sticky>

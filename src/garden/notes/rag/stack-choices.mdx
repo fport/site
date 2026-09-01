@@ -12,6 +12,32 @@ the four hard problems, not against a feature list.
   ]}
 />
 
+<Diagram
+  title="one process, one collection, one file"
+  nodes={[
+    { id: 'agent', label: 'Agent', sub: 'Claude Code · Cursor', kind: 'external', x: 0, y: 0 },
+    { id: 'github', label: 'GitHub', sub: 'webhook · poller', kind: 'external', x: 0, y: 1 },
+    { id: 'mcp', label: 'MCP · /mcp', sub: 'search · read · list', kind: 'service', x: 1, y: 0 },
+    { id: 'api', label: 'FastAPI', sub: '/search /ask · CLI', kind: 'service', x: 1, y: 1 },
+    { id: 'retriever', label: 'Retriever', sub: 'route → dense | BM25', kind: 'service', x: 2, y: 0 },
+    { id: 'worker', label: 'Indexer', sub: 'tree-sitter · BGE-M3', kind: 'queue', x: 2, y: 1 },
+    { id: 'milvus', label: 'Milvus 2.6', sub: 'dense + sparse', kind: 'data', x: 3, y: 0.5 },
+    { id: 'sqlite', label: 'SQLite', sub: 'repos · jobs · cache', kind: 'data', x: 2, y: 2 },
+  ]}
+  groups={[
+    { label: 'one FastAPI process', kind: 'service', nodes: ['mcp', 'api', 'retriever', 'worker'] },
+  ]}
+  edges={[
+    { from: 'agent', to: 'mcp', label: 'Streamable HTTP', kind: 'service' },
+    { from: 'github', to: 'api', label: 'push', dashed: true },
+    { from: 'mcp', to: 'retriever', label: 'query' },
+    { from: 'api', to: 'worker', label: 'job per repo', kind: 'queue', dashed: true },
+    { from: 'retriever', to: 'milvus', label: 'hybrid search', kind: 'data', route: 'hv' },
+    { from: 'worker', to: 'milvus', label: 'upsert', kind: 'data', dashed: true, route: 'hv' },
+    { from: 'worker', to: 'sqlite', label: 'manifest · jobs', kind: 'data' },
+  ]}
+/>
+
 <Table
   data={{
     headers: ["Piece", "Why", "Rejected"],

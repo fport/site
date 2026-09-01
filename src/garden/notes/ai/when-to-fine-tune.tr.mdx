@@ -1,0 +1,30 @@
+Fine-tuning olgular için değil, **biçim** için. Her hafta değişen bilgiyi
+ağırlıklara yakmak, her değişiklikte yeniden eğitmek demek.
+
+```mermaid
+flowchart TD
+  P["Prompt yeterli mi?"] -->|"evet"| S1["Bitti"]
+  P -->|"hayır"| R["RAG kur ve ölç"]
+  R --> Q{"Geriye ne kaldı?"}
+  Q -->|"eksik bilgi"| R2["Retrieval’ı düzelt"]
+  Q -->|"ton, şema, format"| F["Fine-tune"]
+  Q -->|"maliyet ve latency"| D["Daha küçük bir modele damıt"]
+```
+
+## İki meşru iş
+
+1. **Distillation.** Güçlü bir modelin davranışını küçük, ucuz, hızlı bir
+   modele taşı. Kazandığın şey maliyet ve latency.
+2. **Kalıntıyı sabitlemek.** Prompt’un tutamadığı ton, çıktı şeması ve ret
+   kalıpları. Hiç %100’e ulaşmayan uzun kuyruk.
+
+<Callout type="idea" title="Veri seti boyutu miti">
+  "En az 1000 örnek" kuralı LoRA/QLoRA ile öldü. Sınıflandırma ve extraction
+  için 200–500 **iyi seçilmiş** örnek çoğu zaman yeterli. Nitelik niceliği
+  yener.
+</Callout>
+
+<Sticky accent="rose">
+  Sırayı bozma: Prompt → RAG → Fine-tune → Distill. RAG’i ölçmeden fine-tune’a
+  uzanmak, problemi bilmeden GPU kiralamaktır.
+</Sticky>

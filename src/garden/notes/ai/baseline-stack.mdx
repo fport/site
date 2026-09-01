@@ -9,6 +9,24 @@ service. This is the zero point every measurement is compared against.
   { label: 'Configuration', sub: 'Zod + YAML' },
 ]} />
 
+<Diagram
+  title="one process, three dependencies"
+  nodes={[
+    { id: 'client', label: 'Client', sub: 'curl · eval harness', kind: 'external', x: 0, y: 0 },
+    { id: 'api', label: 'Express', sub: 'POST /rag/query', kind: 'service', x: 1, y: 0 },
+    { id: 'chain', label: 'LangChain', sub: 'retrieval chain', kind: 'service', x: 2, y: 0 },
+    { id: 'chroma', label: 'Chroma', sub: 'vector store · local', kind: 'data', x: 3, y: 0 },
+    { id: 'ollama', label: 'Ollama', sub: 'embed + chat · t=0', kind: 'model', x: 2, y: 1 },
+  ]}
+  groups={[{ label: 'one Node process', kind: 'service', nodes: ['api', 'chain'] }]}
+  edges={[
+    { from: 'client', to: 'api', label: 'HTTP', kind: 'service' },
+    { from: 'api', to: 'chain', label: 'q, k (Zod)' },
+    { from: 'chain', to: 'chroma', label: 'similaritySearch', kind: 'data' },
+    { from: 'chain', to: 'ollama', label: 'embed · chat', kind: 'model', dashed: true },
+  ]}
+/>
+
 ## Two tracks
 
 <Schema title="track 1 — offline index build">

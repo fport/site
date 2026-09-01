@@ -1,0 +1,28 @@
+Model kodunu asla görmüyor. Gördüğü şey **bir isim, bir açıklama ve bir
+schema** — kalite de tam orada yaşıyor.
+
+<Stack layers={[
+  { label: 'Az ve geniş', sub: "beş iyi tool kırk dar tool'u yener", accent: 'lime' },
+  { label: 'Dürüst açıklamalar', sub: 'sadece ne zaman kullanılacağını değil, ne zaman KULLANILMAYACAĞINI da söyle' },
+  { label: 'Tipli girdi', sub: "katı bir schema bir retry'dan ucuzdur" },
+  { label: 'Okunabilir hatalar', sub: 'modelin üzerine aksiyon alabileceği metin döndür' },
+  { label: 'Sayfala', sub: 'asla sınırsız bir blob geri verme' },
+]} />
+
+## Bozulma biçimleri
+
+- **Tool çorbası.** Kısa, kuru isimli kırk tool. Model yanlış seçiyor ve
+  üstüne ne kadar prompt engineering yaparsan yap kötü bir menüyü düzeltmiyor.
+- **Yutulan hatalar.** Hata durumunda boş sonuç döndüren bir tool, modele
+  cevabın "hiçbir şey" olduğunu öğretiyor.
+- **Sayfalanmamış dönüşler.** Koca bir JSON dokümanını olduğu gibi boşaltan
+  tek bir tool, patlayan context window'un en yaygın sebebi.
+
+<Callout type="idea" title="Açıklamayı yeni bir iş arkadaşına yazar gibi yaz">
+  "issue'ları arar" değil; "tek bir repository'deki issue'ları metne göre arar;
+  mevcut raporları bulmak için kullan, numarası bilinen bir issue'yu okumak için
+  değil — onun için `get_issue` kullan."
+</Callout>
+
+Bu tool'ları tüketen döngü başlı başına bir konu — AI bahçesindeki
+[bir agent bir döngüdür](/garden/ai/agent-tool-loop) notuna bak.

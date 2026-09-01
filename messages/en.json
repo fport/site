@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "title": "Furkan Portakal — Frontend Tech Lead & Full-stack Engineer",
+    "description": "Furkan Portakal — Frontend Tech Lead at Sanstech and co-founder of Fişle. Full-stack TypeScript, AI-native products, and notes on building with LLMs.",
+    "roleLine": "Frontend Tech Lead · Full-stack Engineer",
+    "ogTagline": "Full-stack TypeScript, AI-native products, and notes on building with LLMs."
+  },
+  "nav": {
+    "home": "Home",
+    "backHome": "← Furkan Portakal",
+    "backToHome": "Back to the home page"
+  },
+  "common": {
+    "seeAll": "see all",
+    "updated": "updated {date}",
+    "more": "more",
+    "notesCount": "{count, plural, one {# note} other {# notes}}"
+  },
+  "theme": {
+    "label": "theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "tr": "Türkçe"
+  },
+  "writing": {
+    "title": "Writing",
+    "description": "Long-form posts — side projects, stacks and what I learned building them.",
+    "intro": "Longer pieces, meant to be read start to finish. The half-finished thinking lives in the <garden>garden</garden> instead.",
+    "back": "← Writing"
+  },
+  "garden": {
+    "title": "Garden",
+    "description": "Whiteboards of working notes, schemas and open questions — half-finished on purpose.",
+    "intro": "Whiteboards rather than articles. Each one is a canvas of notes you can pan around — half-finished on purpose, and updated whenever I learn something.",
+    "seeOnBoard": "See this note on the whiteboard →",
+    "mobileHint": "The whiteboard needs a wider screen — here are the notes in order.",
+    "kind": {
+      "note": "note",
+      "schema": "schema",
+      "experiment": "experiment",
+      "snippet": "snippet",
+      "open-question": "open question",
+      "role": "role",
+      "talk": "talk",
+      "resource": "resource"
+    },
+    "status": {
+      "seed": "seed",
+      "growing": "growing",
+      "evergreen": "evergreen"
+    },
+    "toolbar": {
+      "pan": "Drag to pan",
+      "laser": "Laser pointer",
+      "trail": "trail",
+      "tap": "tap",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "fit": "fit",
+      "notes": "notes",
+      "menu": "Theme and shortcuts",
+      "shortcuts": {
+        "drag": "pan the board",
+        "cmdScroll": "zoom",
+        "plusMinus": "zoom in and out",
+        "zero": "fit everything",
+        "slash": "search notes",
+        "esc": "close the note",
+        "v": "drag tool",
+        "l": "laser pointer"
+      }
+    },
+    "index": {
+      "search": "Search notes…",
+      "unfiled": "unfiled"
+    },
+    "card": {
+      "open": "Open {title}",
+      "openTitle": "Open full size",
+      "permalink": "Permalink to {title}",
+      "permalinkTitle": "Permalink",
+      "resize": "Resize {title}"
+    },
+    "reader": {
+      "permalink": "permalink",
+      "close": "Close"
+    },
+    "author": {
+      "status": "author mode · {count} moved",
+      "copyTitle": "Copies the full contents of {file}",
+      "copy": "copy layout",
+      "copied": "copied ✓",
+      "reset": "reset",
+      "exit": "exit"
+    },
+    "diagram": {
+      "alt": "Architecture diagram",
+      "service": "Backend",
+      "data": "Database",
+      "cloud": "Cloud",
+      "security": "Security",
+      "queue": "Queue",
+      "external": "External",
+      "model": "Model"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page does not exist.",
+    "body": "Nothing grows here. The page may have moved, or never existed.",
+    "home": "← Back to the home page"
+  }
+}

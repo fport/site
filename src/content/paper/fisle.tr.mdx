@@ -1,0 +1,39 @@
+Gündüzleri kurumsal bir frontend işinde çalışıyorum. Akşamlarıysa [Fisle](https://www.fisle.co) üzerinde çalışıyoruz — fişin fotoğrafını alıp Luca'ya hazır bir muhasebe kaydına çeviren bir araç. Hedef kitle, her ay saatlerini fişleri elle tabloya girmeye harcayan mali müşavirler ve küçük işletme sahipleri.
+
+## Neden bu, neden şimdi
+
+Kendi işimizde hep aynı soruna çarpıyorduk — biriken telefon kamerası fişleri, kimsenin dokunmak istemediği bir Excel şablonu, ay sonunda uçup giden saatler. İş, otomatikleştirilmesi gerekecek kadar tekrarlı; son bir iki yılda gelen AI vision modelleri de nihayet bunu Türkçede iyi yapacak kadar iyi.
+
+Buradaki baskın muhasebe yazılımı Luca, belirli bir Excel import formatı kabul ediyor. Dolayısıyla döngü kısa: fişi tara → muhasebecinin umursadığı alanları çıkar (satıcı, kalemler, KDV, toplamlar, hesap kodları) → Luca'nın istediği dosyayı dışa aktar. Birkaç ay önce, bu döngünün kimsenin düşünmesine gerek kalmayacak kadar küçültülüp küçültülemeyeceğini görmek için başladık.
+
+## Bugün ne yapıyor
+
+- Fotoğraf ya da PDF yükle → alanlar çıkarılır
+- Doğru tekdüzen hesap planı koduna eşlenir (153 ticari mal, 191 indirilecek KDV vb.)
+- Luca uyumlu Excel olarak dışa aktarılır
+- Yanında bir avuç ücretsiz araç — KDV hesaplayıcı, gelir vergisi hesaplayıcı, hesap kodu arama — kendi başlarına faydalı, üstüne arama trafiği de getiriyorlar
+
+Kimse taahhüt vermeden deneyebilsin diye ücretsiz bir katman var; gerçek hacmi olan muhasebeciler ve işletmeler için de ücretli planlar. İlk ödeyen müşteriler geldi.
+
+## Zor olan ne
+
+Dürüst olmak gerekirse iki şey.
+
+**Fiş formatlarının uzun kuyruğunda OCR kalitesi.** Türkiye'de fişler standart değil. Marketten çıkan termal yazıcı fişi, otel folyosuna ya da restoran faturasına hiç benzemiyor. Çıkarımın hepsinde güvenilir olması — sadece kolay %80'inde değil — demoların ima ettiğinden çok daha fazla iterasyon istiyor.
+
+**Zaman, çünkü bu bir yan proje.** Kurumsal iş + ürün demek, anlamlı işin çoğunun akşam dokuzdan sonra ya da hafta sonları olması demek. En zor kısım kod değil, ona ayrılan odağı korumak.
+
+## Stack
+
+- Vercel üzerinde **Next.js 16 + Tailwind v4**
+- DNS ve API için **Cloudflare** (Workers, D1, R2)
+- Client ve worker arasında auth için **Better Auth**
+- Çıkarım adımı için vision/dil modeli sağlayıcılarının bir karışımı
+
+Diğer işlerimle aynı şekil — her parçası ve neden yerini hak ettiği [stack bahçemde](/garden/stack) anlatılıyor. Bir yan projenin bakımını sürdürebileceği kadar küçük tutuldu.
+
+## Bunu okuyorsan
+
+- Fişlere boğulmuş bir mali müşavir ya da küçük işletme sahibi tanıyorsan, ona [fisle.co](https://www.fisle.co) adresini gönder.
+- Denersen ve bir şey bozulur ya da yanlış gelirse DM'lerim açık — şu an bana verebileceğin en faydalı şey doğrudan geri bildirim.
+- Ya da sadece [fisle.co](https://www.fisle.co) adresine girip kurcala.

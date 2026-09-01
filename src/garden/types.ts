@@ -82,6 +82,45 @@ export type Garden = {
   initialZoom?: number;
 };
 
+/**
+ * What a translation of a garden may override, keyed the same way the garden
+ * is: cluster labels by cluster id, notes by slug. Anything left out falls
+ * back to the English registry, so a garden can be translated one note at a
+ * time and never renders a hole.
+ */
+export type GardenTranslation = {
+  title?: string;
+  tagline?: string;
+  description?: string;
+  clusters?: Record<string, string>;
+  notes?: Record<string, Partial<Pick<GardenNote, 'title' | 'summary' | 'Content'>>>;
+};
+
+/** The English garden with a translation laid over it. */
+export function localizeGarden(garden: Garden, translation?: GardenTranslation): Garden {
+  if (!translation) return garden;
+  return {
+    ...garden,
+    title: translation.title ?? garden.title,
+    tagline: translation.tagline ?? garden.tagline,
+    description: translation.description ?? garden.description,
+    clusters: garden.clusters.map((cluster) => ({
+      ...cluster,
+      label: translation.clusters?.[cluster.id] ?? cluster.label,
+    })),
+    notes: garden.notes.map((note) => {
+      const patch = translation.notes?.[note.slug];
+      if (!patch) return note;
+      return {
+        ...note,
+        title: patch.title ?? note.title,
+        summary: patch.summary ?? note.summary,
+        Content: patch.Content ?? note.Content,
+      };
+    }),
+  };
+}
+
 /** Fallback frame for a note that has not been placed yet. */
 export const DEFAULT_FRAME: NoteFrame = { x: 0, y: 0, w: 380, h: 300 };
 

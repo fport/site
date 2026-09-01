@@ -1,0 +1,33 @@
+Vanilla RAG iki ayrı pipeline’dır ve ikisini karıştırmamak işin yarısıdır: biri
+**offline** çalışıp index’i kurar, öteki **her istekte** çalışır.
+
+```mermaid
+flowchart LR
+  subgraph OFF["Offline · index kurulumu"]
+    direction TB
+    O1["1 Oku"] --> O2["2 Böl"] --> O3["3 Embed et"] --> O4["4 Yaz"]
+  end
+  subgraph RUN["Runtime · her sorgu"]
+    direction TB
+    R1["5 Sorguyu embed et"] --> R2["6 top-k getir"] --> R3["7 Sentezle"] --> R4["8 Cevapla"]
+  end
+  O4 -.->|"vector store"| R2
+```
+
+<Schema title="iki hat, iki sözleşme">
+  <Col gap={6}>
+    <Pipeline accent="sky" steps={['Kaynak|dokümanlar, ticket’lar', 'Chunk|böl + overlap', 'Embed|vektör', 'Store|index']} />
+    <Pipeline steps={['Sorgu', 'Retrieve|top-k', 'Prompt|context + soru', 'Cevap|kaynaklarıyla']} />
+  </Col>
+</Schema>
+
+## Vanilla’da olmayan her şey
+
+Router yok, çok adımlı planlama yok, geri bildirim yok. Model bir kez getirir,
+bir kez cevaplar. Asıl iş **retrieval ile generation arasındaki sözleşmeyi**
+kurmak: modele ne veriyorsun, karşılığında ne bekliyorsun.
+
+<Callout type="note" title="Baseline zorunlu">
+  Vanilla RAG atlanacak bir aşama değil — ölçümün tabanı. Her ileri teknik
+  "ne kadar fayda etti" sorusunu bu pipeline’a göre cevaplar.
+</Callout>

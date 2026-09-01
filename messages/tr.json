@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "title": "Furkan Portakal — Frontend Tech Lead & Full-stack Mühendis",
+    "description": "Furkan Portakal — Sanstech'te Frontend Tech Lead, Fişle'nin kurucu ortağı. Full-stack TypeScript, AI-native ürünler ve LLM'lerle geliştirme üzerine notlar.",
+    "roleLine": "Frontend Tech Lead · Full-stack Mühendis",
+    "ogTagline": "Full-stack TypeScript, AI-native ürünler ve LLM'lerle geliştirme üzerine notlar."
+  },
+  "nav": {
+    "home": "Ana sayfa",
+    "backHome": "← Furkan Portakal",
+    "backToHome": "Ana sayfaya dön"
+  },
+  "common": {
+    "seeAll": "tümünü gör",
+    "updated": "güncellendi {date}",
+    "more": "devamı",
+    "notesCount": "{count} not"
+  },
+  "theme": {
+    "label": "tema",
+    "light": "Açık",
+    "dark": "Koyu"
+  },
+  "language": {
+    "label": "Dil",
+    "en": "English",
+    "tr": "Türkçe"
+  },
+  "writing": {
+    "title": "Yazılar",
+    "description": "Uzun yazılar — yan projeler, stack'ler ve onları yaparken öğrendiklerim.",
+    "intro": "Baştan sona okunmak üzere yazılmış uzun parçalar. Yarım kalmış düşünceler ise <garden>bahçede</garden> yaşıyor.",
+    "back": "← Yazılar"
+  },
+  "garden": {
+    "title": "Bahçe",
+    "description": "Çalışma notları, şemalar ve açık sorulardan oluşan beyaz tahtalar — bilerek yarım bırakılmış.",
+    "intro": "Makale değil, beyaz tahta. Her biri etrafında gezinebileceğiniz bir not kanvası — bilerek yarım bırakılmış ve yeni bir şey öğrendikçe güncellenen.",
+    "seeOnBoard": "Bu notu beyaz tahtada gör →",
+    "mobileHint": "Beyaz tahta daha geniş bir ekran istiyor — notlar sırayla aşağıda.",
+    "kind": {
+      "note": "not",
+      "schema": "şema",
+      "experiment": "deney",
+      "snippet": "snippet",
+      "open-question": "açık soru",
+      "role": "rol",
+      "talk": "konuşma",
+      "resource": "kaynak"
+    },
+    "status": {
+      "seed": "tohum",
+      "growing": "büyüyor",
+      "evergreen": "olgun"
+    },
+    "toolbar": {
+      "pan": "Sürükleyerek kaydır",
+      "laser": "Lazer işaretçi",
+      "trail": "iz",
+      "tap": "nokta",
+      "zoomIn": "Yakınlaştır",
+      "zoomOut": "Uzaklaştır",
+      "fit": "sığdır",
+      "notes": "notlar",
+      "menu": "Tema ve kısayollar",
+      "shortcuts": {
+        "drag": "tahtayı kaydır",
+        "cmdScroll": "yakınlaştır",
+        "plusMinus": "yakınlaştır / uzaklaştır",
+        "zero": "hepsini sığdır",
+        "slash": "notlarda ara",
+        "esc": "notu kapat",
+        "v": "sürükleme aracı",
+        "l": "lazer işaretçi"
+      }
+    },
+    "index": {
+      "search": "Notlarda ara…",
+      "unfiled": "sınıflandırılmamış"
+    },
+    "card": {
+      "open": "{title} notunu aç",
+      "openTitle": "Tam boyutta aç",
+      "permalink": "{title} kalıcı bağlantısı",
+      "permalinkTitle": "Kalıcı bağlantı",
+      "resize": "{title} boyutunu değiştir"
+    },
+    "reader": {
+      "permalink": "kalıcı bağlantı",
+      "close": "Kapat"
+    },
+    "author": {
+      "status": "yazar modu · {count} taşındı",
+      "copyTitle": "{file} dosyasının tamamını kopyalar",
+      "copy": "düzeni kopyala",
+      "copied": "kopyalandı ✓",
+      "reset": "sıfırla",
+      "exit": "çık"
+    },
+    "diagram": {
+      "alt": "Mimari diyagramı",
+      "service": "Backend",
+      "data": "Veritabanı",
+      "cloud": "Bulut",
+      "security": "Güvenlik",
+      "queue": "Kuyruk",
+      "external": "Dış",
+      "model": "Model"
+    }
+  },
+  "notFound": {
+    "title": "Sayfa bulunamadı",
+    "description": "Bu sayfa mevcut değil.",
+    "body": "Burada bir şey yetişmiyor. Sayfa taşınmış ya da hiç var olmamış olabilir.",
+    "home": "← Ana sayfaya dön"
+  }
+}

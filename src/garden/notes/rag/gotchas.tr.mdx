@@ -1,0 +1,42 @@
+Her biri bir öğleden sonraya mal olan ve artık bir config'de ya da bir test'te
+tek satır olan şeyler.
+
+<Callout type="gotcha" title="Uzun ömürlü bir process'te tree-sitter">
+  `Node.start_point` / `end_point` okumak 40. dosya civarında segfault verdi
+  (py-tree-sitter 0.26 + language-pack 1.15). Satır numaraları artık byte
+  offset'lerinden bisect ile hesaplanıyor. `progress_callback`'li
+  read-callback parse yolu da segfault veriyor — yani bir parse'a zaman
+  bütçesi koymanın hiçbir yolu yok. Patolojik grammar'lar timeout ile değil,
+  grammar başına bir subprocess smoke test'iyle yakalanıyor.
+</Callout>
+
+<Callout type="gotcha" title="Temasa dayanamayan grammar'lar">
+  `tree-sitter-sql` ORM migration dosyalarında çöküyor; `cobol` dengesiz
+  parantezlerde 300 sn'yi aşıp takılıyor. İkisi de satır penceresi olarak
+  index'leniyor ve asla bir parser'a verilmiyor.
+</Callout>
+
+<Callout type="gotcha" title="Yük altında yerel LLM'ler">
+  qwen2.5 cümle ortasında haber vermeden Çinceye kayıyor — üretilen her
+  açıklamanın alfabesi kontrol ediliyor. Thinking açık qwen3.x, 1024 token'lık
+  bütçesinin tamamını düşünmeye harcayıp hiçbir şey döndürmüyor — thinking
+  kapalı gönderiliyor. Ollama'nın default 4k context'i 8 chunk'lık bir
+  prompt'u sessizce kesiyor — 16k'ya ayarlandı.
+</Callout>
+
+<Callout type="gotcha" title="Grammar'ların ilk kullanımda inmesi">
+  language-pack 1.15 bir grammar'ı ilk kullanımda indiriyor. Laptop'ta sorun
+  yok; offline bir container'da ilk Kotlin dosyası sessizce pencerelere
+  düşüyor. Docker build'i test edilen listeyi önceden indiriyor.
+</Callout>
+
+<Callout type="gotcha" title="Secret'lar ve false positive'ler">
+  İsme dayalı secret kuralları bir repo'da 247 false positive üretti.
+  Muhafazakâr temizleme 2 üretiyor (biri gerçek). Private repo'ların
+  token'ları git header'ı olarak taşınıyor ve hata metninden temizleniyor.
+</Callout>
+
+<Sticky accent="slate">
+  Bunların hiçbiri bir benchmark'ta görünmüyor. Hepsi production'da gece 2'de
+  görünüyor.
+</Sticky>

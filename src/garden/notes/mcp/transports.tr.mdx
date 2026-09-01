@@ -1,0 +1,38 @@
+Pratikte iki transport var ve seçim aslında "aynı makine mi, değil mi"
+sorusundan ibaret.
+
+<Table
+  data={{
+    headers: ['Transport', 'Ne için', 'Biçimi'],
+    rows: [
+      ['stdio', "yerel server'lar", 'child process, stdin/stdout'],
+      ['Streamable HTTP', "uzak server'lar", 'düz HTTP, stateless'],
+      ['HTTP+SSE (legacy)', 'yeni hiçbir şey için', 'deprecated, 12 aylık çıkış takviminde'],
+    ],
+  }}
+/>
+
+<Schema title="aynı server, ona ulaşmanın iki yolu">
+  <Col gap={6}>
+    <Pipeline accent="sky" steps={['Host', 'process başlat', 'stdio', 'Server']} />
+    <Pipeline steps={['Host', 'HTTPS isteği', 'Streamable HTTP', 'Server']} />
+  </Col>
+</Schema>
+
+## SSE'den neden uzaklaşıldı
+
+Orijinal uzak transport, server'ın istekleri geri itebilmesi için uzun ömürlü
+bir server-sent-events stream'ini açık tutuyordu. Bu her bağlantıyı **sticky**
+yapıyordu — önüne düz bir load balancer koyamıyordun ve kopan bir stream
+session'ı da götürüyordu.
+
+<Callout type="gotcha" title="Eski kaynakları okuyorsan">
+  MCP hakkında yazılanların çoğu hâlâ HTTP+SSE'yi ve bir session id'yi normal
+  uzak kurulum olarak anlatıyor. O eski biçim. Yeni uzak server'lar Streamable
+  HTTP üzerinde stateless olmalı.
+</Callout>
+
+<Sticky accent="sky">
+  stdio ikinci sınıf bir transport değil — yerel dosya sistemine ya da yerel
+  credential'lara dokunan her şey için doğru olan o, üstelik en basiti.
+</Sticky>

@@ -1,0 +1,49 @@
+Referans baseline — çalışan, sade, bilerek numarasız bırakılmış bir vanilla RAG
+servisi. Her ölçümün kıyaslandığı sıfır noktası bu.
+
+<Stack layers={[
+  { label: 'API & orkestrasyon', sub: 'TypeScript + Express', accent: 'sky' },
+  { label: 'RAG entegrasyonu', sub: 'LangChain' },
+  { label: 'Vector store', sub: 'Chroma, lokal' },
+  { label: 'Embedding & generation', sub: 'Ollama, temperature 0' },
+  { label: 'Konfigürasyon', sub: 'Zod + YAML' },
+]} />
+
+<Diagram
+  title="tek process, üç bağımlılık"
+  nodes={[
+    { id: 'client', label: 'Client', sub: 'curl · eval harness', kind: 'external', x: 0, y: 0 },
+    { id: 'api', label: 'Express', sub: 'POST /rag/query', kind: 'service', x: 1, y: 0 },
+    { id: 'chain', label: 'LangChain', sub: 'retrieval zinciri', kind: 'service', x: 2, y: 0 },
+    { id: 'chroma', label: 'Chroma', sub: 'vector store · lokal', kind: 'data', x: 3, y: 0 },
+    { id: 'ollama', label: 'Ollama', sub: 'embed + chat · t=0', kind: 'model', x: 2, y: 1 },
+  ]}
+  groups={[{ label: 'tek Node process’i', kind: 'service', nodes: ['api', 'chain'] }]}
+  edges={[
+    { from: 'client', to: 'api', label: 'HTTP', kind: 'service' },
+    { from: 'api', to: 'chain', label: 'q, k (Zod)' },
+    { from: 'chain', to: 'chroma', label: 'similaritySearch', kind: 'data' },
+    { from: 'chain', to: 'ollama', label: 'embed · chat', kind: 'model', dashed: true },
+  ]}
+/>
+
+## İki hat
+
+<Schema title="hat 1 — offline index kurulumu">
+  <Pipeline steps={['JSON oku', 'Filtrele|pdfText', 'TextSplitter', 'Metadata', 'Chroma’ya yaz']} />
+</Schema>
+
+<Schema title="hat 2 — POST /rag/query">
+  <Pipeline accent="lime" steps={['Zod ile doğrula', 'similaritySearch|q, k', 'Chunk’ları biçimlendir', 'ChatOllama', 'JSON yanıt']} />
+</Schema>
+
+<Callout type="gotcha" title="Tam sıfırlama">
+  Her index kurulumunda collection’ı silip baştan yazmak baseline’da zararsız,
+  production’da yanlış: tek bir doküman değişince bütün corpus yeniden embed
+  edilir. İlk düzeltme, doküman hash’i üzerinden incremental upsert.
+</Callout>
+
+<Sticky accent="sky">
+  temperature = 0 tesadüf değil: eval sırasında cevaptaki varyans sampling’den
+  değil, retrieval kalitesinden gelmeli.
+</Sticky>

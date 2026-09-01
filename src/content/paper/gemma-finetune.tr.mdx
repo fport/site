@@ -1,0 +1,116 @@
+Fine-tuning'i okuyarak değil, uçtan uca yaparak anlamak istedim. Gemma 3 4B'yi
+aldım, üzerine Türkçe bir instruction setiyle LoRA adapter'ı koydum ve sonucu
+Hugging Face'e ve Ollama'ya gönderdim. Pipeline ilk denemede çalıştı. Model,
+girdiğinden daha kötü çıktı.
+
+İşte o son cümle, yazının tamamı.
+
+## Koşu
+
+<Table
+  data={{
+    headers: ['', ''],
+    rows: [
+      ['Base model', 'unsloth/gemma-3-4b-it, 4-bit'],
+      ['Veri seti', 'BrewInteractive/alpaca-tr — 45.331 satır, filtreleme sonrası 44.695'],
+      ['Adapter', 'LoRA r=16, alpha=16 — 4.33B parametrenin 29.8M\'i, %0.69'],
+      ['Eğitim', '60 step, batch 2 × grad accum 4 ≈ 480 örnek, lr 2e-4'],
+      ['Maskeleme', 'train_on_responses_only'],
+      ['Donanım', 'Colab Tesla T4, 14.6 GB — tepe 2.33 GB, son loss 1.231'],
+    ],
+  }}
+/>
+
+Yazmaya değer bir şey: koşu **float32**'de. T4'te bf16 yok, Gemma 3 de fp16'da
+overflow yapıyor; dolayısıyla alışıldık yarı hassasiyet kısayolu ücretsiz
+katmanda düpedüz mevcut değil. Bedelini hızdan ödüyorsun.
+
+## Ne çıktı
+
+Aynı dört soruyu, aynı seed ile, eğitimden önce ve sonra modele sordum. Cevaplar
+dramatik biçimde kısaldı:
+
+<Table
+  data={{
+    headers: ['Soru', 'Önce', 'Sonra', 'Değişim'],
+    rows: [
+      ['Türk kahvaltı kültürü', '827', '899', '+9%'],
+      ['İki günlük İstanbul programı', '646', '215', '−67%'],
+      ['Python list vs tuple', '790', '491', '−38%'],
+      ['Bu cümleyi düzelt', '399', '82', '−79%'],
+    ],
+  }}
+/>
+
+Kısa olmak kendi başına kötü değil. Kötü yapan, uzunlukla birlikte gidenler.
+Markdown yapısı gitti. Kod blokları gitti — list-vs-tuple cevabında eskiden
+çalışan bir Python örneği vardı, sonrasında yoktu. Gezi programı saat saat
+planlanmaktan çıkıp yapısız bir paragrafa dönüştü.
+
+Sonra var olmayan Türkçe kelimeler uydurmaya başladı: *salso*, *gözükürünce*,
+*Benün*. "Bu cümleyi düzelt" sorusunda da cümleyi düzeltmedi. Başka, yine bozuk
+bir cümle üretti. Bu bir ton değişikliği değil; modelin talimatı artık
+anlamaması.
+
+Bunun adı catastrophic forgetting, ve ben bunu bedava bir GPU'da on dakikada
+başardım.
+
+## Neden
+
+Dört şey, önem sırasıyla:
+
+1. **Base model zaten instruction-tuned'dı.** `-it` eki bunu söylüyor. Google'ın
+   derlediği veriyle hizalanmış. Üzerine çıkması kolay bir taban değil; ben de
+   onu taban olarak hiç görmedim.
+2. **`alpaca-tr` makine çevirisi.** Stanford Alpaca'nın çeviriden geçirilmiş
+   hâli. Kısa, yapısız, zaman zaman bozuk cevaplar.
+3. **Dolayısıyla model bilgi değil, üslup öğrendi.** Çıktı dağılımını veri
+   setinin şekline doğru çekmek için 480 örnek fazlasıyla yeterliydi.
+4. **`lr=2e-4` bunun için fazla agresif.** Bir base model'e yeni bir şey
+   öğretirken makul bir varsayılan. Güçlü bir instruct model'in üzerine yazarken
+   fazla yüksek; response-only maskelemeyle birleşince de modeli doğrudan hedef
+   üsluba itti.
+
+## Gerçekten işe yarayan kısım
+
+Model değil. Ölçüm.
+
+Pipeline'ın her aşaması işini yaptı — veriden chat template'e, LoRA'ya,
+maskelemeye, eğitime, export'a; Hub'da üç artefakt, aralarında Ollama'da lokal
+çalışan bir GGUF. Orada dursaydım fine-tuning'in ne kadar kolay olduğuna dair
+bir yazı yazmış olurdum.
+
+Beni kurtaran adım, eğitimden *önce* aynı prompt'lar ve aynı seed ile baseline
+cevaplarını kaydetmekti. Maliyeti bir hücre ve yaklaşık bir dakika. Aynı zamanda
+okuduğum fine-tuning yazılarının çoğunda eksik olan adım; o yüzden o kadar çoğu,
+modelin artık neyi yapamadığına kimse bakmadan "ve artık benim tonumda
+konuşuyor" diye bitiyor.
+
+Baseline'ı olmayan bir fine-tune başarısız olamaz. Bu iyi bir özellik değil.
+
+## İkinci tur
+
+Çözüm daha iyi hyperparameter'lar değil, daha iyi bir hedef. "Türkçesini
+iyileştir" hiçbir zaman gerçek bir hedef değildi — Gemma 3 zaten iyi Türkçe
+konuşuyor. Fine-tuning, ekmeğini base model'in *tutarsız* olduğu dar görevlerde
+kazanıyor.
+
+Bu yüzden sıradaki koşu format uyumu: her cevap sabit bir JSON şeması olarak.
+Base model burada tutarsız — bazen JSON, bazen markdown, bazen önünde bir özürle
+gelen bir JSON nesnesi. Birkaç yüz örnek bunu düzeltmeli; değerlendirme de
+tamamen nesnel: `json.loads` hata fırlatıyor mu, alanlar yerinde mi. Zevk
+meselesi yok.
+
+Yanında: `lr` 2e-5'e iniyor, tek bir final sayısına güvenmek yerine her 15
+step'te loss'u kontrol edilen, gerçekten bağlı bir eval seti, ve bf16 çalışsın,
+float32 cezası ortadan kalksın diye bir L4.
+
+Birinci tur üç hâliyle de Hub'da — [LoRA
+adapter](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-lora),
+[birleştirilmiş model](https://huggingface.co/fport/gemma-3-4b-tr-alpaca) ve
+Ollama'da lokal çalışan bir [GGUF
+build](https://huggingface.co/fport/gemma-3-4b-tr-alpaca-GGUF).
+
+Ne iseler o olarak yayımlandılar: çalışan bir pipeline ve bir regresyon.
+Notebook ve ham önce-sonra çıktıları, ikinci turun arkasında durulacak bir şeyi
+olana kadar bende kalıyor.

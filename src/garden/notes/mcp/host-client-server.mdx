@@ -1,16 +1,27 @@
 Three roles, and they are easy to blur. The **host** is the application. It
 holds one **client** per connection. Each client talks to one **server**.
 
-```mermaid
-flowchart LR
-  H["Host · IDE, chat client, agent"] --> C1["MCP client 1"]
-  H --> C2["MCP client 2"]
-  C1 --> S1["MCP server · files"]
-  C2 --> S2["MCP server · issues"]
-  S1 --> D["Local or remote database"]
-  S2 --> W["Web API"]
-  W --> R["Some remote service"]
-```
+<Diagram
+  title="one client per server"
+  nodes={[
+    { id: 'c1', label: 'MCP client 1', sub: 'one connection', kind: 'service', x: 0, y: 0 },
+    { id: 'c2', label: 'MCP client 2', sub: 'one connection', kind: 'service', x: 0, y: 1 },
+    { id: 's1', label: 'MCP server', sub: 'files · local', kind: 'service', x: 1, y: 0 },
+    { id: 's2', label: 'MCP server', sub: 'issues · remote', kind: 'service', x: 1, y: 1 },
+    { id: 'db', label: 'Database', sub: 'local or remote', kind: 'data', x: 2, y: 0 },
+    { id: 'web', label: 'Web API', sub: 'some remote service', kind: 'cloud', x: 2, y: 1 },
+  ]}
+  groups={[
+    { label: 'Host · IDE, chat client, agent', kind: 'external', nodes: ['c1', 'c2'] },
+    { label: 'the part you write', kind: 'security', nodes: ['s1', 's2'] },
+  ]}
+  edges={[
+    { from: 'c1', to: 's1', label: 'stdio', kind: 'service' },
+    { from: 'c2', to: 's2', label: 'Streamable HTTP', kind: 'service' },
+    { from: 's1', to: 'db', label: 'SQL', kind: 'data' },
+    { from: 's2', to: 'web', label: 'HTTPS', kind: 'cloud', dashed: true },
+  ]}
+/>
 
 <Table
   data={{

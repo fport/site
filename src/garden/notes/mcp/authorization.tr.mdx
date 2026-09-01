@@ -1,0 +1,28 @@
+Uzak server'lar için authorization oyunun tamamı. Spec **OAuth 2.1**'de karar
+kılıyor ve sıkılaştırdığı detaylar tam da sömürülen detaylar.
+
+<Stack layers={[
+  { label: 'PKCE, her zaman', sub: 'sadece public olanlar için değil, her client için zorunlu', accent: 'amber' },
+  { label: 'Implicit grant yok', sub: "spec'ten tamamen çıkarıldı" },
+  { label: 'Audience doğrula', sub: "sadece senin için basılmış token'ları kabul et" },
+  { label: 'Passthrough yok', sub: "bir client token'ını asla upstream bir API'ye iletme" },
+]} />
+
+## Bilmeye değer iki sıkılaştırma
+
+- **Issuer doğrulama (RFC 9207).** Credential'lar onları basan issuer'a
+  bağlanıyor; bu, authorization server'lar arasındaki bir sınıf mix-up
+  saldırısını kapatıyor.
+- **CIMD, Dynamic Client Registration'ın yerini alıyor.** Artık desteklenen
+  yol Client ID Metadata Documents; DCR resmen deprecated.
+
+<Callout type="gotcha" title="Token passthrough klasik hata">
+  Başkası için basılmış bir token'ı kabul etmek ya da client'ının token'ını
+  upstream bir servise vermek, server'ını o token'ı elinde tutan herkes için
+  açık bir proxy'ye çevirir. Upstream çağrı için kendi credential'ını bas.
+</Callout>
+
+<Sticky accent="amber">
+  Token'ları minimuma scope'la ve kullanıcı başına scope'la — server geneli bir
+  service account, olmayı bekleyen bir confused deputy problemi.
+</Sticky>
