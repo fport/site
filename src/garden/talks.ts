@@ -31,7 +31,8 @@ export const talksGarden: Garden = {
     {
       slug: 'sanstech',
       title: 'Sanstech',
-      summary: 'Frontend Developer → Senior → Tech Lead. Iddaa, two migrations, an internal AI product.',
+      summary:
+        'Frontend Developer → Senior → Tech Lead. Iddaa, two migrations, an internal AI product.',
       kind: 'role',
       status: 'evergreen',
       updated: '2026-08-28',
@@ -55,7 +56,8 @@ export const talksGarden: Garden = {
     {
       slug: 'simpra',
       title: 'Simpra',
-      summary: 'Interface architecture on Check and Place — React, Redux, Storybook and a real test setup.',
+      summary:
+        'Interface architecture on Check and Place — React, Redux, Storybook and a real test setup.',
       kind: 'role',
       status: 'evergreen',
       updated: '2026-08-28',

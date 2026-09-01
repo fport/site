@@ -59,8 +59,7 @@ const posts: Post[] = [
   {
     slug: 'ai-learning',
     title: 'My Journey in Generative AI',
-    summary:
-      'From NLP and CNNs to transformers, fine-tuning and RAG — how the ground kept moving.',
+    summary: 'From NLP and CNNs to transformers, fine-tuning and RAG — how the ground kept moving.',
     published: '2025-01-18',
     updated: '2026-01-16',
     Content: AiLearning,

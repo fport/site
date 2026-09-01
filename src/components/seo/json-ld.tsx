@@ -118,7 +118,7 @@ export async function ArticleJsonLd({
         isPartOf: { '@id': schemaId.website },
         inLanguage: locale,
         ...(published ? { datePublished: published } : {}),
-        ...(updated ?? published ? { dateModified: updated ?? published } : {}),
+        ...((updated ?? published) ? { dateModified: updated ?? published } : {}),
         ...(tags?.length ? { keywords: [...tags] } : {}),
       }}
     />

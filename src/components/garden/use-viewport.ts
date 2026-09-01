@@ -36,7 +36,7 @@ export function fitViewport(
   rect: { width: number; height: number },
   padding = 48,
   maxZoom = 1,
-  inset: Inset = {}
+  inset: Inset = {},
 ): Viewport {
   const { left = 0, top = 0, right = 0, bottom = 0 } = inset;
   const width = Math.max(1, bounds.maxX - bounds.minX);
@@ -72,7 +72,7 @@ export function useViewport(initial: Viewport = { x: 0, y: 0, z: 1 }) {
       stop();
       setViewport(next);
     },
-    [stop]
+    [stop],
   );
 
   /** Tween there — used by fit, zoom buttons and "fly to note". */
@@ -101,7 +101,7 @@ export function useViewport(initial: Viewport = { x: 0, y: 0, z: 1 }) {
       };
       frame.current = requestAnimationFrame(step);
     },
-    [stop]
+    [stop],
   );
 
   /** Zoom by `factor`, keeping the world point under (clientX, clientY) fixed. */
@@ -119,7 +119,7 @@ export function useViewport(initial: Viewport = { x: 0, y: 0, z: 1 }) {
         };
       });
     },
-    [set]
+    [set],
   );
 
   return { viewport, set, animateTo, zoomAt, stop };

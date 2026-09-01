@@ -15,35 +15,25 @@ export function CNNVisualization() {
               const yPos = 80 - (layer.nodes * 25) / 2 + nodeIndex * 25;
               return (
                 <g key={nodeIndex}>
-                  <circle
-                    cx="0"
-                    cy={yPos}
-                    r="8"
-                    fill={layer.color}
-                    className="drop-shadow-md"
-                  />
+                  <circle cx="0" cy={yPos} r="8" fill={layer.color} className="drop-shadow-md" />
                   {layerIndex < layers.length - 1 &&
-                    Array.from({ length: layers[layerIndex + 1].nodes }).map(
-                      (_, nextNodeIndex) => {
-                        const nextYPos =
-                          80 -
-                          (layers[layerIndex + 1].nodes * 25) / 2 +
-                          nextNodeIndex * 25;
-                        return (
-                          <line
-                            key={`${nodeIndex}-${nextNodeIndex}`}
-                            x1="8"
-                            y1={yPos}
-                            x2="72"
-                            y2={nextYPos}
-                            stroke="#e2e8f0"
-                            strokeWidth="1"
-                            opacity="0.5"
-                            className="dark:stroke-gray-600"
-                          />
-                        );
-                      }
-                    )}
+                    Array.from({ length: layers[layerIndex + 1].nodes }).map((_, nextNodeIndex) => {
+                      const nextYPos =
+                        80 - (layers[layerIndex + 1].nodes * 25) / 2 + nextNodeIndex * 25;
+                      return (
+                        <line
+                          key={`${nodeIndex}-${nextNodeIndex}`}
+                          x1="8"
+                          y1={yPos}
+                          x2="72"
+                          y2={nextYPos}
+                          stroke="#e2e8f0"
+                          strokeWidth="1"
+                          opacity="0.5"
+                          className="dark:stroke-gray-600"
+                        />
+                      );
+                    })}
                 </g>
               );
             })}

@@ -18,7 +18,7 @@ function gardenUpdated(notes: readonly { updated: string }[]) {
  */
 function localized(
   path: string,
-  rest: Pick<Entry, 'lastModified' | 'changeFrequency' | 'priority'>
+  rest: Pick<Entry, 'lastModified' | 'changeFrequency' | 'priority'>,
 ): MetadataRoute.Sitemap {
   const languages = {
     ...Object.fromEntries(routing.locales.map((locale) => [locale, absoluteUrl(path, locale)])),
@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(post.updated ?? post.published),
       changeFrequency: 'yearly',
       priority: 0.7,
-    })
+    }),
   );
 
   const gardenPages = gardens.flatMap((garden) => [
@@ -53,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(note.updated),
         changeFrequency: 'monthly',
         priority: 0.6,
-      })
+      }),
     ),
   ]);
 

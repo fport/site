@@ -44,5 +44,4 @@ export const schemaId = {
   website: `${site.url}/#website`,
 } as const;
 
-export const absolute = (path: string) =>
-  path.startsWith('http') ? path : `${site.url}${path}`;
+export const absolute = (path: string) => (path.startsWith('http') ? path : `${site.url}${path}`);

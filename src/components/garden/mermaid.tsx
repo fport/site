@@ -35,7 +35,7 @@ export function Mermaid({ chart, title }: { chart: string; title?: string }) {
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) setVisible(true);
       },
-      { rootMargin: '200px' }
+      { rootMargin: '200px' },
     );
     observer.observe(element);
     return () => observer.disconnect();
@@ -85,7 +85,10 @@ export function Mermaid({ chart, title }: { chart: string; title?: string }) {
           {title}
         </figcaption>
       ) : null}
-      <div ref={hostRef} className="overflow-x-auto p-3 [&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-full">
+      <div
+        ref={hostRef}
+        className="overflow-x-auto p-3 [&_svg]:mx-auto [&_svg]:h-auto [&_svg]:max-w-full"
+      >
         {state.status === 'ready' ? (
           <div dangerouslySetInnerHTML={{ __html: state.svg }} />
         ) : state.status === 'error' ? (

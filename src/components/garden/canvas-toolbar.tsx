@@ -266,10 +266,7 @@ export function CanvasToolbar({
 
               <ul className="space-y-1.5">
                 {SHORTCUTS.map(([key, what]) => (
-                  <li
-                    key={key}
-                    className="flex items-baseline justify-between gap-3 text-[11.5px]"
-                  >
+                  <li key={key} className="flex items-baseline justify-between gap-3 text-[11.5px]">
                     <span className="shrink-0 rounded border border-card-border px-1.5 py-0.5 font-mono text-[10.5px] text-muted">
                       {key}
                     </span>

@@ -1,13 +1,15 @@
-You are an expert software architect tasked with creating comprehensive code style guidelines for site. 
+You are an expert software architect tasked with creating comprehensive code style guidelines for site.
 
 # Code Style Guidelines for site
 
 ## Project Overview
+
 site is portfolio web site with mdx suported
 
 This document defines the coding standards and style guidelines for site, ensuring consistency and maintainability across the codebase.
 
 ### Technical Stack
+
 - Platform: web
 - Framework: next
 - Key Dependencies:
@@ -16,11 +18,12 @@ This document defines the coding standards and style guidelines for site, ensuri
 
 - shadcn-next
 
-
 ## Style Guide Sections
 
 ### 1. File Organization
+
 Define standards for:
+
 - Directory structure
 - File naming conventions
 - Module organization
@@ -28,7 +31,9 @@ Define standards for:
 - Code grouping within files
 
 ### 2. Code Formatting
+
 Specify:
+
 - Indentation (spaces/tabs)
 - Line length limits
 - Line breaks and spacing
@@ -39,7 +44,9 @@ Specify:
 - Comments formatting
 
 ### 3. Naming Conventions
+
 Detail rules for:
+
 - Variables (camelCase, PascalCase, etc.)
 - Functions and methods
 - Classes and interfaces
@@ -49,7 +56,9 @@ Detail rules for:
 - Test file naming
 
 ### 4. TypeScript/JavaScript Guidelines
+
 Establish:
+
 - Type annotations usage
 - Interface vs Type aliases
 - Generics conventions
@@ -60,7 +69,9 @@ Establish:
 - Optional chaining usage
 
 ### 5. Component Guidelines
+
 Define:
+
 - Component composition
 - Props interface definitions
 - State management
@@ -71,7 +82,9 @@ Define:
 - Error boundaries
 
 ### 6. Documentation Standards
+
 Specify:
+
 - JSDoc requirements
 - README structure
 - Code comments style
@@ -81,7 +94,9 @@ Specify:
 - Changelog format
 
 ### 7. Testing Standards
+
 Detail:
+
 - Test file organization
 - Naming conventions
 - Test structure (Arrange-Act-Assert)
@@ -91,7 +106,9 @@ Detail:
 - E2E test guidelines
 
 ### 8. Performance Guidelines
+
 Cover:
+
 - Bundle optimization
 - Code splitting
 - Lazy loading
@@ -101,7 +118,9 @@ Cover:
 - Asset optimization
 
 ### 9. Security Guidelines
+
 Address:
+
 - Authentication handling
 - Data validation
 - API security
@@ -111,7 +130,9 @@ Address:
 - Security best practices
 
 ### 10. Development Workflow
+
 Define:
+
 - Git workflow
 - Branch naming
 - Commit message format
@@ -123,6 +144,7 @@ Define:
 ## Enforcement and Tools
 
 ### Linting and Formatting
+
 - ESLint configuration
 - Prettier setup
 - TypeScript compiler options
@@ -130,6 +152,7 @@ Define:
 - CI checks
 
 ### IDE Configuration
+
 - VS Code settings
 - Extensions
 - Snippets
@@ -138,6 +161,7 @@ Define:
 ## Best Practices
 
 ### 1. Code Quality
+
 - Keep functions small and focused
 - Follow DRY principles
 - Maintain separation of concerns
@@ -146,6 +170,7 @@ Define:
 - Handle errors appropriately
 
 ### 2. Performance
+
 - Optimize bundle size
 - Implement code splitting
 - Use proper caching
@@ -153,6 +178,7 @@ Define:
 - Follow lazy loading patterns
 
 ### 3. Maintainability
+
 - Write clear documentation
 - Use consistent patterns
 - Implement proper error handling
@@ -160,6 +186,7 @@ Define:
 - Keep dependencies updated
 
 ### 4. Collaboration
+
 - Write clear commit messages
 - Document breaking changes
 - Maintain changelog
@@ -170,7 +197,8 @@ After generating the content, save it to the CODE_STYLE.md file using the approp
 
 Please generate comprehensive code style guidelines following this structure, ensuring all sections are thoroughly detailed and technically accurate. The final document should be saved as 'CODE_STYLE.md' in the project root directory.
 
-Note: 
+Note:
+
 - Customize the guidelines based on your project's specific needs and tech stack
 - Remove any sections that don't apply to your project
 - Add project-specific conventions and requirements

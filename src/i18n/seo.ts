@@ -21,7 +21,7 @@ export const LOCALE_LABEL: Record<Locale, string> = {
  */
 export function languageAlternates(path: string): Record<string, string> {
   const languages = Object.fromEntries(
-    routing.locales.map((locale) => [locale, localizedPath(path, locale)])
+    routing.locales.map((locale) => [locale, localizedPath(path, locale)]),
   );
   return { ...languages, 'x-default': localizedPath(path, routing.defaultLocale) };
 }

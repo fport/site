@@ -69,7 +69,12 @@ export function NoteReader({
             className="shrink-0 rounded p-1 text-muted transition-colors hover:bg-foreground/10 hover:text-foreground"
           >
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <path
+                d="M3 3l10 10M13 3L3 13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         </header>

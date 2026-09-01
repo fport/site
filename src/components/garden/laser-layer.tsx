@@ -56,7 +56,7 @@ export const LaserLayer = forwardRef<LaserHandle>(function LaserLayer(_props, re
       if (frame.current !== null) cancelAnimationFrame(frame.current);
       frame.current = null;
     },
-    []
+    [],
   );
 
   useImperativeHandle(
@@ -77,7 +77,7 @@ export const LaserLayer = forwardRef<LaserHandle>(function LaserLayer(_props, re
         tick((n) => n + 1);
       },
     }),
-    [wake]
+    [wake],
   );
 
   const now = performance.now();

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useTranslations } from "next-intl";
-import type { RefObject } from "react";
-import type { GardenCluster, PlacedNote } from "@/garden/types";
+import { useTranslations } from 'next-intl';
+import type { RefObject } from 'react';
+import type { GardenCluster, PlacedNote } from '@/garden/types';
 
 type Props = {
   tagline: string;
@@ -31,7 +31,7 @@ export function GardenIndex({
   onSelect,
   searchRef,
 }: Props) {
-  const t = useTranslations("garden.index");
+  const t = useTranslations('garden.index');
   const groups = [
     ...clusters.map((cluster) => ({
       id: cluster.id,
@@ -39,25 +39,23 @@ export function GardenIndex({
       notes: notes.filter((note) => note.cluster === cluster.id),
     })),
     {
-      id: "__loose",
-      label: t("unfiled"),
+      id: '__loose',
+      label: t('unfiled'),
       notes: notes.filter((note) => !note.cluster),
     },
   ].filter((group) => group.notes.length > 0);
 
   return (
     <div className="flex max-h-[min(28rem,calc(100dvh-6rem))] flex-col">
-      <p className="px-3 pt-3 text-[11.5px] leading-snug text-muted">
-        {tagline}
-      </p>
+      <p className="px-3 pt-3 text-[11.5px] leading-snug text-muted">{tagline}</p>
 
       <div className="px-3 pb-2 pt-2">
         <input
           ref={searchRef}
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder={t("search")}
-          aria-label={t("search")}
+          placeholder={t('search')}
+          aria-label={t('search')}
           className="w-full rounded-md border border-card-border bg-background px-2 py-1.5 text-[12.5px] placeholder:text-muted focus:border-muted focus:outline-none"
         />
       </div>
@@ -77,12 +75,12 @@ export function GardenIndex({
                       type="button"
                       onClick={() => onSelect(note.slug)}
                       className={[
-                        "w-full rounded-md px-2 py-1.5 text-left transition-colors",
+                        'w-full rounded-md px-2 py-1.5 text-left transition-colors',
                         activeSlug === note.slug
-                          ? "bg-foreground/10"
-                          : "hover:bg-foreground/[0.06]",
-                        dimmed ? "opacity-35" : "",
-                      ].join(" ")}
+                          ? 'bg-foreground/10'
+                          : 'hover:bg-foreground/[0.06]',
+                        dimmed ? 'opacity-35' : '',
+                      ].join(' ')}
                     >
                       <span className="block truncate text-[12.5px] leading-snug">
                         {note.title}

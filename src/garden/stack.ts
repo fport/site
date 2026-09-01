@@ -75,7 +75,8 @@ export const stackGarden: Garden = {
     {
       slug: 'langfuse',
       title: 'langfuse / langfuse',
-      summary: 'Open source AI engineering platform: LLM evals, observability, metrics, prompt management.',
+      summary:
+        'Open source AI engineering platform: LLM evals, observability, metrics, prompt management.',
       kind: 'resource',
       status: 'seed',
       updated: '2026-08-28',
@@ -135,7 +136,8 @@ export const stackGarden: Garden = {
     {
       slug: 'shadcn-ui',
       title: 'shadcn-ui / ui',
-      summary: 'A set of beautifully-designed, accessible components and a code distribution platform.',
+      summary:
+        'A set of beautifully-designed, accessible components and a code distribution platform.',
       kind: 'resource',
       status: 'evergreen',
       updated: '2026-08-28',

@@ -29,29 +29,17 @@ type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>;
 type PreProps = ComponentPropsWithoutRef<'pre'>;
 
 const components = {
-  h1: (props: HeadingProps) => (
-    <h1 className="font-medium pt-12 mb-0 fade-in" {...props} />
-  ),
-  h2: (props: HeadingProps) => (
-    <h2 className="text-foreground font-medium mt-8 mb-3" {...props} />
-  ),
-  h3: (props: HeadingProps) => (
-    <h3 className="text-foreground font-medium mt-8 mb-3" {...props} />
-  ),
+  h1: (props: HeadingProps) => <h1 className="font-medium pt-12 mb-0 fade-in" {...props} />,
+  h2: (props: HeadingProps) => <h2 className="text-foreground font-medium mt-8 mb-3" {...props} />,
+  h3: (props: HeadingProps) => <h3 className="text-foreground font-medium mt-8 mb-3" {...props} />,
   h4: (props: HeadingProps) => <h4 className="font-medium" {...props} />,
-  p: (props: ParagraphProps) => (
-    <p className="text-foreground leading-snug" {...props} />
-  ),
+  p: (props: ParagraphProps) => <p className="text-foreground leading-snug" {...props} />,
   ol: (props: ListProps) => (
     <ol className="text-foreground list-decimal pl-5 space-y-2" {...props} />
   ),
-  ul: (props: ListProps) => (
-    <ul className="text-foreground list-disc pl-5 space-y-1" {...props} />
-  ),
+  ul: (props: ListProps) => <ul className="text-foreground list-disc pl-5 space-y-1" {...props} />,
   li: (props: ListItemProps) => <li className="pl-1" {...props} />,
-  em: (props: ComponentPropsWithoutRef<'em'>) => (
-    <em className="font-medium" {...props} />
-  ),
+  em: (props: ComponentPropsWithoutRef<'em'>) => <em className="font-medium" {...props} />,
   strong: (props: ComponentPropsWithoutRef<'strong'>) => (
     <strong className="font-medium" {...props} />
   ),
@@ -72,13 +60,7 @@ const components = {
       );
     }
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        {...props}
-      >
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className} {...props}>
         {children}
       </a>
     );
@@ -119,10 +101,7 @@ const components = {
     </table>
   ),
   blockquote: (props: BlockquoteProps) => (
-    <blockquote
-      className="ml-[0.075em] border-l-3 border-muted pl-4 text-muted"
-      {...props}
-    />
+    <blockquote className="ml-[0.075em] border-l-3 border-muted pl-4 text-muted" {...props} />
   ),
 
   // Garden schema primitives — available in every .mdx file without importing.

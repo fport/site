@@ -30,7 +30,8 @@ export const talksGardenTr: GardenTranslation = {
   notes: {
     sanstech: {
       title: 'Sanstech',
-      summary: 'Frontend Developer → Senior → Tech Lead. Iddaa, iki büyük geçiş, şirket içi bir AI ürünü.',
+      summary:
+        'Frontend Developer → Senior → Tech Lead. Iddaa, iki büyük geçiş, şirket içi bir AI ürünü.',
       Content: SanstechTr,
     },
     pargali: {
@@ -40,7 +41,8 @@ export const talksGardenTr: GardenTranslation = {
     },
     simpra: {
       title: 'Simpra',
-      summary: 'Check and Place üzerinde arayüz mimarisi — React, Redux, Storybook ve gerçek bir test düzeni.',
+      summary:
+        'Check and Place üzerinde arayüz mimarisi — React, Redux, Storybook ve gerçek bir test düzeni.',
       Content: SimpraTr,
     },
     'mythology-tech': {

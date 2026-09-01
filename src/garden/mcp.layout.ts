@@ -1,4 +1,4 @@
-import type { NoteFrame } from "./types";
+import type { NoteFrame } from './types';
 
 /**
  * Card placement for the MCP garden, in world units. One column per cluster,
@@ -12,27 +12,27 @@ import type { NoteFrame } from "./types";
  */
 export const mcpLayout: Record<string, NoteFrame> = {
   // why mcp exists
-  "what-mcp-is": { x: 0, y: 0, w: 460, h: 740 },
-  "the-nxm-problem": { x: 0, y: 800, w: 460, h: 820 },
+  'what-mcp-is': { x: 0, y: 0, w: 460, h: 740 },
+  'the-nxm-problem': { x: 0, y: 800, w: 460, h: 820 },
 
   // architecture
-  "host-client-server": { x: 540, y: 0, w: 460, h: 550 },
+  'host-client-server': { x: 540, y: 0, w: 460, h: 550 },
   transports: { x: 540, y: 610, w: 460, h: 750 },
-  "request-walkthrough": { x: 540, y: 1420, w: 460, h: 750 },
+  'request-walkthrough': { x: 540, y: 1420, w: 460, h: 750 },
 
   // primitives
-  "server-primitives": { x: 1080, y: 0, w: 460, h: 680 },
-  "client-primitives": { x: 1080, y: 740, w: 460, h: 710 },
-  "tool-design": { x: 1080, y: 1510, w: 460, h: 690 },
+  'server-primitives': { x: 1080, y: 0, w: 460, h: 680 },
+  'client-primitives': { x: 1080, y: 740, w: 460, h: 710 },
+  'tool-design': { x: 1080, y: 1510, w: 460, h: 690 },
 
   // building one
-  "anatomy-of-a-server": { x: 1620, y: 0, w: 460, h: 690 },
-  "mcp-vs-function-calling": { x: 1620, y: 750, w: 460, h: 600 },
+  'anatomy-of-a-server': { x: 1620, y: 0, w: 460, h: 690 },
+  'mcp-vs-function-calling': { x: 1620, y: 750, w: 460, h: 600 },
 
   // security
-  "attack-surface": { x: 2160, y: 0, w: 460, h: 780 },
+  'attack-surface': { x: 2160, y: 0, w: 460, h: 780 },
   authorization: { x: 2160, y: 840, w: 460, h: 690 },
 
   // where the spec went
-  "stateless-spec": { x: 2700, y: 0, w: 460, h: 840 },
+  'stateless-spec': { x: 2700, y: 0, w: 460, h: 840 },
 };

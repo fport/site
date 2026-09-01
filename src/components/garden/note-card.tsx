@@ -69,10 +69,14 @@ export function NoteCard({
       ].join(' ')}
     >
       <header
-        onPointerDown={editing && onDragStart ? (event) => onDragStart(event, note.slug) : undefined}
+        onPointerDown={
+          editing && onDragStart ? (event) => onDragStart(event, note.slug) : undefined
+        }
         className={[
           'flex shrink-0 items-start gap-2 border-b px-3 py-2',
-          note.accent ? 'border-black/5 bg-[color:var(--accent)] dark:border-white/5' : 'border-card-border',
+          note.accent
+            ? 'border-black/5 bg-[color:var(--accent)] dark:border-white/5'
+            : 'border-card-border',
           editing ? 'cursor-grab active:cursor-grabbing' : '',
         ].join(' ')}
       >

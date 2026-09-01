@@ -6,28 +6,28 @@ A modern portfolio website built with Next.js, featuring MDX support for content
 
 ### Current Features
 
--   📝 MDX Support for dynamic content
--   🌍 English + Turkish (`next-intl`) — English at `/`, Turkish at `/tr`, with `hreflang`, localized metadata, Open Graph images and sitemap
--   🎨 Modern and clean design
--   💨 TailwindCSS for styling
--   🚀 Next.js 15 for optimal performance
--   📱 Fully responsive design
+- 📝 MDX Support for dynamic content
+- 🌍 English + Turkish (`next-intl`) — English at `/`, Turkish at `/tr`, with `hreflang`, localized metadata, Open Graph images and sitemap
+- 🎨 Modern and clean design
+- 💨 TailwindCSS for styling
+- 🚀 Next.js 15 for optimal performance
+- 📱 Fully responsive design
 
 ### Upcoming Features
 
--   💬 AI-powered chat integration
--   🔖 Bookmark system
--   📚 Interactive blog posts
--   🤖 AI assistant for visitor interactions
+- 💬 AI-powered chat integration
+- 🔖 Bookmark system
+- 📚 Interactive blog posts
+- 🤖 AI assistant for visitor interactions
 
 ## Tech Stack
 
--   Next.js 15
--   TypeScript
--   TailwindCSS
--   MDX
--   Supabase (for upcoming features)
--   shadcn/ui
+- Next.js 15
+- TypeScript
+- TailwindCSS
+- MDX
+- Supabase (for upcoming features)
+- shadcn/ui
 
 ## Getting Started
 
@@ -51,9 +51,9 @@ Visit [http://localhost:3000](http://localhost:3000) to see the site.
 
 Content is written in MDX format, allowing for:
 
--   Interactive components within markdown
--   Custom React components
--   Dynamic content rendering
+- Interactive components within markdown
+- Custom React components
+- Dynamic content rendering
 
 ## Languages
 
@@ -62,12 +62,12 @@ translation and lives under `/tr`. The routing is `next-intl` with
 `localePrefix: 'as-needed'` (`src/i18n/routing.ts`), so every pre-i18n URL
 still resolves unchanged.
 
-| What | English | Turkish |
-| --- | --- | --- |
-| UI strings | `messages/en.json` | `messages/tr.json` |
-| Homepage | `src/content/home.mdx` | `src/content/home.tr.mdx` |
-| Essays (`/paper`) | `src/content/paper/<slug>.mdx` + `src/writing.ts` | `src/content/paper/<slug>.tr.mdx` + `src/writing.tr.ts` |
-| Garden notes | `src/garden/notes/<id>/<slug>.mdx` + `src/garden/<id>.ts` | `src/garden/notes/<id>/<slug>.tr.mdx` + `src/garden/<id>.tr.ts` |
+| What              | English                                                   | Turkish                                                         |
+| ----------------- | --------------------------------------------------------- | --------------------------------------------------------------- |
+| UI strings        | `messages/en.json`                                        | `messages/tr.json`                                              |
+| Homepage          | `src/content/home.mdx`                                    | `src/content/home.tr.mdx`                                       |
+| Essays (`/paper`) | `src/content/paper/<slug>.mdx` + `src/writing.ts`         | `src/content/paper/<slug>.tr.mdx` + `src/writing.tr.ts`         |
+| Garden notes      | `src/garden/notes/<id>/<slug>.mdx` + `src/garden/<id>.ts` | `src/garden/notes/<id>/<slug>.tr.mdx` + `src/garden/<id>.tr.ts` |
 
 Translations are overlays: anything a `.tr.ts` file leaves out (a title, a
 summary, a whole note) falls back to English, so content can be translated one
@@ -83,10 +83,10 @@ locale and keeps the view transitions. Never hand-write `/tr/...` in content.
 
 This project follows modern development practices:
 
--   TypeScript for type safety
--   ESLint for code quality
--   Prettier for code formatting
--   Husky for git hooks
+- TypeScript for type safety
+- ESLint for code quality
+- Prettier for code formatting
+- Husky for git hooks
 
 ## License
 

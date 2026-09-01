@@ -20,9 +20,7 @@ export function AuthorToolbar({ dirtyCount, copied, fileName, onCopy, onReset, o
 
   return (
     <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-card-border bg-card/90 px-1.5 py-1 text-[12px] backdrop-blur-md">
-      <span className="px-2 text-muted">
-        {t('status', { count: dirtyCount })}
-      </span>
+      <span className="px-2 text-muted">{t('status', { count: dirtyCount })}</span>
       <button
         type="button"
         onClick={onCopy}

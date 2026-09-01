@@ -90,17 +90,17 @@ already have.
 Every primitive is registered globally in `mdx-components.tsx`, so notes use
 them without importing:
 
-| Primitive | For |
-| --- | --- |
-| `<Schema title>` | framed drawing surface with a faint grid |
-| `<Pipeline steps={['A\|caption', 'B']} />` | `A → B → C` in one line |
-| `<Stack layers={[{label, sub, accent}]} />` | layered architecture |
-| `<Box sub accent dashed>` / `<Arrow dir label>` | hand-built diagrams |
-| `<Row>` / `<Col>` | arranging the above |
-| `<Meter label value max unit>` | budgets, ratios, deltas |
-| `<Callout type>` / `<Sticky accent>` | asides and post-its |
-| `<Diagram nodes groups edges title>` | infra-style architecture diagram: typed nodes on a grid (`x`, `y`, kind `service` `data` `cloud` `security` `queue` `external` `model`), dashed regions around named nodes, labelled arrows (`dashed`, `route`), automatic legend — one static SVG |
-| ` ```mermaid ` fence | flowcharts, sequence diagrams |
+| Primitive                                       | For                                                                                                                                                                                                                                                |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<Schema title>`                                | framed drawing surface with a faint grid                                                                                                                                                                                                           |
+| `<Pipeline steps={['A\|caption', 'B']} />`      | `A → B → C` in one line                                                                                                                                                                                                                            |
+| `<Stack layers={[{label, sub, accent}]} />`     | layered architecture                                                                                                                                                                                                                               |
+| `<Box sub accent dashed>` / `<Arrow dir label>` | hand-built diagrams                                                                                                                                                                                                                                |
+| `<Row>` / `<Col>`                               | arranging the above                                                                                                                                                                                                                                |
+| `<Meter label value max unit>`                  | budgets, ratios, deltas                                                                                                                                                                                                                            |
+| `<Callout type>` / `<Sticky accent>`            | asides and post-its                                                                                                                                                                                                                                |
+| `<Diagram nodes groups edges title>`            | infra-style architecture diagram: typed nodes on a grid (`x`, `y`, kind `service` `data` `cloud` `security` `queue` `external` `model`), dashed regions around named nodes, labelled arrows (`dashed`, `route`), automatic legend — one static SVG |
+| ` ```mermaid ` fence                            | flowcharts, sequence diagrams                                                                                                                                                                                                                      |
 
 Mermaid is lazy — it loads only when a diagram scrolls into view, so pages
 without one never pay for it.

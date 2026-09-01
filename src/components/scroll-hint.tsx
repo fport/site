@@ -14,10 +14,7 @@ export function ScrollHint() {
 
   useEffect(() => {
     const update = () => {
-      const remaining =
-        document.documentElement.scrollHeight -
-        window.scrollY -
-        window.innerHeight;
+      const remaining = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
       setVisible(remaining > 48);
     };
 
@@ -41,9 +38,7 @@ export function ScrollHint() {
         type="button"
         className="scroll-hint__cue"
         tabIndex={visible ? 0 : -1}
-        onClick={() =>
-          window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' })
-        }
+        onClick={() => window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' })}
       >
         {t('more')}
         <span className="scroll-hint__arrow" aria-hidden="true">

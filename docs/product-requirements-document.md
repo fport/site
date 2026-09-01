@@ -1,23 +1,27 @@
-You are an expert product manager tasked with creating a detailed Product Requirements Document (PRD) for site. 
+You are an expert product manager tasked with creating a detailed Product Requirements Document (PRD) for site.
 
 # site - Product Requirements Document
 
 ## Project Overview
+
 site is portfolio web site with mdx suported
 
 ## Project Context
+
 Platform: web
 Framework: next
-Dependencies: 
+Dependencies:
+
 - tailwind-next
 
 - shadcn
 
-
 ## Document Sections
 
 ### 1. Executive Summary
+
 Write a concise overview that includes:
+
 - Product vision and goals
 - Target audience
 - Key value propositions
@@ -25,7 +29,9 @@ Write a concise overview that includes:
 - Project timeline overview
 
 ### 2. Problem Statement
+
 Describe:
+
 - Current pain points and challenges
 - Market opportunity
 - User needs and feedback
@@ -33,7 +39,9 @@ Describe:
 - Competitive analysis
 
 ### 3. Product Scope
+
 Detail:
+
 - Core features and capabilities
 - User personas and journey maps
 - Use cases and user stories
@@ -41,7 +49,9 @@ Detail:
 - Future considerations
 
 ### 4. Technical Requirements
+
 Specify:
+
 - System architecture overview
 - Platform requirements (web)
 - Framework specifications (next)
@@ -51,7 +61,9 @@ Specify:
 - Scalability considerations
 
 ### 5. Feature Specifications
+
 For each feature, include:
+
 - Detailed description
 - User stories
 - Acceptance criteria
@@ -61,7 +73,9 @@ For each feature, include:
 - Effort estimation
 
 ### 6. Non-Functional Requirements
+
 Address:
+
 - Performance metrics
 - Security standards
 - Accessibility requirements
@@ -70,7 +84,9 @@ Address:
 - Browser/device support
 
 ### 7. Implementation Plan
+
 Outline:
+
 - Development phases
 - Resource requirements
 - Timeline and milestones
@@ -79,7 +95,9 @@ Outline:
 - Launch criteria
 
 ### 8. Success Metrics
+
 Define:
+
 - Key performance indicators
 - Success criteria
 - Monitoring plan
@@ -89,24 +107,28 @@ Define:
 ## Writing Guidelines
 
 1. Technical Detail:
+
 - Provide implementation-ready specifications
 - Include clear acceptance criteria
 - Define measurable success metrics
 - Document technical constraints
 
 2. Clarity:
+
 - Use clear, unambiguous language
 - Define technical terms
 - Include visual aids where helpful
 - Provide examples for complex features
 
 3. Scope:
+
 - Clearly define what's in/out of scope
 - Prioritize features and requirements
 - Document dependencies and assumptions
 - Include future considerations
 
 4. Implementation Focus:
+
 - Consider technical feasibility
 - Address scalability concerns
 - Document integration requirements

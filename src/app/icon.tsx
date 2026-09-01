@@ -12,41 +12,39 @@ export const contentType = 'image/png';
  */
 export default function Icon() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#1b1d1e',
+        position: 'relative',
+      }}
+    >
       <div
         style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#1b1d1e',
-          position: 'relative',
+          width: 24,
+          height: 24,
+          borderRadius: '50%',
+          background: '#fd971f',
         }}
-      >
-        <div
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: '50%',
-            background: '#fd971f',
-          }}
-        />
-        {/* The leaf. Small enough to read as a notch rather than a shape. */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 3,
-            left: 17,
-            width: 10,
-            height: 6,
-            borderRadius: '50%',
-            background: '#a6e22e',
-            transform: 'rotate(-28deg)',
-          }}
-        />
-      </div>
-    ),
-    size
+      />
+      {/* The leaf. Small enough to read as a notch rather than a shape. */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 3,
+          left: 17,
+          width: 10,
+          height: 6,
+          borderRadius: '50%',
+          background: '#a6e22e',
+          transform: 'rotate(-28deg)',
+        }}
+      />
+    </div>,
+    size,
   );
 }

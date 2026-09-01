@@ -33,10 +33,7 @@ export function Schema({
 }
 
 /** Post-it note. Good for an aside you would have scribbled in the margin. */
-export function Sticky({
-  children,
-  accent = 'amber',
-}: Children & { accent?: NoteAccent }) {
+export function Sticky({ children, accent = 'amber' }: Children & { accent?: NoteAccent }) {
   return (
     <div
       data-accent={accent}
@@ -168,13 +165,7 @@ export function Arrow({
 }
 
 /** Shorthand for `Box → Box → Box`. Steps may be `'Label'` or `'Label|caption'`. */
-export function Pipeline({
-  steps,
-  accent,
-}: {
-  steps: string[];
-  accent?: NoteAccent;
-}) {
+export function Pipeline({ steps, accent }: { steps: string[]; accent?: NoteAccent }) {
   return (
     <div className="flex items-stretch gap-1">
       {steps.map((step, index) => {

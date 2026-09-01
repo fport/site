@@ -13,7 +13,7 @@ type Props = { params: Promise<{ locale: Locale; garden: string; slug: string }>
 
 export function generateStaticParams() {
   return gardens.flatMap((garden) =>
-    garden.notes.map((note) => ({ garden: garden.id, slug: note.slug }))
+    garden.notes.map((note) => ({ garden: garden.id, slug: note.slug })),
   );
 }
 

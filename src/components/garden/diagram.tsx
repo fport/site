@@ -113,13 +113,25 @@ function routeEdge(from: Rect, to: Rect, route?: 'hv' | 'vh'): Point[] {
 
   if (sameRow) {
     return b.x > a.x
-      ? [{ x: from.x + from.w, y: a.y }, { x: to.x, y: b.y }]
-      : [{ x: from.x, y: a.y }, { x: to.x + to.w, y: b.y }];
+      ? [
+          { x: from.x + from.w, y: a.y },
+          { x: to.x, y: b.y },
+        ]
+      : [
+          { x: from.x, y: a.y },
+          { x: to.x + to.w, y: b.y },
+        ];
   }
   if (sameCol) {
     return b.y > a.y
-      ? [{ x: a.x, y: from.y + from.h }, { x: b.x, y: to.y }]
-      : [{ x: a.x, y: from.y }, { x: b.x, y: to.y + to.h }];
+      ? [
+          { x: a.x, y: from.y + from.h },
+          { x: b.x, y: to.y },
+        ]
+      : [
+          { x: a.x, y: from.y },
+          { x: b.x, y: to.y + to.h },
+        ];
   }
 
   const mode = route ?? (Math.abs(b.x - a.x) >= Math.abs(b.y - a.y) ? 'hv' : 'vh');
@@ -220,12 +232,14 @@ export function Diagram({
         count: counts.get(kind) ?? 0,
       }))
     : [];
-  const legendRows: { kind: DiagramKind; label: string; count: number; x: number; y: number }[] = [];
+  const legendRows: { kind: DiagramKind; label: string; count: number; x: number; y: number }[] =
+    [];
   {
     let x = bounds.x;
     let y = bounds.y + bounds.h + 30;
     for (const item of legendItems) {
-      const width = 22 + textWidth(item.label, 10.5) + 12 + textWidth(String(item.count), 9) + 10 + 18;
+      const width =
+        22 + textWidth(item.label, 10.5) + 12 + textWidth(String(item.count), 9) + 10 + 18;
       if (x + width > bounds.x + bounds.w && x > bounds.x) {
         x = bounds.x;
         y += 22;
@@ -235,9 +249,7 @@ export function Diagram({
     }
   }
 
-  const height = legendRows.length
-    ? legendRows[legendRows.length - 1].y + 10 - bounds.y
-    : bounds.h;
+  const height = legendRows.length ? legendRows[legendRows.length - 1].y + 10 - bounds.y : bounds.h;
   const viewBox = `${bounds.x - MARGIN} ${bounds.y - MARGIN} ${bounds.w + MARGIN * 2} ${height + MARGIN * 2}`;
   const width = bounds.w + MARGIN * 2;
 

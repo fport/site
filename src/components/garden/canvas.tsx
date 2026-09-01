@@ -89,7 +89,7 @@ function layoutSource(gardenId: string, order: string[], frames: Record<string, 
     .map((slug) => {
       const f = frames[slug];
       return `  '${slug}': { x: ${Math.round(f.x)}, y: ${Math.round(f.y)}, w: ${Math.round(
-        f.w
+        f.w,
       )}, h: ${Math.round(f.h)} },`;
     })
     .join('\n');
@@ -130,9 +130,9 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
   const initialFrames = useMemo(
     () =>
       Object.fromEntries(
-        notes.map((note) => [note.slug, { x: note.x, y: note.y, w: note.w, h: note.h }])
+        notes.map((note) => [note.slug, { x: note.x, y: note.y, w: note.w, h: note.h }]),
       ) as Record<string, NoteFrame>,
-    [notes]
+    [notes],
   );
 
   const [frames, setFrames] = useState<Record<string, NoteFrame>>(initialFrames);
@@ -162,12 +162,12 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
 
   const placed = useMemo(
     () => notes.map((note) => ({ ...note, ...frames[note.slug] })),
-    [notes, frames]
+    [notes, frames],
   );
 
   const matches = useMemo(
     () => new Set(placed.filter((note) => matchesQuery(note, query)).map((note) => note.slug)),
-    [placed, query]
+    [placed, query],
   );
 
   const dirtyCount = useMemo(
@@ -177,7 +177,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
         const b = initialFrames[slug];
         return a.x !== b.x || a.y !== b.y || a.w !== b.w || a.h !== b.h;
       }).length,
-    [frames, initialFrames]
+    [frames, initialFrames],
   );
 
   const storageKey = `garden:${garden.id}:frames`;
@@ -228,7 +228,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
       bottom: CONTROLS_HEIGHT,
       left: indexOpenRef.current ? DRAWER_WIDTH : 0,
     }),
-    []
+    [],
   );
 
   const fitAll = useCallback(() => {
@@ -236,9 +236,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
     if (!element) return;
     const rect = element.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
-    animateTo(
-      fitViewport(boundsOf(Object.values(framesRef.current)), rect, 48, 1, fitInset())
-    );
+    animateTo(fitViewport(boundsOf(Object.values(framesRef.current)), rect, 48, 1, fitInset()));
   }, [animateTo, fitInset]);
 
   const flyTo = useCallback(
@@ -249,7 +247,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
       const rect = element.getBoundingClientRect();
       if (rect.width === 0) return;
       const z = clampZoom(
-        Math.min((rect.width * 0.62) / frame.w, (rect.height * 0.82) / frame.h, 1.15)
+        Math.min((rect.width * 0.62) / frame.w, (rect.height * 0.82) / frame.h, 1.15),
       );
       animateTo({
         z,
@@ -258,7 +256,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
       });
       setActiveSlug(slug);
     },
-    [animateTo, indexOpen]
+    [animateTo, indexOpen],
   );
 
   // Fit once the surface actually has a size — it starts at zero while the
@@ -290,7 +288,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
               x: (inset.left ?? 0) + 48 - bounds.minX * z,
               y: (inset.top ?? 0) + 48 - bounds.minY * z,
             },
-            0
+            0,
           );
         } else {
           animateTo(fit, 0);
@@ -325,7 +323,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
           Math.exp(-step * ZOOM_SENSITIVITY),
           event.clientX,
           event.clientY,
-          element.getBoundingClientRect()
+          element.getBoundingClientRect(),
         );
         return;
       }
@@ -336,8 +334,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
       if (scroller && scroller.scrollHeight > scroller.clientHeight + 1) {
         const goingDown = event.deltaY > 0;
         const atTop = scroller.scrollTop <= 0;
-        const atBottom =
-          scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+        const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
         if (!((goingDown && atBottom) || (!goingDown && atTop))) return;
       }
 
@@ -510,8 +507,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      const typing =
-        target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+      const typing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
 
       if (event.key === '/' && !typing) {
         event.preventDefault();
@@ -559,7 +555,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
     const source = layoutSource(
       garden.id,
       notes.map((note) => note.slug),
-      frames
+      frames,
     );
     const ok = await copyText(source);
     setCopied(ok);
@@ -589,7 +585,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
         zoomAt(factor, rect.left + rect.width / 2, rect.top + rect.height / 2, rect);
       }
     },
-    [zoomAt]
+    [zoomAt],
   );
 
   return (
@@ -606,8 +602,7 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
           style={{
-            backgroundImage:
-              'radial-gradient(circle, var(--paper-dot) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, var(--paper-dot) 1px, transparent 1px)',
             backgroundSize: `${24 * viewport.z}px ${24 * viewport.z}px`,
             backgroundPosition: `${viewport.x}px ${viewport.y}px`,
             opacity: Math.min(1, viewport.z * 1.4),
@@ -694,7 +689,6 @@ export function GardenCanvas({ garden, notes }: { garden: GardenMeta; notes: Can
               />
             </div>
           ) : null}
-
         </div>
       </div>
 

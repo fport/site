@@ -22,8 +22,7 @@ export function GET() {
     .map((garden) => {
       const notes = garden.notes
         .map(
-          (note) =>
-            `- [${note.title}](${site.url}${garden.path}/${note.slug}) — ${note.summary}`
+          (note) => `- [${note.title}](${site.url}${garden.path}/${note.slug}) — ${note.summary}`,
         )
         .join('\n');
       return `### ${garden.title}\n\n${garden.tagline}\n\n${notes}`;

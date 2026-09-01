@@ -1,4 +1,4 @@
-import type { NoteFrame } from "./types";
+import type { NoteFrame } from './types';
 
 /**
  * Card placement for the Code RAG garden, in world units. One column per
@@ -13,30 +13,30 @@ import type { NoteFrame } from "./types";
  */
 export const ragLayout: Record<string, NoteFrame> = {
   // the problem
-  "four-hard-things": { x: 0, y: 0, w: 460, h: 720 },
-  "first-experiment": { x: 0, y: 780, w: 460, h: 820 },
+  'four-hard-things': { x: 0, y: 0, w: 460, h: 720 },
+  'first-experiment': { x: 0, y: 780, w: 460, h: 820 },
 
   // the stack
-  "stack-choices": { x: 540, y: 0, w: 460, h: 1080 },
-  "incremental-sync": { x: 540, y: 1140, w: 460, h: 820 },
+  'stack-choices': { x: 540, y: 0, w: 460, h: 1080 },
+  'incremental-sync': { x: 540, y: 1140, w: 460, h: 820 },
 
   // retrieval, measured
-  "route-by-query-shape": { x: 1080, y: 0, w: 460, h: 860 },
-  "reranker-hurt": { x: 1080, y: 920, w: 460, h: 820 },
-  "turkish-over-english-code": { x: 1080, y: 1800, w: 460, h: 980 },
+  'route-by-query-shape': { x: 1080, y: 0, w: 460, h: 860 },
+  'reranker-hurt': { x: 1080, y: 920, w: 460, h: 820 },
+  'turkish-over-english-code': { x: 1080, y: 1800, w: 460, h: 980 },
 
   // chunking & languages
-  "chunk-is-a-code-unit": { x: 1620, y: 0, w: 460, h: 860 },
-  "ast-vs-windows": { x: 1620, y: 920, w: 460, h: 900 },
-  "language-coverage-is-a-rule": { x: 1620, y: 1880, w: 460, h: 1160 },
+  'chunk-is-a-code-unit': { x: 1620, y: 0, w: 460, h: 860 },
+  'ast-vs-windows': { x: 1620, y: 920, w: 460, h: 900 },
+  'language-coverage-is-a-rule': { x: 1620, y: 1880, w: 460, h: 1160 },
 
   // saying no
-  "three-bands": { x: 2160, y: 0, w: 460, h: 1040 },
+  'three-bands': { x: 2160, y: 0, w: 460, h: 1040 },
 
   // agent surface
-  "mcp-same-process": { x: 2700, y: 0, w: 460, h: 940 },
+  'mcp-same-process': { x: 2700, y: 0, w: 460, h: 940 },
 
   // lessons
-  "measure-or-it-didnt-happen": { x: 3240, y: 0, w: 460, h: 900 },
+  'measure-or-it-didnt-happen': { x: 3240, y: 0, w: 460, h: 900 },
   gotchas: { x: 3240, y: 960, w: 460, h: 940 },
 };

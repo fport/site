@@ -63,7 +63,8 @@ export const stackGardenTr: GardenTranslation = {
     },
     vllm: {
       title: 'vllm-project / vllm',
-      summary: "LLM'ler için yüksek throughput'lu ve bellek açısından verimli bir inference ve serving motoru.",
+      summary:
+        "LLM'ler için yüksek throughput'lu ve bellek açısından verimli bir inference ve serving motoru.",
       Content: VllmTr,
     },
     'claude-code-action': {

@@ -5,7 +5,10 @@ import type { PlacedNote } from '@/garden/types';
 type Point = { x: number; y: number };
 
 /** Pick the pair of card edges that gives the shortest, least-crossing curve. */
-function anchors(from: PlacedNote, to: PlacedNote): { start: Point; end: Point; horizontal: boolean } {
+function anchors(
+  from: PlacedNote,
+  to: PlacedNote,
+): { start: Point; end: Point; horizontal: boolean } {
   const fromCenter = { x: from.x + from.w / 2, y: from.y + from.h / 2 };
   const toCenter = { x: to.x + to.w / 2, y: to.y + to.h / 2 };
   const dx = toCenter.x - fromCenter.x;
@@ -46,19 +49,13 @@ function path(from: PlacedNote, to: PlacedNote) {
  * curves pan and zoom with the cards; a 1×1 SVG with `overflow: visible` lets
  * us draw anywhere without sizing it to the content.
  */
-export function Edges({
-  notes,
-  activeSlug,
-}: {
-  notes: PlacedNote[];
-  activeSlug: string | null;
-}) {
+export function Edges({ notes, activeSlug }: { notes: PlacedNote[]; activeSlug: string | null }) {
   const bySlug = new Map(notes.map((note) => [note.slug, note]));
   const edges = notes.flatMap((note) =>
     (note.links ?? []).flatMap((target) => {
       const to = bySlug.get(target);
       return to ? [{ from: note, to, key: `${note.slug}->${target}` }] : [];
-    })
+    }),
   );
 
   if (edges.length === 0) return null;
