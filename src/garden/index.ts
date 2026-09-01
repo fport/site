@@ -1,5 +1,6 @@
 import { aiGarden } from "./ai";
 import { mcpGarden } from "./mcp";
+import { ragGarden } from "./rag";
 import { stackGarden } from "./stack";
 import { talksGarden } from "./talks";
 import type { Garden } from "./types";
@@ -11,6 +12,7 @@ import type { Garden } from "./types";
  */
 export const gardens: Garden[] = [
   aiGarden,
+  ragGarden,
   mcpGarden,
   stackGarden,
   talksGarden,
@@ -20,5 +22,5 @@ export function getGarden(id: string): Garden | undefined {
   return gardens.find((garden) => garden.id === id);
 }
 
-export { aiGarden, mcpGarden, stackGarden, talksGarden };
+export { aiGarden, mcpGarden, ragGarden, stackGarden, talksGarden };
 export * from "./types";

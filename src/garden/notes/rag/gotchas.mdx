@@ -1,0 +1,41 @@
+Things that cost an afternoon each and are now one line in a config or a test.
+
+<Callout type="gotcha" title="tree-sitter in a long-lived process">
+  Reading `Node.start_point` / `end_point` segfaulted around the 40th file
+  (py-tree-sitter 0.26 + language-pack 1.15). Line numbers are computed from
+  byte offsets with a bisect instead. The read-callback parse path with
+  `progress_callback` segfaults too — so there is no way to put a time budget
+  on a parse. Pathological grammars are caught by a per-grammar subprocess
+  smoke test, not by a timeout.
+</Callout>
+
+<Callout type="gotcha" title="Grammars that do not survive contact">
+  `tree-sitter-sql` crashes on ORM migration files; `cobol` hangs past 300 s
+  on unbalanced brackets. Both are indexed as line windows and never handed
+  to a parser.
+</Callout>
+
+<Callout type="gotcha" title="Local LLMs under load">
+  qwen2.5 drifts into Chinese mid-sentence without saying so — every generated
+  description is script-checked. qwen3.x with thinking on spends its whole
+  1024-token budget thinking and returns nothing — thinking is sent off.
+  Ollama's default 4k context silently truncates an 8-chunk prompt — it is
+  set to 16k.
+</Callout>
+
+<Callout type="gotcha" title="Lazy grammar downloads">
+  language-pack 1.15 fetches a grammar on first use. Fine on a laptop; in an
+  offline container the first Kotlin file quietly falls back to windows. The
+  Docker build prefetches the tested list.
+</Callout>
+
+<Callout type="gotcha" title="Secrets and false positives">
+  Name-based secret rules produced 247 false positives on one repo. The
+  conservative scrub produces 2 (one real). Tokens for private repos travel as
+  a git header and are redacted from error text.
+</Callout>
+
+<Sticky accent="slate">
+  None of these show up in a benchmark. All of them show up in production at
+  2 a.m.
+</Sticky>

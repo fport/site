@@ -1,0 +1,30 @@
+The textbook says: retrieve 40, rerank with a cross-encoder, hand over 8. On
+this corpus the textbook was wrong, and the numbers said so.
+
+<Table
+  data={{
+    headers: ["Setting", "Recall@8", "MRR", "TR prose", "p50"],
+    rows: [
+      ["auto + dense (no rerank)", "0.786", "0.690", "0.684", "34 ms"],
+      ["hybrid, k=40 candidates", "0.952", "—", "0.895", "39 ms"],
+      ["hybrid + bge-reranker-v2-m3", "0.762", "0.508", "0.579", "4389 ms"],
+      ["auto + bge-reranker-v2-m3", "0.762", "0.514", "0.579", "2050 ms"],
+    ],
+  }}
+/>
+
+- **The headroom is real.** Recall@40 is 0.95 — the right chunk is almost
+  always in the candidate pool. A good reranker has 17 points to win.
+- **This reranker spent them.** MRR dropped from 0.690 to 0.514 and the
+  Turkish slice fell furthest. It also cost two to four seconds per query.
+- **As a "no answer" gate it was worse.** It caught 12/12 negatives — and
+  flagged 12/42 real answers as junk. A 29% false alarm rate.
+
+<Callout type="warn" title="Kept, but off">
+  The flag exists so that a better reranker can be tried as one more table
+  row. The default is decided by the table, not by the paper.
+</Callout>
+
+<Sticky accent="lime">
+  A reranker is a hypothesis about your corpus. Test it like one.
+</Sticky>

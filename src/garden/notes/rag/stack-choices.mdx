@@ -1,0 +1,33 @@
+One process, one collection, one database file. Each piece was picked against
+the four hard problems, not against a feature list.
+
+<Stack
+  layers={[
+    { label: "MCP · /mcp", sub: "search_code · read_code · list_repos, same process", accent: "sky" },
+    { label: "FastAPI + typer", sub: "/search /ask, webhooks, CLI", accent: "sky" },
+    { label: "Retriever", sub: "route → dense | BM25 → (RRF, rerank behind flags)", accent: "lime" },
+    { label: "Milvus 2.6", sub: "dense + BM25 sparse in one collection, repo_id partition key", accent: "violet" },
+    { label: "BGE-M3 · tree-sitter · sha256 manifest", sub: "embed · chunk · diff", accent: "violet" },
+    { label: "SQLite + one worker", sub: "repos, files, jobs, enrichment cache", accent: "slate" },
+  ]}
+/>
+
+<Table
+  data={{
+    headers: ["Piece", "Why", "Rejected"],
+    rows: [
+      ["Milvus 2.6", "BM25 is a built-in Function → no second index; partition key makes repo filters cheap", "pgvector (no BM25), Qdrant (BM25 client-side), Elasticsearch (a second world)"],
+      ["BGE-M3, local, 1024d", "multilingual: Turkish prose 0.684 where MiniLM had 0.04; code never leaves the machine", "OpenAI / Voyage embeddings (code leaves; kept as a flag)"],
+      ["tree-sitter", "chunk = code unit, citation = file:line — symbol", "fixed windows, LLM chunking"],
+      ["sha256 manifest", "rename, mode, submodule edge cases vanish; local dirs take the same path", "git diff"],
+      ["webhook + poller", "push-time freshness with a safety net", "cron only, webhook only"],
+      ["SQLite + one worker", "one file, no Redis, one pending job per repo", "Postgres + Celery"],
+    ],
+  }}
+/>
+
+<Sticky accent="sky">
+  The whole thing talks to the world over HTTP and never writes into the repos
+  it indexes. Personal access tokens travel as a git header and are redacted
+  from every error message.
+</Sticky>

@@ -1,0 +1,28 @@
+Vector search is the easy part of a codebase RAG. The four things that are
+actually hard decided every part of this system.
+
+<Schema title="what breaks first">
+  <Row gap={6}>
+    <Box accent="rose" sub="handleAuthCallback">exact symbols</Box>
+    <Box accent="rose" sub="prose vs. code">Turkish → English</Box>
+    <Box accent="rose" sub="repo moved on">staleness</Box>
+    <Box accent="rose" sub="kNN never says no">saying "no"</Box>
+  </Row>
+</Schema>
+
+<Table
+  data={{
+    headers: ["Problem", "What we did", "Measured"],
+    rows: [
+      ["Symbols", "route symbol-shaped queries to BM25", "1.0 / 1.0 recall@8 / MRR"],
+      ["Turkish questions", "multilingual embedder, optional LLM descriptions", "0.04 → 0.684 → 1.0 (subset)"],
+      ["Staleness", "sha256 manifest diff on push", "38 changed files in 23 s"],
+      ["No answer", "three score bands + negative golden cases", "abstain 0.846, false alarm 0.048"],
+    ],
+  }}
+/>
+
+<Sticky accent="rose">
+  Every row is a decision with a number next to it. The rest of this garden is
+  the story of those numbers — including the ones that changed our minds.
+</Sticky>

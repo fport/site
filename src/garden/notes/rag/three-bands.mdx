@@ -1,0 +1,48 @@
+Nearest-neighbour search has no concept of "nothing is close". Ask a codebase
+whether you have been to a five-star resort and it returns eight chunks (best
+score 0.366). Hallucination starts right there.
+
+<Schema title="CRAG-style bands on the top dense score">
+  <Row gap={6}>
+    <Box accent="rose" sub="dropped, counted">below 0.45</Box>
+    <Arrow />
+    <Box accent="amber" sub="returned with a weak-match note">0.45 – 0.55</Box>
+    <Arrow />
+    <Box accent="lime" sub="normal">0.55 and up</Box>
+  </Row>
+</Schema>
+
+## Why not one threshold
+
+Cosine does not separate the grey zone on this model and corpus: real answers
+have a top-1 dense median of 0.636 and a minimum of 0.526; irrelevant
+questions have a median of 0.524 and a *maximum* of 0.587. They overlap. A
+single cut either drops real answers or lets junk through.
+
+<Table
+  data={{
+    headers: ["Gate", "abstain on 13 negatives", "false alarm on 42 positives", "extra latency"],
+    rows: [
+      ["note below 0.55", "0.833", "0.048", "0"],
+      ["floor 0.45 + note 0.55 ✓", "0.846", "0.048", "0"],
+      ["reranker score below 0.05", "1.000", "0.286", "+550 ms"],
+    ],
+  }}
+/>
+
+The floor removed nothing from the golden set and turned the resort question
+into an empty result. The two negatives that still slip through are questions
+with genuinely *similar* code in the repo — there the call belongs to the
+reader.
+
+<Callout type="idea" title="Signals, not filters">
+  The retriever never decides alone. It returns the band, a DOC label on
+  documentation hits, how many candidates were dropped, and how fresh the
+  index is. The judge is the agent, the LLM or the human — with the evidence.
+</Callout>
+
+<Callout type="warn" title="Thresholds are per model + corpus">
+  The same job scores ~0.73 on one embedder and ~0.46 on another. Every eval
+  report prints the calibration block — positives' minimum, negatives'
+  maximum — and the bands are re-read from it when the model changes.
+</Callout>

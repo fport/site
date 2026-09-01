@@ -1,0 +1,28 @@
+A push should cost seconds, not a full re-index. Change detection is by
+content hash, not by git diff.
+
+<Schema title="what a push triggers">
+  <Pipeline accent="sky" steps={["push|webhook or poll", "job|deduped per repo", "fetch + reset", "sha256 diff|vs manifest", "delete + rewrite|changed paths only", "manifest|updated"]} />
+</Schema>
+
+## Why a hash and not a diff
+
+- Renames, mode changes, submodules, force-pushes: none of them are special
+  cases when you compare file contents.
+- A local directory that is not a git repo goes through the exact same path.
+- The manifest is the single source of truth for `read_code` too — the agent
+  can only read files that are actually indexed.
+
+## Crash safety by ordering
+
+A file's manifest row is removed **before** its chunks are deleted and put back
+**after** the new chunks are written. A job killed halfway leaves the file
+looking "unindexed", so the next sync simply redoes it. Nothing is ever half
+there.
+
+<Callout type="note" title="Measured">
+  318-file TypeScript API: full index ≈ 5 minutes on an Apple M-series
+  (embedding dominates); a push touching 38 files ≈ 23 s. When a chunk or
+  embedding setting changes, an `index_version` string changes with it and
+  the next sync is forced to be full.
+</Callout>

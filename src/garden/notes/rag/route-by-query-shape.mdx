@@ -1,0 +1,34 @@
+Two retrievers, one regex. A query that looks like a symbol goes to BM25;
+a sentence goes to the dense index. Hybrid fusion and reranking stay behind
+flags — both were measured and both lost.
+
+<Table
+  data={{
+    headers: ["Setting", "Recall@8", "MRR", "TR prose R@8", "p50"],
+    rows: [
+      ["BM25 only", "0.405", "0.240", "0.263", "2 ms"],
+      ["hybrid (dense + BM25 → RRF)", "0.786", "0.604", "0.684", "40 ms"],
+      ["dense only", "0.786", "0.678", "0.684", "32 ms"],
+      ["auto: symbol → BM25, prose → dense ✓", "0.786", "0.690", "0.684", "34 ms"],
+    ],
+  }}
+/>
+
+## Why always-hybrid loses
+
+RRF adds up *ranks*. When one channel has nothing useful — dense on
+`QUEUE_NAMES`, BM25 on "how does auth work" — its best guess is still promoted
+at full strength and pollutes the top of the list. Routing removes the channel
+that would have guessed.
+
+## What counts as a symbol
+
+One token with an internal boundary: camelCase, snake_case, kebab-case,
+`a.b.c`, `a/b`, `A::B`, or ALLCAPS. Deliberately narrow — a false positive
+sends a real question to BM25, which is measurably bad; a false negative only
+forgoes a small win. Symbols score 1.0 / 1.0 on BM25 and 1.0 / 0.875 on dense.
+
+<Sticky accent="lime">
+  An LLM router was on the table. A regex got the same MRR gain for free and
+  adds no latency.
+</Sticky>

@@ -1,0 +1,30 @@
+A chunk is a function, class, method, interface, type or exported constant —
+with boundaries from a real parser, not from counting braces.
+
+<Schema title="chunker rules">
+  <Pipeline accent="violet" steps={["parse|tree-sitter", "units|≤ 2000 B", "split|big class → members", "merge|small ones ≥ 200 B", "header|only for the index"]} />
+</Schema>
+
+## The four rules
+
+- **Big containers split into members.** A 5 KB class becomes a header chunk
+  plus one chunk per method, each carrying `parent = class`.
+- **Small things merge with a neighbour.** One-line types, short consts,
+  import blocks and doc comments stick to the next unit.
+- **Nothing exceeds ~2000 bytes (≈ 500 tokens).** The model accepts 8192, but
+  a long chunk's embedding averages toward nothing. A single oversized function
+  is windowed by lines and keeps its symbol.
+- **Text stays clean.** The "what am I, where do I live" header — file,
+  symbol, parent, imports — is prepended only to the text that gets embedded
+  and BM25-indexed. Citations show real source.
+
+## Identifiers for BM25
+
+The standard analyser keeps `handleAuthCallback` as one token, so "auth
+callback" never touches it. Every chunk's identifiers are split into lowercase
+sub-words and appended to the indexed text.
+
+<Callout type="note" title="Every hit carries its channels">
+  A result returns `dense`, `bm25`, `rrf` and `rerank` scores side by side.
+  Which channel found what is data, not a UI guess.
+</Callout>

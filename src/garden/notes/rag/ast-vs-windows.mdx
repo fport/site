@@ -1,0 +1,36 @@
+What does syntax-aware chunking actually buy? We indexed the same repo twice —
+once with tree-sitter units, once with blank-line windows of the same size —
+and ran the same 42 questions.
+
+<Table
+  data={{
+    headers: ["Chunker", "Recall@8", "MRR", "EN prose", "TR prose", "symbol R / MRR"],
+    rows: [
+      ["tree-sitter units", "0.786", "0.690", "0.842 / 0.744", "0.684 / 0.570", "1.0 / 1.0"],
+      ["blank-line windows", "0.762", "0.598", "0.895 / 0.737", "0.632 / 0.518", "0.75 / 0.32"],
+    ],
+  }}
+/>
+
+## Reading it honestly
+
+- Recall moved by **one question**. MRR moved by 0.09 — and almost all of it
+  is symbol queries (0.32 → 1.0) plus the Turkish slice.
+- On English prose the plain windows were **equal or better**.
+- So AST chunking does not find more. It puts the right piece on top and
+  knows its name. That is worth having; it is not a 20-point lever.
+
+## The literature agrees
+
+The cAST paper reports +1 to +4 points over same-size line windows. An
+independent controlled replication found ≈ 0, and a third found the fixed
+windows slightly ahead. Naive function-per-chunk is reliably *worse* (−4 to
+−6 pp) — the value sits in merging small siblings and capping size, not in
+the syntactic boundary itself. Reranking and LLM-written context move
+retrieval 3–10× more.
+
+<Callout type="gotcha" title="What the eval could not see">
+  Our golden set expects file paths, not `path::symbol`. Citation quality —
+  the thing AST chunking is best at — was not even scored. The delta above is
+  pure retrieval.
+</Callout>

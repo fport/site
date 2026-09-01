@@ -1,0 +1,31 @@
+Before the real system there was a throwaway one: MiniLM-L6-v2, a small Milvus,
+30 questions. It was wrong about almost everything and that was the point.
+
+<Table
+  data={{
+    headers: ["recall@5", "symbol query", "plain sentence"],
+    rows: [
+      ["dense (MiniLM)", "0.60", "0.62"],
+      ["BM25", "0.80", "0.36"],
+      ["RRF of both", "0.60", "0.52"],
+    ],
+  }}
+/>
+
+## What survived into the real build
+
+- **Symbols want BM25.** An embedding has nothing to say about
+  `QUEUE_NAMES`; a lexical index has everything.
+- **Fusing always is not free.** RRF promoted the losing channel's best guess
+  at full strength and came out below *either* channel alone.
+- **Turkish over English code scored 0.04.** Not a retrieval bug — there was
+  simply no Turkish text to match. Two fixes were carried forward: a
+  multilingual embedder, and LLM-written descriptions as an option.
+- **Local models drift.** qwen2.5 slid into Chinese mid-sentence under load
+  and did not say so. Every generated description is script-checked since.
+
+<Callout type="idea" title="Why keep the failed experiment">
+  Its numbers are the baseline every later decision is compared against. A
+  design note that says "BM25 for symbols" is an opinion; 0.80 vs 0.60 is a
+  fact.
+</Callout>

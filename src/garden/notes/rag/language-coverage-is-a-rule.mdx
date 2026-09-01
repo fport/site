@@ -1,0 +1,47 @@
+The tempting design was a table: extension → language, folder → role
+(`controllers/` = controller), a regex per language for symbols. We surveyed
+what production systems do instead, and measured what a table would buy.
+
+## What everyone else does
+
+GitHub code search, Sourcegraph, Cursor, aider, Continue, Sweep, Qodo,
+Greptile — all of them **outsource language coverage to a parser
+ecosystem** (tree-sitter grammars with upstream `tags.scm`, or
+universal-ctags), chunk with a grammar-generic size cap, keep a universal
+line-window fallback, and carry path + symbol as metadata. None of them has
+framework-specific logic. None of them keeps a folder→role taxonomy.
+
+<Table
+  data={{
+    headers: ["Proposed", "Verdict", "Why"],
+    rows: [
+      ["extension → language table", "replaced by a rule", "371 grammars ship in the pack; if the extension name is a grammar name (.lua .vue .razor .zig) it just works; a small alias table (.ts .cs .kt) is validated against the pack at import"],
+      ["regex symbol extractors", "no", "tree-sitter already yields symbol, kind, parent for 20+ languages"],
+      ["folder → role tags", "no", "a role is a deterministic function of the path, and the path is already in the embedded text; it fixed none of the 11 misses in the golden set"],
+      ["vendor-name skip lists (jquery, bootstrap…)", "no", "a per-repo ignore file generalises; a name list encodes one company"],
+      ["per-framework rules (Next.js, Vue, Razor)", "no", "route files already carry the route in their path; Razor blocks fall out of the grammar"],
+    ],
+  }}
+/>
+
+## What we kept hand-written, and why
+
+- **Deliberately plain:** json, yaml, css, html — grammars exist, but windows
+  measured equal and a parser is only crash surface.
+- **Never indexed:** csv, tsv, diff, po, pem — grammars exist for those too.
+- **Grammar exists, parser refused:** `sql` (the generated grammar segfaults on
+  migration files) and `cobol` (hangs past 300 s on unbalanced brackets). Both
+  were found by a smoke test that runs every grammar in its own subprocess on
+  degenerate input — a crash kills the child, not the indexer.
+
+<Callout type="gotcha" title="Grammars download lazily">
+  Since language-pack 1.15 a grammar is fetched on first use. In an offline
+  container the first Kotlin file would silently fall back to windows, so the
+  Docker build calls `prefetch()` on the tested list and bakes it into the
+  image.
+</Callout>
+
+<Sticky accent="violet">
+  Adding a language now costs zero lines. The ceiling of that whole axis, per
+  the ablation, is about one question of recall — so zero is the right price.
+</Sticky>

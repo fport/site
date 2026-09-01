@@ -1,0 +1,36 @@
+The consumer is an agent — Claude Code, Cursor — so the retriever is exposed
+as three MCP tools mounted at `/mcp` inside the same FastAPI process.
+
+<Schema title="tools">
+  <Pipeline accent="sky" steps={["search_code|query, repo, path prefix, category", "read_code|indexed file, line range", "list_repos|freshness"]} />
+</Schema>
+
+## Design choices
+
+- **Same process, same retriever.** No stdio sidecar loading the embedding
+  model twice; blocking work (embedding, Milvus, disk) runs in threads so the
+  MCP session's event loop keeps flowing.
+- **Output is data, not instructions.** Code returned to the agent is wrapped
+  as untrusted content.
+- **Signals travel with the hits.** Weak-match band, `DOC` label, "N
+  candidates dropped", last index time per repo.
+- **`read_code` reads only indexed files.** The path must be in the manifest —
+  so the agent cannot read `node_modules` or `.env`, and cannot be told "that
+  file exists" when it does not. If the file on disk no longer matches the
+  indexed hash, the slice comes back flagged `stale`.
+
+<Table
+  data={{
+    headers: ["Gotcha", "Fix"],
+    rows: [
+      ["mounted sub-app lifespans never run", "session_manager.run() wraps the parent app's lifespan"],
+      ["transport rejects foreign Host headers with 421 (DNS rebinding)", "extra hosts via config"],
+      ["/mcp → /mcp/ is a 307; redirect-averse clients lose the POST body", "a pure-ASGI middleware rewrites the path instead"],
+    ],
+  }}
+/>
+
+<Sticky accent="sky">
+  The agent gets candidates and evidence, then reads. Retrieval that tries to
+  be the last word is retrieval that hallucinates on the agent's behalf.
+</Sticky>

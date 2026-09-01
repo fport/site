@@ -1,0 +1,32 @@
+The rule of the repo: no retrieval flag changes its default without a JSON in
+`evals/results/`. "It seems better" is not a result.
+
+<Schema title="the harness">
+  <Pipeline accent="slate" steps={["golden|42 positives + 13 negatives", "run|auto · k=8", "score|Recall@8 · MRR · abstain · false-weak", "ledger|README table"]} />
+</Schema>
+
+The golden set is 19 English prose questions, 19 Turkish, 4 symbols, and 13
+questions whose answer is *not* in the repo. Every run also prints p50/p95 and
+a calibration block. Repo-specific sets stay out of git — they contain
+internal paths.
+
+## What the numbers overturned
+
+<Table
+  data={{
+    headers: ["Belief", "Measured", "Decision"],
+    rows: [
+      ["always fuse dense + BM25", "MRR 0.604 vs 0.690 routed", "route by query shape"],
+      ["a cross-encoder reranker helps", "MRR 0.690 → 0.514, +2–4 s", "flag, default off"],
+      ["a reranker can gate 'no answer'", "29% false alarm", "three cosine bands instead"],
+      ["folder → role tags make embeddings smarter", "fixed 0 of 11 misses", "not built"],
+      ["more languages = big win", "AST vs windows: 1 question, MRR +0.09", "generic rule, zero per-language code"],
+      ["Turkish needs a better matcher", "text was missing, not matching: 0.04 → 0.684 → 0.932", "multilingual embedder + optional enrichment"],
+    ],
+  }}
+/>
+
+<Sticky accent="slate">
+  Half the table is things we were sure about. That is the reason the table
+  exists.
+</Sticky>

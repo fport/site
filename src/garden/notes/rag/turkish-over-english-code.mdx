@@ -1,0 +1,40 @@
+The users ask in Turkish; the code, comments and commit messages are English.
+Nothing in a bi-encoder bridges that gap unless the text does.
+
+<Meter label="TR prose recall@8 — MiniLM" value={4} max={100} unit="%" />
+<Meter label="TR prose recall@8 — BGE-M3" value={68} max={100} unit="%" />
+<Meter label="TR prose MRR — subset, no enrichment" value={78} max={100} unit="%" />
+<Meter label="TR prose MRR — subset, enriched" value={93} max={100} unit="%" />
+
+## Step one: a multilingual embedder
+
+BGE-M3 alone took Turkish prose from 0.04 to 0.684. English prose sits at
+0.842 on the same corpus, so a gap of ~16 points remained.
+
+## Step two: write the missing text
+
+Contextual retrieval, applied to code: one LLM call per file returns a 2–3
+sentence Turkish description of each chunk. The description goes only into the
+embedded/BM25 text — the chunk shown to the model stays the real source. Cached
+by chunk hash + model, so a re-index never pays twice.
+
+<Table
+  data={{
+    headers: ["Same 46 files / 423 chunks", "Recall@8", "MRR", "TR prose MRR", "false weak-match"],
+    rows: [
+      ["no enrichment", "0.929", "0.839", "0.778", "0.119"],
+      ["enriched (local qwen3.5:9b)", "1.000", "0.912", "0.932", "0.048"],
+    ],
+  }}
+/>
+
+Negatives were unchanged (abstain 0.923 both ways) — the descriptions did not
+manufacture confidence on unrelated questions — and the score calibration did
+not move.
+
+<Callout type="gotcha" title="Why the default is still off">
+  A local 9B model writes ~11 descriptions a minute: a 2.8k-chunk repo costs
+  about four hours, once. With a cloud model it is minutes and money. An
+  install with no API key would otherwise spend hours on every repo it adds,
+  so enrichment is a flag with a measured payoff, not a default.
+</Callout>
